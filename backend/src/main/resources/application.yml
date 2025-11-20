@@ -72,7 +72,7 @@ logging:
   file:
     name: ./log/nebula-agent.log
   logback:
-    rollingpolicy:
+    rolling-policy:
       clean-history-on-start: true
       max-file-size: 10MB
       max-history: 30
