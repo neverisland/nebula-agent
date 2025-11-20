@@ -1,0 +1,100 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: nebula-agent
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    ##  Hikari 连接池配置
+    hikari:
+      pool-name: HikariCP
+      # 最小连接池数量
+      minimum-idle: 10
+      # 最大连接池数量
+      maximum-pool-size: 30
+      # 此属性控制从池返回的连接的默认自动提交行为,默认值：true
+      auto-commit: true
+      # 空闲连接存活最大时间，默认600000（10分钟）
+      idle-timeout: 180000
+      ## 数据库连接超时时间,默认30秒，即30000
+      connection-timeout: 30000
+      ## 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+      max-lifetime: 1800000
+      # 配置检测连接是否有效
+      connection-test-query: SELECT 1
+  # redis配置
+  data:
+    redis:
+      # Redis数据库索引（默认为0）
+      database: 0
+      # 连接超时时间
+      timeout: 10s
+      lettuce:
+        pool:
+          # 连接池最大连接数
+          max-active: 200
+          # 连接池最大阻塞等待时间（使用负值表示没有限制）
+          max-wait: -1ms
+          # 连接池中的最大空闲连接
+          max-idle: 10
+          # 连接池中的最小空闲连接
+          min-idle: 0
+  cache:
+    # 缓存类型 redis， none（不适用缓存）
+    type: redis
+    # 缓存时间（单位：ms）
+    redis:
+      time-to-live: 3600000
+      # 缓存null值，防止缓存穿透
+      cache-null-values: true
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
+  mvc:
+    static-path-pattern: /file/**
+
+# mybatis 配置内容
+mybatis:
+  # 配置 Mapper XML 地址
+  mapper-locations: classpath:/mapper/**/*Mapper.xml
+  configuration:
+    # 使用驼峰命名法转换字段
+    map-underscore-to-camel-case: true
+    # 配置数据库日志
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# 日志配置
+logging:
+  file:
+    name: ./log/nebula-agent.log
+  logback:
+    rollingpolicy:
+      clean-history-on-start: true
+      max-file-size: 10MB
+      max-history: 30
+
+
+# 基础数据赋值
+data:
+  assignment:
+    enable: true
+
+sa-token:
+  # token 名称（同时也是 cookie 名称）
+  token-name: authentication
+  # token 有效期（单位：秒） 默认30天，-1 代表永久有效
+  timeout: 86400
+  # token 最低活跃频率（单位：秒），如果 token 超过此时间没有访问系统就会被冻结，默认-1 代表不限制，永不冻结
+  active-timeout: 3600
+  # 是否允许同一账号多地同时登录 （为 true 时允许一起登录, 为 false 时新登录挤掉旧登录）
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个 token （为 true 时所有登录共用一个 token, 为 false 时每次登录新建一个 token）
+  is-share: false
+  # token 风格（默认可取值：uuid、simple-uuid、random-32、random-64、random-128、tik）
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: false
