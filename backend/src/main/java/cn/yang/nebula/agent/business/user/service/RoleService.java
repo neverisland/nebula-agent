@@ -292,8 +292,21 @@ public class RoleService implements RoleFacade {
                 .distinct()
                 .toList();
     }
+
+    /**
+     * 获取所有角色列表
+     *
+     * @return 角色列表
+     */
+    @Override
+    public List<RoleDto> selectAll() {
+        List<Role> roles = roleRepository.selectAll();
+        return roles.stream()
+                .map(role -> {
+                    RoleDto roleDto = BeanConvertUtils.convert(role, RoleDto.class);
+                    roleDto.setPermissionList(BeanConvertUtils.convert(role.getPermissionList(), PermissionDto.class));
+                    return roleDto;
+                })
+                .toList();
+    }
 }
-
-
-
-

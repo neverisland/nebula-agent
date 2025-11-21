@@ -22,11 +22,6 @@ public class UserInfo implements Serializable {
     private String userId;
 
     /**
-     * 当前登录身份id
-     */
-    private String identityId;
-
-    /**
      * 用户名
      */
     private String username;

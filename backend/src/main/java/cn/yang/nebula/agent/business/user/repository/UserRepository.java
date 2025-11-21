@@ -1,10 +1,14 @@
 package cn.yang.nebula.agent.business.user.repository;
 
 import cn.yang.nebula.agent.business.user.dal.UserDo;
+import cn.yang.nebula.agent.business.user.dal.UserRoleDo;
+import cn.yang.nebula.agent.business.user.dto.role.RoleDto;
 import cn.yang.nebula.agent.business.user.dto.user.UserPageDto;
 import cn.yang.nebula.agent.business.user.dto.user.UserPageQuery;
+import cn.yang.nebula.agent.business.user.entity.Role;
 import cn.yang.nebula.agent.business.user.entity.User;
 import cn.yang.nebula.agent.business.user.mapper.UserMapper;
+import cn.yang.nebula.agent.business.user.mapper.UserRoleMapper;
 import cn.yang.common.data.structure.annotation.assignment.BaseDataAssignment;
 import cn.yang.common.data.structure.annotation.assignment.DataOperationTypeEnum;
 import cn.yang.common.data.structure.exception.NullDataException;
@@ -14,8 +18,14 @@ import cn.yang.foundational.capability.id.generator.IdGenerator;
 import jakarta.annotation.Resource;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 用户 仓储层
@@ -27,6 +37,12 @@ public class UserRepository {
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private UserRoleMapper userRoleMapper;
+
+    @Resource
+    private RoleRepository roleRepository;
 
     @Resource
     private IdGenerator idGenerator;
@@ -43,9 +59,58 @@ public class UserRepository {
         if (count > 0) {
             List<UserDo> userDoList = userMapper.selectPageData(userPageQuery);
             List<UserPageDto> userPageDtoList = BeanConvertUtils.convert(userDoList, UserPageDto.class);
+            // 填充角色信息
+            fillRoles(userPageDtoList);
             return new PageResult<>(userPageQuery, userPageDtoList, count);
         } else {
             return new PageResult<>(userPageQuery);
+        }
+    }
+
+    /**
+     * 填充角色信息到用户分页DTO列表
+     *
+     * @param userPageDtoList 用户分页DTO列表
+     */
+    private void fillRoles(List<UserPageDto> userPageDtoList) {
+        if (CollectionUtils.isEmpty(userPageDtoList)) {
+            return;
+        }
+        List<String> userIds = userPageDtoList.stream().map(UserPageDto::getId).collect(Collectors.toList());
+        List<UserRoleDo> userRoleDos = userRoleMapper.selectByUserIds(userIds);
+
+        if (CollectionUtils.isEmpty(userRoleDos)) {
+            return;
+        }
+
+        List<String> roleIds = userRoleDos.stream()
+                .map(UserRoleDo::getRoleId)
+                .distinct()
+                .collect(Collectors.toList());
+        List<Role> roles = roleRepository.selectByIds(roleIds);
+        
+        // Map<RoleId, Role>
+        Map<String, Role> roleMap = roles.stream()
+                .collect(Collectors.toMap(Role::getId, r -> r));
+        
+        // Map<UserId, List<Role>>
+        Map<String, List<Role>> userRoleMap = new HashMap<>();
+        for (UserRoleDo userRoleDo : userRoleDos) {
+            String userId = userRoleDo.getUserId();
+            String roleId = userRoleDo.getRoleId();
+            Role role = roleMap.get(roleId);
+            if (role != null) {
+                userRoleMap.computeIfAbsent(userId, k -> new ArrayList<>()).add(role);
+            }
+        }
+        
+        // 填充到DTO
+        for (UserPageDto dto : userPageDtoList) {
+            List<Role> userRoles = userRoleMap.get(dto.getId());
+            if (!CollectionUtils.isEmpty(userRoles)) {
+                List<RoleDto> roleDtos = BeanConvertUtils.convert(userRoles, RoleDto.class);
+                dto.setRoles(roleDtos);
+            }
         }
     }
 
@@ -104,7 +169,45 @@ public class UserRepository {
         if (userDo == null) {
             throw new NullDataException("用户不存在");
         }
-        return BeanConvertUtils.convert(userDo, User.class);
+        User user = BeanConvertUtils.convert(userDo, User.class);
+        
+        // 填充角色
+        List<UserRoleDo> userRoleDos = userRoleMapper.selectByUserId(id);
+        if (!CollectionUtils.isEmpty(userRoleDos)) {
+            List<String> roleIds = userRoleDos.stream()
+                    .map(UserRoleDo::getRoleId)
+                    .collect(Collectors.toList());
+            List<Role> roles = roleRepository.selectByIds(roleIds);
+            user.setRoles(roles);
+        }
+        return user;
+    }
+
+    /**
+     * 分配角色
+     *
+     * @param userId     用户id
+     * @param roleIdList 角色id列表
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void assignRole(String userId, List<String> roleIdList) {
+        // 删除旧的关联
+        userRoleMapper.deleteByUserId(userId);
+
+        // 新增新的关联
+        if (CollectionUtils.isEmpty(roleIdList)) {
+            return;
+        }
+        
+        List<UserRoleDo> userRoleDos = new ArrayList<>();
+        for (String roleId : roleIdList) {
+            UserRoleDo userRoleDo = new UserRoleDo();
+            userRoleDo.setId(idGenerator.getId());
+            userRoleDo.setUserId(userId);
+            userRoleDo.setRoleId(roleId);
+            userRoleDos.add(userRoleDo);
+        }
+        userRoleMapper.batchInsert(userRoleDos);
     }
 
     /**
@@ -152,7 +255,3 @@ public class UserRepository {
         return userMapper.deleteById(id);
     }
 }
-
-
-
-

@@ -9,7 +9,7 @@ import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
- * 获取当前登录用户身份id
+ * 获取当前登录用户ID
  *
  * @author : 未见清海
  */
@@ -20,9 +20,9 @@ public class CurrentlyUserService implements CurrentlyUserFacade {
     private AuthenticationFacade authenticationFacade;
 
     /**
-     * 获取当前登录用户的身份id
+     * 获取当前登录用户ID
      *
-     * @return 身份id
+     * @return 用户ID
      * @throws NotLoginException 用户未登录异常
      */
     @Override
@@ -35,7 +35,7 @@ public class CurrentlyUserService implements CurrentlyUserFacade {
         if (!authenticationFacade.verifyWhetherAuthenticated()) {
             throw new NotLoginException("用户未登录");
         }
-        return authenticationFacade.getCurrentUserIdentityId();
+        return authenticationFacade.getCurrentUserId();
     }
 
 }

@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 用户分页展示数据
@@ -50,6 +51,16 @@ public class UserPageDto implements Serializable {
      * <br>
      * 参见 {@link EnabledEnum}
      */
+    /**
+     * 是否启用 false 禁用 true 启用
+     * <br>
+     * 参见 {@link EnabledEnum}
+     */
     private Boolean enabled;
+
+    /**
+     * 角色列表
+     */
+    private List<cn.yang.nebula.agent.business.user.dto.role.RoleDto> roles;
 
 }

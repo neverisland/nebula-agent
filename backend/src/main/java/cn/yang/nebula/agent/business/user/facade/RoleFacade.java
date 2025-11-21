@@ -75,6 +75,13 @@ public interface RoleFacade {
     RoleDto selectByMark(String mark);
 
     /**
+     * 获取所有角色列表
+     *
+     * @return 角色列表
+     */
+    List<RoleDto> selectAll();
+
+    /**
      * 根据角色ID列表获取权限列表数据
      *
      * @param roleIds 角色id列表

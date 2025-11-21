@@ -6,7 +6,6 @@ import cn.yang.nebula.agent.business.authentication.entity.UserInfo;
 import cn.yang.nebula.agent.business.authentication.facade.AuthenticationFacade;
 import cn.yang.nebula.agent.business.user.entity.Permission;
 import cn.yang.nebula.agent.business.user.entity.Role;
-import cn.yang.nebula.agent.business.user.facade.IdentityFacade;
 import cn.yang.nebula.agent.business.user.facade.RoleFacade;
 import cn.yang.nebula.agent.business.user.facade.UserFacade;
 import cn.yang.common.data.structure.enums.StatusCodeEnum;
@@ -34,9 +33,6 @@ public class AuthenticationController {
 
     @Resource
     private AuthenticationFacade authenticationFacade;
-
-    @Resource
-    private IdentityFacade identityFacade;
 
     @Resource
     private UserFacade userFacade;
@@ -76,7 +72,7 @@ public class AuthenticationController {
     public ResultVo<CurrentUserInfoDto> getCurrentUserInfo() {
         UserInfo userInfo = authenticationFacade.getCurrentUserInfo();
         // 获取当前用户角色信息
-        List<Role> currentUserRoleList = identityFacade.getRoleListByIdentityId(userInfo.getIdentityId());
+        List<Role> currentUserRoleList = userFacade.selectById(userInfo.getUserId()).getRoles();
         List<CurrentUserRoleDto> currentUserRoleDtoList = new ArrayList<>();
         List<String> permissionMarkList = new ArrayList<>();
         if (!CollectionUtils.isEmpty(currentUserRoleList)) {

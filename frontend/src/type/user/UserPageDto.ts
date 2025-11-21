@@ -37,4 +37,9 @@ export interface UserPageDto {
      * 最后登录时间
      */
     loginDate: string;
+
+    /**
+     * 角色列表
+     */
+    roles?: any[];
 }

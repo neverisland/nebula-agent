@@ -4,7 +4,6 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.yang.nebula.agent.business.authentication.entity.UserInfo;
 import cn.yang.nebula.agent.business.authentication.facade.AuthenticationFacade;
 import cn.yang.nebula.agent.business.user.entity.User;
-import cn.yang.nebula.agent.business.user.facade.IdentityFacade;
 import cn.yang.nebula.agent.business.user.facade.UserFacade;
 import cn.yang.common.data.structure.utils.bean.BeanConvertUtils;
 import jakarta.annotation.Resource;
@@ -23,9 +22,6 @@ public class AuthenticationService implements AuthenticationFacade {
     @Resource
     private UserFacade userFacade;
 
-    @Resource
-    private IdentityFacade identityFacade;
-
 
     /**
      * 根据用户id获取可进行的认证方式
@@ -43,29 +39,27 @@ public class AuthenticationService implements AuthenticationFacade {
     /**
      * 获取当前登录用户信息
      *
-     * @return 当前登录用户信息ø
+     * @return 当前登录用户信息
      */
     @Override
     public UserInfo getCurrentUserInfo() {
-        // 获取当前登录用户的身份id
-        String identityId = getCurrentUserIdentityId();
-        // 获取用户ID并且获取用户信息数据
-        String userId = identityFacade.selectUserIdByIdentityId(identityId);
+        // 获取当前登录用户ID
+        String userId = getCurrentUserId();
+        // 获取用户信息数据
         User user = userFacade.selectById(userId);
         // 组装当前用户信息数据
         UserInfo userInfo = BeanConvertUtils.convert(user, UserInfo.class);
         userInfo.setUserId(userId);
-        userInfo.setIdentityId(identityId);
         return userInfo;
     }
 
     /**
-     * 获取当前登录用户的身份id
+     * 获取当前登录用户ID
      *
-     * @return 身份idø
+     * @return 用户ID
      */
     @Override
-    public String getCurrentUserIdentityId() {
+    public String getCurrentUserId() {
         return String.valueOf(StpUtil.getLoginId());
     }
 

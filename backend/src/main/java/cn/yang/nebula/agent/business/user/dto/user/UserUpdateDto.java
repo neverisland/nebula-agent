@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 用户修改
@@ -46,5 +47,11 @@ public class UserUpdateDto implements Serializable {
      * 邮箱
      */
     private String email;
+
+    /**
+     * 角色ID列表
+     */
+    @NotNull(message = "角色列表不能为空")
+    private List<String> roleIdList;
 
 }

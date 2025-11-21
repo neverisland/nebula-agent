@@ -139,8 +139,11 @@ public interface RoleMapper {
      * @return 角色数据
      */
     RoleDo selectByMark(@Param("mark") String mark);
+
+    /**
+     * 获取所有角色数据（包含权限）
+     *
+     * @return 所有角色数据列表
+     */
+    List<RoleDo> selectAllData();
 }
-
-
-
-

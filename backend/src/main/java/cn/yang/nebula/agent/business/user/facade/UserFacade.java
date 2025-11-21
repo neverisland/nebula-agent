@@ -82,4 +82,11 @@ public interface UserFacade {
      * @param id 用户id
      */
     void deleteById(String id);
+
+    /**
+     * 分配角色
+     *
+     * @param assignRoleDto 分配角色入参
+     */
+    void assignRole(AssignRoleDto assignRoleDto);
 }

@@ -1,12 +1,12 @@
 import request from "../utils/request";
-import {ResultVo} from "../type/ResultVo.ts";
-import {AxiosResponse} from "axios";
-import {SysRolePageDto} from "../type/role/SysRolePageDto.ts";
-import {SysRoleQueryDto} from "../type/role/SysRoleQueryDto.ts";
-import {PageResult} from "../type/PageResult.ts";
-import {SysRoleAddDto} from "../type/role/SysRoleAddDto.ts";
-import {SysRoleDto} from "../type/role/SysRoleDto.ts";
-import {SysRoleUpdateDto} from "../type/role/SysRoleUpdateDto.ts";
+import { ResultVo } from "../type/ResultVo.ts";
+import { AxiosResponse } from "axios";
+import { SysRolePageDto } from "../type/role/SysRolePageDto.ts";
+import { SysRoleQueryDto } from "../type/role/SysRoleQueryDto.ts";
+import { PageResult } from "../type/PageResult.ts";
+import { SysRoleAddDto } from "../type/role/SysRoleAddDto.ts";
+import { SysRoleDto } from "../type/role/SysRoleDto.ts";
+import { SysRoleUpdateDto } from "../type/role/SysRoleUpdateDto.ts";
 
 
 type ConfigType<T = ResultVo> = Promise<AxiosResponse<T>>
@@ -66,6 +66,16 @@ export const updateRole = (data: SysRoleUpdateDto): ConfigType<ResultVo<null>> =
 export const deleteRoleById = (id: string): ConfigType<ResultVo<null>> => {
     return request({
         url: "/role/deleteById?id=" + id,
+        method: 'GET'
+    });
+}
+
+/**
+ * 查询所有角色列表（不分页）
+ */
+export const selectAllRoles = (): ConfigType<ResultVo<SysRoleDto[]>> => {
+    return request({
+        url: "/role/selectAll",
         method: 'GET'
     });
 }

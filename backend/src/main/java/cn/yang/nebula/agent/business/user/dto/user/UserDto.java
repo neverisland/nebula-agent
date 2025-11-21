@@ -1,5 +1,6 @@
 package cn.yang.nebula.agent.business.user.dto.user;
 
+import cn.yang.nebula.agent.business.user.dto.role.RoleDto;
 import cn.yang.nebula.agent.enums.EnabledEnum;
 import cn.yang.nebula.agent.business.user.enums.AccountNonLockedEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -8,6 +9,7 @@ import lombok.Data;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 用户详情出参
@@ -62,5 +64,10 @@ public class UserDto implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private LocalDateTime createTime;
+
+    /**
+     * 角色列表
+     */
+    private List<RoleDto> roles;
 
 }

@@ -1,10 +1,12 @@
 package cn.yang.nebula.agent.business.user.dto.user;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 新增用户入参实体
@@ -39,5 +41,11 @@ public class UserInsertDto implements Serializable {
      * 邮箱
      */
     private String email;
+
+    /**
+     * 角色ID列表
+     */
+    @NotNull(message = "角色列表不能为空")
+    private List<String> roleIdList;
 
 }

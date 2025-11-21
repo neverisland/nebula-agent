@@ -47,4 +47,9 @@ export interface UserDto {
      * 注册时间
      */
     createTime: string;
+
+    /**
+     * 角色列表
+     */
+    roles?: any[];
 }

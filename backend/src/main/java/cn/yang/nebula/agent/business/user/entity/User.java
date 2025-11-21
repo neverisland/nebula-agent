@@ -7,6 +7,7 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 import java.time.LocalDateTime;
 
 /**
@@ -62,6 +63,16 @@ public class User extends BaseEntity implements Serializable {
      * <br>
      * 参见 {@link EnabledEnum}
      */
+    /**
+     * 是否启用 0 禁用 1 启用
+     * <br>
+     * 参见 {@link EnabledEnum}
+     */
     private Boolean enabled;
+
+    /**
+     * 拥有的角色
+     */
+    private List<Role> roles;
 
 }

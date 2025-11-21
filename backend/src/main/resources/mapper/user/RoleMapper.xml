@@ -262,4 +262,27 @@
             #{item}
         </foreach>
     </delete>
+
+    <!-- 获取所有角色数据（包含权限） -->
+    <select id="selectAllData" resultMap="BaseResultMap">
+        SELECT
+            r.id,
+            r.mark,
+            r.NAME,
+            r.description,
+            r.type,
+            r.create_user_id,
+            r.create_time,
+            r.update_user_id,
+            r.update_time,
+            p.id AS p_id,
+            p.mark AS p_mark,
+            p.description AS p_description,
+            p.create_time AS p_create_time,
+            p.update_time AS p_update_time
+        FROM
+            role r
+                LEFT JOIN permission p ON p.id IN ( SELECT permission_id FROM role_permission WHERE role_id = r.id )
+        ORDER BY r.create_time DESC
+    </select>
 </mapper>

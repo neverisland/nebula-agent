@@ -2,13 +2,11 @@ package cn.yang.nebula.agent.business.authentication.service;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.yang.nebula.agent.business.authentication.facade.AuthorizationFacade;
-import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
-import cn.yang.nebula.agent.business.user.entity.Identity;
 import cn.yang.nebula.agent.business.user.entity.User;
 import cn.yang.nebula.agent.business.user.enums.AccountNonLockedEnum;
 import cn.yang.nebula.agent.business.user.enums.EnabledEnum;
-import cn.yang.nebula.agent.business.user.facade.IdentityFacade;
 import cn.yang.nebula.agent.business.user.facade.UserFacade;
+import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
 import cn.yang.common.data.structure.exception.BusinessException;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -24,16 +22,13 @@ import java.util.List;
 public class AuthorizationService implements AuthorizationFacade {
 
     @Resource
-    private IdentityFacade identityFacade;
-
-    @Resource
     private UserFacade userFacade;
 
     /**
-     * 根据用户id获取可以授权的身份
+     * 根据用户id获取授权用户ID
      *
      * @param userId 用户id
-     * @return 可以授权的身份id
+     * @return 授权用户ID
      */
     @Override
     public String getAuthorizedIdentity(String userId) {
@@ -45,21 +40,19 @@ public class AuthorizationService implements AuthorizationFacade {
         if (!AccountNonLockedEnum.ENABLE.getEnabled().equals(user.getAccountNonLocked())) {
             throw new BusinessException(ErrorStatusCodeEnum.AUTHENTICATION_ERROR, "用户已锁定,请稍后再试");
         }
-        // 获取用户的身份数据
-        List<Identity> identityList = identityFacade.selectByUserId(userId);
-        // todo 获取合适的身份数据，设置默认等等
-        return identityList.get(0).getId();
+        // 直接返回用户ID用于授权
+        return userId;
     }
 
     /**
-     * 授权根据身份id
+     * 授权根据用户ID
      *
-     * @param identityId 身份id
+     * @param userId 用户ID
      * @return 授权标识
      */
     @Override
-    public String authorizationByIdentityId(String identityId) {
-        StpUtil.login(identityId);
+    public String authorizationByIdentityId(String userId) {
+        StpUtil.login(userId);
         return StpUtil.getTokenValue();
     }
 }

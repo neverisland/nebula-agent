@@ -1,13 +1,13 @@
 import request from "../utils/request";
-import {ResultVo} from "../type/ResultVo.ts";
-import {AxiosResponse} from "axios";
-import {UserQueryDto} from "../type/user/UserQueryDto.ts";
-import {UserPageDto} from "../type/user/UserPageDto.ts";
-import {PageResult} from "../type/PageResult.ts";
-import {UserAddDto} from "../type/user/UserAddDto.ts";
-import {UserDto} from "../type/user/UserDto.ts";
-import {UserUpdateDto} from "../type/user/UserUpdateDto.ts";
-import {DisableEnableUserDto} from "@/type/user/DisableEnableUserDto.ts";
+import { ResultVo } from "../type/ResultVo.ts";
+import { AxiosResponse } from "axios";
+import { UserQueryDto } from "../type/user/UserQueryDto.ts";
+import { UserPageDto } from "../type/user/UserPageDto.ts";
+import { PageResult } from "../type/PageResult.ts";
+import { UserAddDto } from "../type/user/UserAddDto.ts";
+import { UserDto } from "../type/user/UserDto.ts";
+import { UserUpdateDto } from "../type/user/UserUpdateDto.ts";
+import { DisableEnableUserDto } from "@/type/user/DisableEnableUserDto.ts";
 
 type ConfigType<T = ResultVo> = Promise<AxiosResponse<T>>
 
@@ -76,6 +76,18 @@ export const deleteUserById = (id: string): ConfigType<ResultVo<null>> => {
 export const disableEnableUser = (data: DisableEnableUserDto): ConfigType<ResultVo<null>> => {
     return request({
         url: "/user/disableEnableUser",
+        method: 'POST',
+        data
+    });
+}
+
+/**
+ * 分配角色
+ * @param data 入参
+ */
+export const assignRole = (data: any): ConfigType<ResultVo<null>> => {
+    return request({
+        url: "/user/assignRole",
         method: 'POST',
         data
     });

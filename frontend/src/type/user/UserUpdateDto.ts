@@ -16,7 +16,7 @@ export interface UserUpdateDto {
     /**
      * 昵称
      */
-    nickName: string;
+    nickname: string;
 
     /**
      * 手机号
@@ -27,4 +27,9 @@ export interface UserUpdateDto {
      * 邮箱
      */
     email: string;
+
+    /**
+     * 角色ID列表
+     */
+    roleIdList: string[];
 }

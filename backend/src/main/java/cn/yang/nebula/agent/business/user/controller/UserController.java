@@ -6,7 +6,6 @@ import cn.yang.nebula.agent.business.user.dto.role.RoleDto;
 import cn.yang.nebula.agent.business.user.dto.user.*;
 import cn.yang.nebula.agent.business.user.entity.User;
 import cn.yang.nebula.agent.business.user.enums.RoleEnum;
-import cn.yang.nebula.agent.business.user.facade.IdentityFacade;
 import cn.yang.nebula.agent.business.user.facade.RoleFacade;
 import cn.yang.nebula.agent.business.user.facade.UserFacade;
 import cn.yang.common.data.structure.enums.StatusCodeEnum;
@@ -35,9 +34,6 @@ public class UserController {
     private UserFacade userFacade;
 
     @Resource
-    private IdentityFacade identityFacade;
-
-    @Resource
     private RoleFacade roleFacade;
 
     /**
@@ -63,9 +59,13 @@ public class UserController {
     public ResultVo<String> insertData(@Validated @RequestBody UserInsertDto userInsertDto) {
         // 新增用户
         String userId = userFacade.insertUser(userInsertDto);
-        // 新增普通用户身份
-        RoleDto roleDto = roleFacade.selectByMark(RoleEnum.ORDINARY_USERS.getMark());
-        identityFacade.insertIdentity(userId, List.of(roleDto.getId()));
+        
+        // 分配角色
+        AssignRoleDto assignRoleDto = new AssignRoleDto();
+        assignRoleDto.setUserId(userId);
+        assignRoleDto.setRoleIdList(userInsertDto.getRoleIdList());
+        userFacade.assignRole(assignRoleDto);
+        
         return ResultFactory.success(StatusCodeEnum.SUCCESS, "新增成功", userId);
     }
 
@@ -76,8 +76,17 @@ public class UserController {
      * @return 是否成功响应
      */
     @PostMapping("/update")
+    @Transactional(rollbackFor = Exception.class, noRollbackFor = BusinessException.class)
     public ResultVo<?> updateDate(@Validated @RequestBody UserUpdateDto userUpdateDto) {
+        // 更新用户基本信息
         userFacade.updateUser(userUpdateDto);
+        
+        // 更新用户角色
+        AssignRoleDto assignRoleDto = new AssignRoleDto();
+        assignRoleDto.setUserId(userUpdateDto.getId());
+        assignRoleDto.setRoleIdList(userUpdateDto.getRoleIdList());
+        userFacade.assignRole(assignRoleDto);
+        
         return ResultFactory.success(StatusCodeEnum.SUCCESS, "修改成功", null);
     }
 
@@ -92,6 +101,13 @@ public class UserController {
         // 获取用户数据
         User user = userFacade.selectById(id);
         UserDto userDto = BeanConvertUtils.convert(user, UserDto.class);
+        
+        // 转换角色列表
+        if (user.getRoles() != null && !user.getRoles().isEmpty()) {
+            List<RoleDto> roleDtos = BeanConvertUtils.convert(user.getRoles(), RoleDto.class);
+            userDto.setRoles(roleDtos);
+        }
+        
         return ResultFactory.success(StatusCodeEnum.SUCCESS, "success", userDto);
     }
 
@@ -115,8 +131,17 @@ public class UserController {
     public ResultVo<?> deleteById(@RequestParam("id") String id) {
         // 删除用户数据
         userFacade.deleteById(id);
-        // 删除身份数据
-        identityFacade.deleteByUserId(id);
         return ResultFactory.success(StatusCodeEnum.SUCCESS, "success");
+    }
+
+    /**
+     * 分配角色
+     *
+     * @param assignRoleDto 分配角色入参
+     */
+    @PostMapping("/assignRole")
+    public ResultVo<?> assignRole(@Validated @RequestBody AssignRoleDto assignRoleDto) {
+        userFacade.assignRole(assignRoleDto);
+        return ResultFactory.success(StatusCodeEnum.SUCCESS, "分配成功");
     }
 }

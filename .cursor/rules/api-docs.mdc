@@ -1,0 +1,76 @@
+---
+description: API 接口文档管理规范
+globs: docs/api/*.md, backend/**/Controller.java, frontend/**/Api.ts
+---
+
+# API 文档规范 (API Documentation Rules)
+
+## 核心原则
+- **单一事实来源**: 代码是逻辑的来源，但 `docs/api/` 是前后端协作的契约。
+- **同步更新**: 后端修改 Controller 接口后，**必须**立即更新对应的 API 文档。
+
+## 文档位置
+- 路径: `docs/api/{ControllerName}.md`
+- 示例: `docs/api/UserController.md`
+
+## 文档格式 (Markdown)
+每个接口文档应包含以下部分：
+1.  **接口名称**: 简要描述接口功能。
+2.  **接口地址**: URL 和 HTTP Method (GET/POST/PUT/DELETE)。
+3.  **请求参数**:
+    - 包含参数名、类型、是否必填、描述。
+    - 如果是 JSON Body，提供对应的 JSON 结构示例。
+4.  **响应参数**:
+    - 包含字段名、类型、描述。
+    - 提供成功响应的 JSON 示例。
+
+## 工作流 (Workflow)
+1.  **后端开发**:
+    - 编写/修改 Controller 代码。
+    - 运行 Cursor 生成/更新 `docs/api/` 下的文档。
+    - 检查文档是否准确反映了代码变更。
+
+2.  **前端开发**:
+    - 阅读 `docs/api/` 下的文档。
+    - 在 `frontend/src/api/` 中编写调用代码。
+    - 在 `frontend/src/type/` 中定义类型。
+
+## 模板示例 (Template)
+
+```markdown
+# 用户管理 (UserController)
+
+## 1. 获取用户详情
+
+**URL**: `/user/detail`
+**Method**: `GET`
+
+### 请求参数
+
+| 参数名 | 类型 | 必填 | 描述 |
+| :--- | :--- | :--- | :--- |
+| id | String | 是 | 用户 ID |
+
+### 响应参数
+
+| 字段名 | 类型 | 描述 |
+| :--- | :--- | :--- |
+| code | Number | 状态码 (200 成功) |
+| msg | String | 消息 |
+| data | Object | 数据对象 |
+| data.id | String | 用户 ID |
+| data.username | String | 用户名 |
+
+### 响应示例
+
+```json
+{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "id": "123",
+    "username": "admin"
+  }
+}
+```
+```

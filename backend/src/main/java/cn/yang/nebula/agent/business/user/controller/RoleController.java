@@ -13,6 +13,8 @@ import jakarta.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 权限接口
  *
@@ -76,6 +78,17 @@ public class RoleController {
     public ResultVo<RoleDto> selectById(@RequestParam("id") String id) {
         RoleDto roleDto = roleFacade.selectById(id);
         return ResultFactory.success(StatusCodeEnum.SUCCESS, "success", roleDto);
+    }
+
+    /**
+     * 获取所有角色列表
+     *
+     * @return 角色列表
+     */
+    @GetMapping("/selectAll")
+    public ResultVo<List<RoleDto>> selectAll() {
+        List<RoleDto> roleDtoList = roleFacade.selectAll();
+        return ResultFactory.success(StatusCodeEnum.SUCCESS, "success", roleDtoList);
     }
 
     /**

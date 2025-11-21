@@ -200,6 +200,24 @@ public class UserService implements UserFacade {
     }
 
     /**
+     * 分配角色
+     *
+     * @param assignRoleDto 分配角色入参
+     */
+    @Override
+    public void assignRole(AssignRoleDto assignRoleDto) {
+        if (ObjectUtils.isEmpty(assignRoleDto.getUserId())) {
+            throw new BusinessException(ErrorStatusCodeEnum.PARAMETER_VERIFICATION_EXCEPTION, "用户id不能为空");
+        }
+        try {
+            userRepository.selectById(assignRoleDto.getUserId());
+        } catch (NullDataException e) {
+            throw new BusinessException(ErrorStatusCodeEnum.PARAMETER_VERIFICATION_EXCEPTION, e.getMessage());
+        }
+        userRepository.assignRole(assignRoleDto.getUserId(), assignRoleDto.getRoleIdList());
+    }
+
+    /**
      * 获取随机用户名
      *
      * @return 用户名称

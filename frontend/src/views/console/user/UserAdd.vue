@@ -1,73 +1,94 @@
 <template>
   <a-form
-      ref="form"
-      :model="form"
-      :rules="rules"
-      :label-col="{ span: 6 }"
-      :wrapper-col="{ span: 15 }"
+    ref="form"
+    :model="form"
+    :rules="rules"
+    :label-col="{ span: 6 }"
+    :wrapper-col="{ span: 15 }"
   >
     <a-form-item label="用户名" name="username">
-      <a-input v-model:value="form.username" autocomplete="off"/>
+      <a-input v-model:value="form.username" autocomplete="off" />
     </a-form-item>
     <a-form-item label="昵称" name="nickname">
-      <a-input v-model:value="form.nickname" autocomplete="off"/>
+      <a-input v-model:value="form.nickname" autocomplete="off" />
     </a-form-item>
     <a-form-item label="手机号" name="phone">
-      <a-input v-model:value="form.phone" autocomplete="off"/>
+      <a-input v-model:value="form.phone" autocomplete="off" />
     </a-form-item>
     <a-form-item label="邮箱" name="email">
-      <a-input v-model:value="form.email" autocomplete="off"/>
+      <a-input v-model:value="form.email" autocomplete="off" />
+    </a-form-item>
+    <a-form-item label="分配角色" name="roleIdList">
+      <a-select
+        v-model:value="form.roleIdList"
+        :options="roleOptions"
+        mode="multiple"
+        placeholder="请选择角色"
+        show-search
+        :filter-option="filterOption"
+        style="width: 100%"
+        option-label-prop="label"
+      />
     </a-form-item>
   </a-form>
   <div class="dialog-footer">
     <a-space wrap>
-      <a-button key="back" @click="close(false)">取消</a-button>
-      <a-button key="submit" type="primary" @click="save">保存</a-button>
+      <a-button @click="close(false)">取消</a-button>
+      <a-button type="primary" @click="save">保存</a-button>
     </a-space>
   </div>
 </template>
 
 <script lang="ts">
-import {FormInstance, message} from 'ant-design-vue';
-import {insertUser} from "@/api/UserApi.ts";
+import { FormInstance, message } from 'ant-design-vue';
+import { insertUser } from '@/api/UserApi.ts';
+import { selectAllRoles } from '@/api/RoleApi.ts';
 
 export default {
-  name: "UserAdd",
+  name: 'UserAdd',
   data() {
     return {
       form: {
         username: '',
         nickname: '',
         phone: '',
-        email: ''
+        email: '',
+        roleIdList: [] as string[],
       },
+      roleOptions: [] as any[],
       rules: {
-        username: [
-          {min: 2, max: 20, message: '用户名长度在 2 到 20 个字符', trigger: 'blur'}
-        ],
-        nickname: [
-          {min: 2, max: 20, message: '昵称长度在 2 到 20 个字符', trigger: 'blur'}
-        ],
+        username: [{ min: 2, max: 20, message: '用户名长度在 2 到 20 个字符', trigger: 'blur' }],
+        nickname: [{ min: 2, max: 20, message: '昵称长度在 2 到 20 个字符', trigger: 'blur' }],
         phone: [
-          {required: true, message: '请输入手机号', trigger: 'blur'},
-          {pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur'}
+          { required: true, message: '请输入手机号', trigger: 'blur' },
+          { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' },
         ],
-        email: [
-          {type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur'}
-        ]
-      }
-    }
+        email: [{ type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }],
+        roleIdList: [{ required: true, message: '请至少选择一个角色', trigger: 'change', type: 'array' }],
+      },
+    };
+  },
+  mounted() {
+    this.loadRoles();
   },
   methods: {
-    /**
-     * 关闭弹窗
-     */
+    loadRoles() {
+      selectAllRoles().then(res => {
+        if (res.data.code === 0) {
+          this.roleOptions = res.data.data.map((item: any) => ({ value: item.id, label: item.name, description: item.description }));
+        } else {
+          message.error('获取角色列表失败：' + res.data.details);
+        }
+      }).catch(() => {
+        message.error('获取角色列表失败');
+      });
+    },
+    filterOption(inputValue: string, item: any) {
+      return item.label.indexOf(inputValue) !== -1;
+    },
     close(refresh: boolean) {
       this.$emit('closeDialogInsert', refresh);
     },
-    /**
-     * 保存
-     */
     save() {
       (this.$refs.form as FormInstance).validate().then(() => {
         insertUser(this.form).then(res => {
@@ -81,10 +102,9 @@ export default {
           message.error('新增用户失败');
         });
       });
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

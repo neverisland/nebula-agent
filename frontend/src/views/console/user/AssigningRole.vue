@@ -18,7 +18,8 @@
 
 <script lang="ts">
 import {message} from 'ant-design-vue';
-import {selectRoleList} from "@/api/RoleApi.ts";
+import {selectAllRoles} from "@/api/RoleApi.ts";
+import {assignRole, selectUserById} from "@/api/UserApi.ts";
 
 export default {
   name: "AssigningRole",
@@ -43,23 +44,27 @@ export default {
      */
     initData() {
       // 获取所有角色列表
-      selectRoleList().then(res => {
+      selectAllRoles().then(res => {
         if (res.data.code === 0) {
           this.roleData = res.data.data.map(item => ({
             key: item.id,
-            title: item.name,
+            label: item.name,
             description: item.description
           }));
-          // // 获取用户已分配的角色
-          // selectUserRoleList(this.selectId).then(res => {
-          //   if (res.data.code === 0) {
-          //     this.targetKeys = res.data.data.map(item => item.id);
-          //   } else {
-          //     message.error('获取用户角色失败：' + res.data.details);
-          //   }
-          // }).catch(() => {
-          //   message.error('获取用户角色失败');
-          // });
+          // 获取用户已分配的角色
+          selectUserById(this.selectId).then(res => {
+            if (res.data.code === 0) {
+              if (res.data.data.roles) {
+                this.targetKeys = res.data.data.roles.map(item => item.id);
+              } else {
+                this.targetKeys = [];
+              }
+            } else {
+              message.error('获取用户角色失败：' + res.data.details);
+            }
+          }).catch(() => {
+            message.error('获取用户角色失败');
+          });
         } else {
           message.error('获取角色列表失败：' + res.data.details);
         }
@@ -71,7 +76,7 @@ export default {
      * 过滤选项
      */
     filterOption(inputValue: string, item: any) {
-      return item.title.indexOf(inputValue) !== -1;
+      return item.label.indexOf(inputValue) !== -1;
     },
     /**
      * 关闭弹窗
@@ -83,19 +88,19 @@ export default {
      * 保存
      */
     save() {
-      // updateUserRole({
-      //   userId: this.selectId,
-      //   roleIds: this.targetKeys
-      // }).then(res => {
-      //   if (res.data.code === 0) {
-      //     message.success('分配角色成功');
-      //     this.$emit('closeDialogAssigningRole', true);
-      //   } else {
-      //     message.error('分配角色失败：' + res.data.details);
-      //   }
-      // }).catch(() => {
-      //   message.error('分配角色失败');
-      // });
+      assignRole({
+        userId: this.selectId,
+        roleIdList: this.targetKeys
+      }).then(res => {
+        if (res.data.code === 0) {
+          message.success('分配角色成功');
+          this.$emit('closeDialogAssigningRole', true);
+        } else {
+          message.error('分配角色失败：' + res.data.details);
+        }
+      }).catch(() => {
+        message.error('分配角色失败');
+      });
     }
   }
 }

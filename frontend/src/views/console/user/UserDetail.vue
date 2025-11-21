@@ -4,6 +4,9 @@
     <a-descriptions-item label="昵称">{{ data.nickname }}</a-descriptions-item>
     <a-descriptions-item label="手机号">{{ data.phone }}</a-descriptions-item>
     <a-descriptions-item label="邮箱">{{ data.email }}</a-descriptions-item>
+    <a-descriptions-item label="角色列表">
+      <a-tag v-for="role in data.roles" :key="role.id" style="margin-right: 4px;">{{ role.name }}</a-tag>
+    </a-descriptions-item>
     <a-descriptions-item label="用户状态">
       <a-tag :color="data.enabled ? 'success' : 'error'">
         {{ enableEnums.getDescriptionByType(data.enabled) }}

@@ -1,5 +1,5 @@
 /**
- * 角色新增
+ * 用户新增入参
  */
 export interface UserAddDto {
 
@@ -22,4 +22,9 @@ export interface UserAddDto {
      * 邮箱
      */
     email: string;
+
+    /**
+     * 角色ID列表
+     */
+    roleIdList: string[];
 }

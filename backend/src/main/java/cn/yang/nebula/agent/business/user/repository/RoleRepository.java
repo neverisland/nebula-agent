@@ -275,8 +275,24 @@ public class RoleRepository {
         role.setPermissionList(BeanConvertUtils.convert(roleDo.getPermissionList(), Permission.class));
         return role;
     }
+
+    /**
+     * 获取所有角色列表
+     *
+     * @return 角色列表
+     */
+    @Cacheable(cacheNames = "role-all-list")
+    public List<Role> selectAll() {
+        List<RoleDo> roleDoList = roleMapper.selectAllData();
+        List<Role> returnRoleList = new ArrayList<>();
+
+        // 组装角色的权限数据
+        roleDoList.forEach(roleDo -> {
+            Role role = BeanConvertUtils.convert(roleDo, Role.class);
+            role.setPermissionList(BeanConvertUtils.convert(roleDo.getPermissionList(), Permission.class));
+            returnRoleList.add(role);
+        });
+
+        return returnRoleList;
+    }
 }
-
-
-
-

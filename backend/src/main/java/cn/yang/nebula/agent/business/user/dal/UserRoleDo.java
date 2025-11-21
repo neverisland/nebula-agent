@@ -6,25 +6,25 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * 身份角色关联
+ * 用户角色关联实体
  *
  * @author 未见清海
  */
 @Data
-public class IdentityRoleDo implements Serializable {
+public class UserRoleDo implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = -1371850690135443721L;
+    private static final long serialVersionUID = 1L;
 
     /**
-     * 身份角色关联id
+     * 主键
      */
     private String id;
 
     /**
-     * 身份id
+     * 用户id
      */
-    private String identityId;
+    private String userId;
 
     /**
      * 角色id

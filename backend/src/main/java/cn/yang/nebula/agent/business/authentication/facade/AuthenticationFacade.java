@@ -28,11 +28,11 @@ public interface AuthenticationFacade {
     UserInfo getCurrentUserInfo();
 
     /**
-     * 获取当前登录用户的身份id
+     * 获取当前登录用户ID
      *
-     * @return 身份idø
+     * @return 用户ID
      */
-    String getCurrentUserIdentityId();
+    String getCurrentUserId();
 
     /**
      * 校验当前用户是否已经认证
