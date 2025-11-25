@@ -43,6 +43,7 @@ public class AuthenticationPasswordController {
      */
     @PostMapping("/login")
     public ResultVo<String> passwordLogin(@RequestBody @Validated PasswordLoginDto passwordLoginDto) {
+        System.out.println(1);
         // 校验滑动验证码是否通过
         Boolean slideCaptchaCheck = slidingVerificationCodeFacade.slideCaptchaCheck(passwordLoginDto.getUserSlideDistance(),
                 passwordLoginDto.getCacheSlidingVerificationCode(),
@@ -54,6 +55,7 @@ public class AuthenticationPasswordController {
         String identityId = authenticationPasswordFacade.passwordLogin(passwordLoginDto);
         // 对用户id授权操作
         String authorizationCode = authorizationFacade.authorizationByIdentityId(identityId);
+        System.out.println(2);
         return ResultFactory.success(StatusCodeEnum.SUCCESS, "登录成功", authorizationCode);
     }
 

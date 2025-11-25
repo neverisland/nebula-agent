@@ -101,7 +101,7 @@
       <ResetPassword :selectId="selectId" @closeDialogResetPassword="closeDialogResetPassword"/>
     </a-modal>
     <a-modal v-model:open="dialogAssigningRole" title="分配角色" :width="600" :footer="null">
-      <AssigningRole :selectId="selectId" @closeDialogResetPassword="closeDialogAssigningRole"/>
+      <AssigningRole :selectId="selectId" @closeDialogAssigningRole="closeDialogAssigningRole"/>
     </a-modal>
   </a-layout>
 </template>

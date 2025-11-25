@@ -11,7 +11,7 @@ const request = axios.create({
     baseURL: '/api',
     // `timeout` 指定请求超时的毫秒数。
     // 如果请求时间超过 `timeout` 的值，则请求会被中断
-    timeout: 3000, // 默认值是 `0` (永不超时)
+    timeout: 10000, // 默认值是 `0` (永不超时)
 })
 
 /**

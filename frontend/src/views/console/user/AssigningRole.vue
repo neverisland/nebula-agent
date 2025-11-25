@@ -1,19 +1,24 @@
 <template>
-  <a-transfer
-      v-model:target-keys="targetKeys"
-      :data-source="roleData"
-      :filter-option="filterOption"
-      :titles="['可选角色', '已选角色']"
-      show-search
-      :search-placeholder="'请输入角色名称'"
-  />
-  <div class="dialog-footer">
-    <a-space wrap>
-      <a-button @click="close">取消</a-button>
-      <a-button type="primary" @click="save">确认</a-button>
-    </a-space>
+  <div style="padding: 20px;">
+    <a-form layout="vertical">
+      <a-form-item label="选择角色">
+        <a-select
+            v-model:value="selectedRoleIds"
+            mode="multiple"
+            style="width: 100%"
+            placeholder="请选择角色"
+            :options="roleOptions"
+            :filter-option="filterOption"
+        />
+      </a-form-item>
+      <div class="dialog-footer" style="text-align: right; margin-top: 20px;">
+        <a-space>
+          <a-button @click="close">取消</a-button>
+          <a-button type="primary" @click="save">确认</a-button>
+        </a-space>
+      </div>
+    </a-form>
   </div>
-
 </template>
 
 <script lang="ts">
@@ -31,8 +36,8 @@ export default {
   },
   data() {
     return {
-      roleData: [],
-      targetKeys: [],
+      roleOptions: [] as any[],
+      selectedRoleIds: [] as string[],
     }
   },
   mounted() {
@@ -46,8 +51,8 @@ export default {
       // 获取所有角色列表
       selectAllRoles().then(res => {
         if (res.data.code === 0) {
-          this.roleData = res.data.data.map(item => ({
-            key: item.id,
+          this.roleOptions = res.data.data.map(item => ({
+            value: item.id,
             label: item.name,
             description: item.description
           }));
@@ -55,9 +60,9 @@ export default {
           selectUserById(this.selectId).then(res => {
             if (res.data.code === 0) {
               if (res.data.data.roles) {
-                this.targetKeys = res.data.data.roles.map(item => item.id);
+                this.selectedRoleIds = res.data.data.roles.map(item => item.id);
               } else {
-                this.targetKeys = [];
+                this.selectedRoleIds = [];
               }
             } else {
               message.error('获取用户角色失败：' + res.data.details);
@@ -75,8 +80,8 @@ export default {
     /**
      * 过滤选项
      */
-    filterOption(inputValue: string, item: any) {
-      return item.label.indexOf(inputValue) !== -1;
+    filterOption(input: string, option: any) {
+      return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     },
     /**
      * 关闭弹窗
@@ -90,7 +95,7 @@ export default {
     save() {
       assignRole({
         userId: this.selectId,
-        roleIdList: this.targetKeys
+        roleIdList: this.selectedRoleIds
       }).then(res => {
         if (res.data.code === 0) {
           message.success('分配角色成功');
