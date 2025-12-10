@@ -1,5 +1,5 @@
 <template>
-  <div class="common-layout">
+<div class="common-layout">
     <div class="center">
       <!--     登录表单     -->
       <h1 class="title">Login</h1>
@@ -121,7 +121,7 @@ export default {
     getCurrentUserInfo() {
       store.dispatch('user/loginGetUserInfo').then(res => {
         message.success("登录成功");
-        this.$router.push({name: 'chat'})
+        this.$router.push({name: 'console'})
       }).catch(error => {
         console.log("登录失败", error)
         message.error("登录失败");
@@ -163,9 +163,13 @@ export default {
 
 <style scoped>
 .common-layout {
-  min-height: 780px;
-  background-image: url('@/assets/img/login-bj.jpg');
-  background-size: 100% 100%;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url('@/assets/img/login-bj.jpg') center center no-repeat;
+  background-size: cover;
 }
 
 .title {
@@ -186,10 +190,6 @@ export default {
 }
 
 .center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   width: 400px;
   padding: 40px;
   background: rgba(0, 0, 0, 0.2);

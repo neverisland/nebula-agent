@@ -6,6 +6,7 @@ import RoleManagement from "@/views/console/role/RoleManagement.vue";
 import UserManagement from "@/views/console/user/UserManagement.vue";
 import {useTimerStore} from "@/store/timer.ts";
 import Chat from "@/views/chat/Chat.vue";
+import ConsoleMainPage from "@/views/console/page/ConsoleMainPage.vue";
 
 let routes = [
     {
@@ -37,8 +38,15 @@ let routes = [
                 // 后台菜单
                 path: 'page',
                 name: 'page',
+                redirect: '/console/page/home',
                 component: ConsoleMenu,
                 children: [
+                    {
+                        // 后台主页面
+                        path: 'home',
+                        name: 'console',
+                        component: ConsoleMainPage
+                    },
                     {
                         // 角色管理
                         path: 'role',
