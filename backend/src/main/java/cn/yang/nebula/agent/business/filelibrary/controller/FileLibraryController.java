@@ -63,12 +63,12 @@ public class FileLibraryController {
     /**
      * 重命名文件
      *
-     * @param renameReq 重命名入参
+     * @param fileLibraryRenameDto 重命名入参
      * @return 是否成功
      */
     @PostMapping("/rename")
-    public ResultVo<?> rename(@Validated @RequestBody FileLibraryRenameDto renameReq) {
-        fileLibraryFacade.rename(renameReq);
+    public ResultVo<?> rename(@Validated @RequestBody FileLibraryRenameDto fileLibraryRenameDto) {
+        fileLibraryFacade.rename(fileLibraryRenameDto);
         return ResultFactory.success(StatusCodeEnum.SUCCESS, "重命名成功");
     }
 
@@ -84,6 +84,4 @@ public class FileLibraryController {
         return ResultFactory.success(StatusCodeEnum.SUCCESS, "删除成功");
     }
 
-
 }
-
