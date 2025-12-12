@@ -11,7 +11,7 @@ export interface PageResult<T = any> {
     /**
      * 每页条数
      */
-    size: string,
+    size: number,
 
     /**
      * 总条数

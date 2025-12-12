@@ -71,6 +71,9 @@ globs: backend/**/*.java
 - **类名**: PascalCase (e.g., `UserController`).
 - **方法名**: camelCase (e.g., `getUserById`).
 - **接口实现**: `Service` 实现 `Facade` 接口。
+- **入参对象**: `XxxxDto`（Parameter Object），用于 Controller 入参/Service 调用入参。
+- **出参对象**: `XxxxVo`（Response Object），用于 Controller 出参/Service 返回对象。
+- **前后端统一**: 前端 TypeScript 类型定义也应遵循 `Dto`/`Vo` 结尾的入参/出参命名，便于对齐契约。
 
 ### 4.2 注释规范 (Mandatory)
 - **强制规则**: 所有类、接口、方法必须包含 Javadoc 注释。

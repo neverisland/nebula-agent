@@ -13,6 +13,3 @@ spring:
       database: 13
       # Redis服务器连接密码（默认为空）
       password: 'sf2!Ka2#tE2AD+9g'
-
-local:
-  path: D:\local-storage\nebula-agent

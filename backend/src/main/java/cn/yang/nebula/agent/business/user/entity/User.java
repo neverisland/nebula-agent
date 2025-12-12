@@ -63,11 +63,6 @@ public class User extends BaseEntity implements Serializable {
      * <br>
      * 参见 {@link EnabledEnum}
      */
-    /**
-     * 是否启用 0 禁用 1 启用
-     * <br>
-     * 参见 {@link EnabledEnum}
-     */
     private Boolean enabled;
 
     /**

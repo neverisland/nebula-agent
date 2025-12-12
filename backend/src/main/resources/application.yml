@@ -54,8 +54,6 @@ spring:
     multipart:
       max-file-size: 200MB
       max-request-size: 200MB
-  mvc:
-    static-path-pattern: /file/**
 
 # mybatis 配置内容
 mybatis:
@@ -98,3 +96,7 @@ sa-token:
   token-style: uuid
   # 是否输出操作日志
   is-log: false
+
+file:
+  access:
+    address: http://127.0.0.1:9000

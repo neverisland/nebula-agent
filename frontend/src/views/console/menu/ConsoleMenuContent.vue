@@ -20,12 +20,21 @@
         <a-menu-item key="/console/page/role">角色管理</a-menu-item>
         <a-menu-item key="/console/page/user">用户管理</a-menu-item>
       </a-sub-menu>
+      <a-sub-menu key="2">
+        <template #icon>
+          <FolderOpenOutlined />
+        </template>
+        <template #title>文件空间</template>
+        <a-menu-item key="/console/page/file-library">我的文件</a-menu-item>
+        <a-menu-item key="/console/page/personal-space">个人空间</a-menu-item>
+        <a-menu-item key="/console/page/my-share">我的分享</a-menu-item>
+      </a-sub-menu>
     </a-menu>
   </a-layout-sider>
 </template>
 
 <script lang="ts">
-import { HomeOutlined, SettingOutlined } from '@ant-design/icons-vue';
+import { HomeOutlined, SettingOutlined, FolderOpenOutlined } from '@ant-design/icons-vue';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -34,7 +43,7 @@ import { useRoute, useRouter } from 'vue-router';
  */
 export default {
   name: "ConsoleMenuContent",
-  components: { HomeOutlined, SettingOutlined },
+  components: { HomeOutlined, SettingOutlined, FolderOpenOutlined },
   setup() {
     const route = useRoute();
     const router = useRouter();

@@ -1,6 +1,6 @@
 ---
 description: 前端 Vue 3 + TypeScript 开发规范 (详细版)
-globs: frontend/**/*.{ts,vue}
+globs: frontend/**/*.ts,frontend/**/*.vue
 ---
 
 # 前端开发规范 (Frontend Rules)
@@ -49,6 +49,7 @@ globs: frontend/**/*.{ts,vue}
 ### 3.4 类型定义 (Types)
 - 所有的入参和出参必须定义 TypeScript 接口 (`interface`)。
 - 类型定义文件放在 `src/type` 目录下。
+- 入参类型统一以 `XxxxPo` 结尾（Parameter Object），出参/数据返回类型统一以 `XxxxRo` 结尾（Response Object），与后端命名保持一致。
 
 ## 4. 代码示例 (Code Examples)
 

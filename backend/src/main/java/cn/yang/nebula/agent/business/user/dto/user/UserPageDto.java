@@ -51,11 +51,6 @@ public class UserPageDto implements Serializable {
      * <br>
      * 参见 {@link EnabledEnum}
      */
-    /**
-     * 是否启用 false 禁用 true 启用
-     * <br>
-     * 参见 {@link EnabledEnum}
-     */
     private Boolean enabled;
 
     /**

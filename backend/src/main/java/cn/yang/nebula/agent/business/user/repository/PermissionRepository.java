@@ -7,6 +7,7 @@ import cn.yang.nebula.agent.business.user.mapper.PermissionMapper;
 import cn.yang.common.data.structure.utils.bean.BeanConvertUtils;
 import cn.yang.foundational.capability.id.generator.IdGenerator;
 import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ import java.util.List;
  * @author 未见清海
  */
 @Component
+@RequiredArgsConstructor
 public class PermissionRepository {
 
     @Resource

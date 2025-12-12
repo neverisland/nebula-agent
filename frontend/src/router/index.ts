@@ -2,11 +2,14 @@ import {createRouter, createWebHistory} from 'vue-router';
 import HelloWorld from "@/views/home/HelloWorld.vue";
 import ConsoleLogin from "@/views/console/login/ConsoleLogin.vue";
 import ConsoleMenu from "@/views/console/menu/ConsoleMenu.vue";
-import RoleManagement from "@/views/console/role/RoleManagement.vue";
-import UserManagement from "@/views/console/user/UserManagement.vue";
+import RoleManagement from "@/views/console/system-manage/role/RoleManagement.vue";
+import UserManagement from "@/views/console/system-manage/user/UserManagement.vue";
 import {useTimerStore} from "@/store/timer.ts";
 import Chat from "@/views/chat/Chat.vue";
 import ConsoleMainPage from "@/views/console/page/ConsoleMainPage.vue";
+import FileLibraryList from "@/views/console/file-space/file-library/FileLibraryList.vue";
+import OneselfShare from "@/views/console/file-space/oneself-share/OneselfShare.vue";
+import OneselfSpace from "@/views/console/file-space/oneself-space/OneselfSpace.vue";
 
 let routes = [
     {
@@ -58,6 +61,24 @@ let routes = [
                         path: 'user',
                         name: 'user',
                         component: UserManagement
+                    },
+                    {
+                        // 文件库 - 我的文件
+                        path: 'file-library',
+                        name: 'file-library',
+                        component: FileLibraryList
+                    },
+                    {
+                        // 文件库 - 个人空间（占位）
+                        path: 'personal-space',
+                        name: 'personal-space',
+                        component: OneselfSpace
+                    },
+                    {
+                        // 文件库 - 我的分享（占位）
+                        path: 'my-share',
+                        name: 'my-share',
+                        component: OneselfSpace
                     }
                 ]
             }
@@ -73,7 +94,7 @@ const router = createRouter({
 /**
  * 全局路由守卫
  */
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
     const timerStore = useTimerStore()
     // 在白名单停止是否登录监听
     if (whiteListRoutes.includes(to.path)) {
@@ -85,11 +106,11 @@ router.beforeEach((to, from, next) => {
     next()
 })
 
-
-export const whiteListRoutes = [
+// 白名单路由
+export const whiteListRoutes: string[] = [
     '/',
     '/home',
     '/console/login',
-] as const
+]
 
 export default router;

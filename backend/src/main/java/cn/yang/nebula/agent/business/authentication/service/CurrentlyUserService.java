@@ -3,6 +3,7 @@ package cn.yang.nebula.agent.business.authentication.service;
 import cn.yang.nebula.agent.business.authentication.facade.AuthenticationFacade;
 import cn.yang.common.data.structure.annotation.assignment.CurrentlyUserFacade;
 import cn.yang.common.data.structure.exception.NotLoginException;
+import cn.yang.nebula.agent.business.authentication.utils.SpringContextUtil;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.ContextLoader;
@@ -27,8 +28,7 @@ public class CurrentlyUserService implements CurrentlyUserFacade {
      */
     @Override
     public String getCurrentlyUserId() throws NotLoginException {
-        WebApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-        if (context == null) {
+        if (SpringContextUtil.getContext() == null) {
             throw new NotLoginException("用户未登录");
         }
 

@@ -116,8 +116,8 @@ import UserAdd from "./UserAdd.vue";
 import UserEdit from "./UserEdit.vue";
 import UserDetail from "./UserDetail.vue";
 import {enabledEnumStore} from "@/enums/EnabledStore.ts";
-import ResetPassword from "@/views/console/user/ResetPassword.vue";
-import AssigningRole from "@/views/console/user/AssigningRole.vue";
+import ResetPassword from "@/views/console/system-manage/user/ResetPassword.vue";
+import AssigningRole from "@/views/console/system-manage/user/AssigningRole.vue";
 
 export default {
   name: "UserManagement",
