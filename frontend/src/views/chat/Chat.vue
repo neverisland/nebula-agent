@@ -2,13 +2,13 @@
   <a-layout style="min-height: 100vh;">
     <a-layout>
       <!-- 菜单 -->
-      <a-layout-sider width="260" :style="siderStyle" style="overflow-y: auto; height: 100vh;">
+      <a-layout-sider width="260" class="chat-sider">
         <ChatSession :new-chat="newChatData"/>
       </a-layout-sider>
       <!-- 内容 -->
       <a-layout>
         <!--  头部  -->
-        <a-layout-header :style="headerStyle" style="height: 57px; padding: 0 20px;">
+        <a-layout-header class="chat-header">
           <ChatHeader @change-prompt="handleChangePrompt" />
         </a-layout-header>
         <a-layout-content style="padding: 5px; height: calc(100vh - 84px);">
@@ -29,27 +29,11 @@ import ChatContent from "@/views/chat/ChatContent.vue";
 import ChatSession from "@/views/chat/ChatSession.vue";
 import ChatHeader from "@/views/chat/ChatHeader.vue";
 import {ChatDto} from "@/type/chat/ChatDto.ts";
-import {mapGetters} from 'vuex';
 
 export default defineComponent({
   name: "Chat",
   components: {ChatHeader, ChatSession, ChatContent},
   computed: {
-    ...mapGetters('theme', ['isDarkTheme']),
-    siderStyle() {
-      return {
-        backgroundColor: this.isDarkTheme ? '#141414' : '#ffffff',
-        overflowY: 'auto',
-        height: '100vh'
-      }
-    },
-    headerStyle() {
-      return {
-        backgroundColor: this.isDarkTheme ? '#141414' : '#ffffff',
-        height: '57px',
-        padding: '0 20px'
-      }
-    }
   },
   data() {
     return {
@@ -79,6 +63,18 @@ export default defineComponent({
   padding: 0;
   height: 55px;
   line-height: 55px;
+}
+
+.chat-sider {
+  overflow-y: auto;
+  height: 100vh;
+  background-color: var(--ant-color-bg-container);
+}
+
+.chat-header {
+  height: 57px;
+  padding: 0 20px;
+  background-color: var(--ant-color-bg-container);
 }
 
 :deep(.ant-layout-footer) {

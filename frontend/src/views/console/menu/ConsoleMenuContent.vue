@@ -1,37 +1,35 @@
 <template>
-  <a-layout-sider width="200" :style="{ backgroundColor: isDarkTheme ? '#141414' : '#ffffff' }">
-    <a-menu
-        v-model:selectedKeys="selectedKeys"
-        mode="inline"
-        :theme="menuTheme"
-        :style="{ height: '100%', borderRight: 0 }"
-        @click="handleMenuClick"
-    >
-      <a-menu-item key="/console/page/home">
-        <template #icon>
-          <HomeOutlined />
-        </template>
-        <span>主页</span>
-      </a-menu-item>
-      <a-sub-menu key="1">
-        <template #icon>
-          <SettingOutlined />
-        </template>
-        <template #title>系统管理</template>
-        <a-menu-item key="/console/page/role">角色管理</a-menu-item>
-        <a-menu-item key="/console/page/user">用户管理</a-menu-item>
-      </a-sub-menu>
-      <a-sub-menu key="2">
-        <template #icon>
-          <FolderOpenOutlined />
-        </template>
-        <template #title>文件空间</template>
-        <a-menu-item key="/console/page/file-library">我的文件</a-menu-item>
-        <a-menu-item key="/console/page/personal-space">个人空间</a-menu-item>
-        <a-menu-item key="/console/page/my-share">我的分享</a-menu-item>
-      </a-sub-menu>
-    </a-menu>
-  </a-layout-sider>
+  <a-menu
+      v-model:selectedKeys="selectedKeys"
+      mode="inline"
+      :theme="menuTheme"
+      :style="{ height: '100%', borderRight: 0 }"
+      @click="handleMenuClick"
+  >
+    <a-menu-item key="/console/page/home">
+      <template #icon>
+        <HomeOutlined />
+      </template>
+      <span>主页</span>
+    </a-menu-item>
+    <a-sub-menu key="1">
+      <template #icon>
+        <SettingOutlined />
+      </template>
+      <template #title>系统管理</template>
+      <a-menu-item key="/console/page/role">角色管理</a-menu-item>
+      <a-menu-item key="/console/page/user">用户管理</a-menu-item>
+    </a-sub-menu>
+    <a-sub-menu key="2">
+      <template #icon>
+        <FolderOpenOutlined />
+      </template>
+      <template #title>文件空间</template>
+      <a-menu-item key="/console/page/file-library">我的文件</a-menu-item>
+      <a-menu-item key="/console/page/personal-space">个人空间</a-menu-item>
+      <a-menu-item key="/console/page/my-share">我的分享</a-menu-item>
+    </a-sub-menu>
+  </a-menu>
 </template>
 
 <script lang="ts">
@@ -55,7 +53,7 @@ export default {
       selectedKeys.value = [newPath];
     });
 
-    const handleMenuClick = ({ key }) => {
+    const handleMenuClick = ({ key }: { key: string }) => {
       router.push(key);
     };
 

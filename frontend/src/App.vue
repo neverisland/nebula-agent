@@ -19,7 +19,11 @@ export default {
     const antTheme = computed(() => {
       const currentTheme = store.getters['theme/currentTheme'];
       return {
-        algorithm: currentTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm
+        algorithm: currentTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
+        token: {
+          colorBgLayout: currentTheme === 'dark' ? '#000000' : '#ffffff',
+        },
+        cssVar: true
       };
     });
 

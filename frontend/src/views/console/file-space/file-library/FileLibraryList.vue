@@ -1,6 +1,6 @@
 <template>
   <a-layout>
-    <a-layout-header :style="headerStyle">
+    <a-layout-header class="file-library-header">
       <div class="title-row">
         <span class="title">文件库 - 我的文件</span>
         <a-space>
@@ -108,14 +108,6 @@ export default {
   name: "FileLibraryList",
   components: { FileUploadModal, UploadOutlined, FileOutlined },
   computed: {
-    ...mapGetters('theme', ['isDarkTheme']),
-    headerStyle() {
-      return {
-        height: '150px',
-        padding: '20px',
-        backgroundColor: this.isDarkTheme ? '#141414' : '#ffffff',
-      };
-    },
   },
   data() {
     return {
@@ -310,6 +302,11 @@ export default {
 .title {
   font-size: 18px;
   font-weight: 600;
+}
+.file-library-header {
+  height: 150px;
+  padding: 20px;
+  background-color: var(--ant-color-bg-container);
 }
 </style>
 
