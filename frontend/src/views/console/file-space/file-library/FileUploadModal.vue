@@ -7,8 +7,8 @@
       @cancel="close"
   >
     <div class="upload-container" @paste="handlePaste">
-      <a-upload
-          drag
+      <a-upload-dragger
+          name="file"
           :file-list="fileList"
           :before-upload="beforeUpload"
           :on-change="handleChange"
@@ -23,7 +23,7 @@
         </p>
         <p class="ant-upload-text">点击选择文件或将文件拖拽到此处</p>
         <p class="ant-upload-hint">也支持粘贴剪贴板中的文件</p>
-      </a-upload>
+      </a-upload-dragger>
       <div class="actions">
         <a-space>
           <a-button @click="clearFiles">清空列表</a-button>
@@ -251,6 +251,11 @@ export default {
 .upload-drag :deep(.ant-upload-drag) {
   padding: 40px 32px;
   min-height: 260px;
+}
+
+.upload-drag :deep(.ant-upload-drag-icon .anticon) {
+  font-size: 64px;
+  color: var(--ant-primary-color);
 }
 </style>
 

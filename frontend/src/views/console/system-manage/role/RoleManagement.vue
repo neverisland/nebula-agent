@@ -146,7 +146,6 @@ export default {
      */
     calculateTableHeight() {
       this.tableHeight = window.innerHeight - 365;
-      console.log(this.tableHeight)
     },
     /**
      * 查询数据

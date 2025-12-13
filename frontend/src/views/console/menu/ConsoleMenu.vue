@@ -1,5 +1,5 @@
 <template>
-  <a-layout style="min-height: 100vh;">
+  <a-layout style="height: 100vh; overflow: hidden;">
     <!--  头部  -->
     <a-layout-header class="console-menu-header" :style="{ borderBottom: `1px solid ${token.colorSplit}` }">
       <ConsoleMenuHeader/>

@@ -5,7 +5,9 @@
         <span class="title">文件库 - 我的文件</span>
         <a-space>
           <a-button type="primary" @click="uploadVisible = true">
-            <template #icon><UploadOutlined /></template>
+            <template #icon>
+              <UploadOutlined/>
+            </template>
             上传
           </a-button>
         </a-space>
@@ -38,6 +40,7 @@
     </a-layout-header>
     <a-layout-content style="padding: 0 20px;">
       <a-table
+          :scroll="{ y: tableHeight }"
           :data-source="tableData"
           :loading="loading"
           :pagination="{
@@ -61,7 +64,7 @@
                 :fallback="getFileIcon('file')"
                 :preview="false"
             />
-            <img v-else :src="getFileIcon(record.mimeType)" style="width: 70px; height: 70px; object-fit: contain;" />
+            <img v-else :src="getFileIcon(record.mimeType)" style="width: 70px; height: 70px; object-fit: contain;"/>
           </template>
         </a-table-column>
         <a-table-column title="文件名" dataIndex="name" key="name"/>
@@ -93,22 +96,21 @@
 </template>
 
 <script lang="ts">
-import { UploadOutlined, FileOutlined } from '@ant-design/icons-vue';
-import { message, Modal, TablePaginationConfig } from 'ant-design-vue';
+import {FileOutlined, UploadOutlined} from '@ant-design/icons-vue';
+import {message, Modal, TablePaginationConfig} from 'ant-design-vue';
 import FileUploadModal from "./FileUploadModal.vue";
-import { deleteFileLibrary, getFileLibraryPage, renameFileLibrary } from "@/api/FileLibraryApi.ts";
-import type { FileLibraryPageVo, FileLibraryPageDto } from "@/type/filelibrary/FileLibrary.ts";
-import type { PageResult } from "@/type/PageResult.ts";
-import { mapGetters } from 'vuex';
+import {deleteFileLibrary, getFileLibraryPage, renameFileLibrary} from "@/api/FileLibraryApi.ts";
+import type {PageResult} from "@/type/PageResult.ts";
+import {FileLibraryPageDto} from "@/type/filelibrary/FileLibraryPageDto.ts";
+import {FileLibraryPageVo} from "@/type/filelibrary/FileLibraryPageVo.ts";
 
 /**
  * 文件库列表
  */
 export default {
   name: "FileLibraryList",
-  components: { FileUploadModal, UploadOutlined, FileOutlined },
-  computed: {
-  },
+  components: {FileUploadModal, UploadOutlined, FileOutlined},
+  computed: {},
   data() {
     return {
       queryForm: {
@@ -127,12 +129,21 @@ export default {
         id: '',
         name: ''
       },
+      tableHeight: 0,
     }
   },
   mounted() {
+    this.calculateTableHeight();
+    window.addEventListener('resize', this.calculateTableHeight);
     this.loadData();
   },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.calculateTableHeight);
+  },
   methods: {
+    calculateTableHeight() {
+      this.tableHeight = window.innerHeight - 365;
+    },
     async loadData() {
       this.loading = true;
       try {
@@ -249,7 +260,7 @@ export default {
         return;
       }
       try {
-        const res = await renameFileLibrary({ id: this.renameForm.id, name: this.renameForm.name });
+        const res = await renameFileLibrary({id: this.renameForm.id, name: this.renameForm.name});
         if (res.data.code === 0) {
           message.success('重命名成功');
           this.renameVisible = false;
@@ -299,10 +310,12 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
+
 .title {
   font-size: 18px;
   font-weight: 600;
 }
+
 .file-library-header {
   height: 150px;
   padding: 20px;

@@ -13,12 +13,12 @@
                 <BulbFilled v-else />
               </template>
             </a-button>
-            <a-avatar :size="32" :src="avatarUrl"/>
-            <a-dropdown :trigger="['click']">
-              <a-typography-text style="cursor: pointer;">
-                {{ userInfo.nickname }}
-                <DownOutlined style="margin-left: 4px;" />
-              </a-typography-text>
+
+            <a-dropdown :trigger="['hover']">
+              <span style="cursor: pointer; display: flex; align-items: center;">
+                <a-avatar :size="32" :src="avatarUrl"/>
+                <span style="margin-left: 8px;">{{ userInfo.nickname }}</span>
+              </span>
               <template #overlay>
                 <a-menu @click="handleMenuClick">
                   <a-menu-item key="logout">
@@ -78,7 +78,7 @@ export default {
     async handleLogout() {
       try {
         await store.dispatch('user/logout');
-        this.$router.push('/login');
+        this.$router.push('/console');
         message.success('已成功退出登录');
       } catch (error) {
         message.error('退出登录失败');
