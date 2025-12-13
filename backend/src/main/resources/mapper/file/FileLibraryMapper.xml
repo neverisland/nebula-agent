@@ -22,7 +22,7 @@
 
     <!-- 新增 -->
     <insert id="insert" parameterType="cn.yang.nebula.agent.business.file.library.dal.FileLibraryDo">
-        insert into file_library (<include refid="Base_Column_List"/>)
+        insert into file_library (id, space_id, name, mime_type, size, path, thumbnails, create_user_id, update_user_id)
         values (#{id, jdbcType=VARCHAR},
                 #{spaceId, jdbcType=VARCHAR},
                 #{name, jdbcType=VARCHAR},
@@ -31,9 +31,7 @@
                 #{path, jdbcType=VARCHAR},
                 #{thumbnails, jdbcType=VARCHAR},
                 #{createUserId, jdbcType=VARCHAR},
-                #{createTime, jdbcType=TIMESTAMP},
-                #{updateUserId, jdbcType=VARCHAR},
-                #{updateTime, jdbcType=TIMESTAMP})
+                #{updateUserId, jdbcType=VARCHAR})
     </insert>
 
     <!-- 分页统计 -->
@@ -95,8 +93,7 @@
     <update id="rename" parameterType="cn.yang.nebula.agent.business.file.library.dal.FileLibraryDo">
         update file_library
         set name = #{name, jdbcType=VARCHAR},
-            update_user_id = #{updateUserId, jdbcType=VARCHAR},
-            update_time    = #{updateTime, jdbcType=TIMESTAMP}
+            update_user_id = #{updateUserId, jdbcType=VARCHAR}
         where id = #{id, jdbcType=VARCHAR}
     </update>
 
@@ -107,4 +104,3 @@
         where id = #{id, jdbcType=VARCHAR}
     </delete>
 </mapper>
-

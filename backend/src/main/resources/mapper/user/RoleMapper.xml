@@ -33,7 +33,7 @@
     <insert id="insert" keyColumn="id" keyProperty="id"
             parameterType="cn.yang.nebula.agent.business.user.entity.Role"
             useGeneratedKeys="true">
-        insert into role (<include refid="Base_Query"/>)
+        insert into role (id, mark, name, description, type, create_user_id, update_user_id)
         values (
         #{id, jdbcType=VARCHAR},
         #{mark, jdbcType=VARCHAR},
@@ -41,9 +41,7 @@
         #{description, jdbcType=VARCHAR},
         #{type, jdbcType=TINYINT},
         #{createUserId, jdbcType=BIGINT},
-        #{createTime, jdbcType=TIMESTAMP},
-        #{updateUserId, jdbcType=BIGINT},
-        #{updateTime, jdbcType=TIMESTAMP} )
+        #{updateUserId, jdbcType=BIGINT} )
     </insert>
 
     <!-- 新增数据(过滤为空数据) -->
@@ -57,9 +55,7 @@
             <if test="description != null">description,</if>
             <if test="type != null">type,</if>
             <if test="createUserId != null">create_user_id,</if>
-            <if test="createTime != null">create_time,</if>
             <if test="updateUserId != null">update_user_id,</if>
-            <if test="updateTime != null">update_time,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id, jdbcType=VARCHAR},</if>
@@ -68,15 +64,13 @@
             <if test="description != null">#{description, jdbcType=VARCHAR},</if>
             <if test="type != null">#{type, jdbcType=TINYINT},</if>
             <if test="createUserId != null">#{createUserId, jdbcType=BIGINT},</if>
-            <if test="createTime != null">#{createTime, jdbcType=TIMESTAMP},</if>
             <if test="updateUserId != null">#{updateUserId, jdbcType=BIGINT},</if>
-            <if test="updateTime != null">#{updateTime, jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
 
     <!--批量插入员工数据-->
     <insert id="insertBatch" parameterType="java.util.List">
-        insert into role(<include refid="Base_Query"/>)
+        insert into role(id, mark, name, description, type, create_user_id, update_user_id)
         values
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.id},
@@ -85,9 +79,7 @@
             #{item.description},
             #{item.type},
             #{item.createUserId},
-            #{item.createTime},
-            #{item.updateUserId},
-            #{item.updateTime})
+            #{item.updateUserId})
         </foreach>
     </insert>
 
@@ -219,9 +211,7 @@
             <if test="description != null and description != ''">description = #{description, jdbcType=VARCHAR},</if>
             <if test="type != null">type = #{type, jdbcType=TINYINT},</if>
             <if test="createUserId != null">create_user_id = #{createUserId, jdbcType=BIGINT},</if>
-            <if test="createTime != null">create_time = #{createTime, jdbcType=TIMESTAMP},</if>
             <if test="updateUserId != null">update_user_id = #{updateUserId, jdbcType=BIGINT},</if>
-            <if test="updateTime != null">update_time = #{updateTime, jdbcType=TIMESTAMP},</if>
         </set>
         where id = #{id, jdbcType=VARCHAR}
     </update>
@@ -231,8 +221,7 @@
         update role
         set name           = #{name, jdbcType=VARCHAR},
             description    = #{description, jdbcType=VARCHAR},
-            update_user_id = #{updateUserId, jdbcType=BIGINT},
-            update_time    = #{updateTime, jdbcType=TIMESTAMP}
+            update_user_id = #{updateUserId, jdbcType=BIGINT}
         where id = #{id, jdbcType=VARCHAR}
     </update>
 
@@ -242,7 +231,6 @@
             update role
             set name = #{item.name, jdbcType=VARCHAR},
             description = #{item.description, jdbcType=VARCHAR},
-            update_time = #{item.updateTime, jdbcType=TIMESTAMP},
             update_user_id = #{item.createUserId, jdbcType=BIGINT}
             where id = #{item.id, jdbcType=BIGINT}
         </foreach>

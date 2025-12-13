@@ -26,7 +26,7 @@
     <insert id="insert" keyColumn="id" keyProperty="id"
             parameterType="cn.yang.nebula.agent.business.user.dal.UserDo"
             useGeneratedKeys="true">
-        insert into user (<include refid="Base_Query"/>)
+        insert into user (id, username, nickname, phone, email, account_non_locked, locked_time, enabled, create_user_id, update_user_id)
         values (
         #{id, jdbcType=VARCHAR},
         #{username, jdbcType=VARCHAR},
@@ -37,9 +37,7 @@
         #{lockedTime, jdbcType=TIMESTAMP},
         #{enabled, jdbcType=TINYINT},
         #{createUserId, jdbcType=BIGINT},
-        #{createTime, jdbcType=TIMESTAMP},
-        #{updateUserId, jdbcType=BIGINT},
-        #{updateTime, jdbcType=TIMESTAMP} )
+        #{updateUserId, jdbcType=BIGINT} )
     </insert>
 
     <!-- 新增数据(过滤为空数据) -->
@@ -56,9 +54,7 @@
             <if test="lockedTime != null">locked_time,</if>
             <if test="enabled != null">enabled,</if>
             <if test="createUserId != null">create_user_id,</if>
-            <if test="createTime != null">create_time,</if>
             <if test="updateUserId != null">update_user_id,</if>
-            <if test="updateTime != null">update_time,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id, jdbcType=VARCHAR},</if>
@@ -70,15 +66,13 @@
             <if test="lockedTime != null">#{lockedTime, jdbcType=TIMESTAMP},</if>
             <if test="enabled != null">#{enabled, jdbcType=TINYINT},</if>
             <if test="createUserId != null">#{createUserId, jdbcType=BIGINT},</if>
-            <if test="createTime != null">#{createTime, jdbcType=TIMESTAMP},</if>
             <if test="updateUserId != null">#{updateUserId, jdbcType=BIGINT},</if>
-            <if test="updateTime != null">#{updateTime, jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
 
     <!--批量插入员工数据-->
     <insert id="insertBatch" parameterType="java.util.List">
-        insert into user (<include refid="Base_Query"/>)
+        insert into user (id, username, nickname, phone, email, account_non_locked, locked_time, enabled, create_user_id, update_user_id)
         values
         <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
             #{item.id},
@@ -90,9 +84,7 @@
             #{item.lockedTime},
             #{item.enabled},
             #{item.createUserId},
-            #{item.createTime},
-            #{item.updateUserId},
-            #{item.updateTime}
+            #{item.updateUserId}
         </foreach>
     </insert>
 
@@ -171,7 +163,6 @@
             <if test="lockedTime != null">locked_time = #{lockedTime, jdbcType=TIMESTAMP},</if>
             <if test="enabled != null">enabled = #{enabled, jdbcType=TINYINT},</if>
             <if test="updateUserId != null">update_user_id = #{updateUserId, jdbcType=BIGINT},</if>
-            <if test="updateTime != null">update_time = #{updateTime, jdbcType=TIMESTAMP},</if>
         </set>
         where id = #{id, jdbcType=VARCHAR}
     </update>
@@ -183,8 +174,7 @@
             nickname       = #{nickname, jdbcType=VARCHAR},
             phone          = #{phone, jdbcType=VARCHAR},
             email          = #{email, jdbcType=VARCHAR},
-            update_user_id = #{updateUserId, jdbcType=BIGINT},
-            update_time    = #{updateTime, jdbcType=TIMESTAMP}
+            update_user_id = #{updateUserId, jdbcType=BIGINT}
         where id = #{id, jdbcType=VARCHAR}
     </update>
 
@@ -192,8 +182,7 @@
     <update id="disableEnableUser">
         update user
         set enabled        = #{user.enabled, jdbcType=TINYINT},
-            update_user_id = #{user.updateUserId, jdbcType=BIGINT},
-            update_time    = #{user.updateTime, jdbcType=TIMESTAMP}
+            update_user_id = #{user.updateUserId, jdbcType=BIGINT}
         where id = #{user.id, jdbcType=BIGINT}
     </update>
 

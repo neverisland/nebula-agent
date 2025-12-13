@@ -1,5 +1,6 @@
 package cn.yang.nebula.agent.integrate.file.service;
 
+import cn.yang.foundational.capability.utils.json.JsonUtils;
 import cn.yang.nebula.agent.exception.CallException;
 import cn.yang.nebula.agent.integrate.file.facade.FileIntegrateFacade;
 import com.aliyun.oss.OSS;
@@ -8,6 +9,7 @@ import com.aliyun.oss.model.DeleteObjectsRequest;
 import com.aliyun.oss.model.GetObjectRequest;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.aliyun.oss.model.PutObjectResult;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,7 +48,7 @@ public class FileIntegrateService implements FileIntegrateFacade {
         try {
             PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, fileKey, file.getInputStream());
             PutObjectResult result = ossClient.putObject(putObjectRequest);
-            log.info("OSS文件上传成功,fileKey:[{}],响应:[{}]", fileKey, result.getResponse());
+            log.info("OSS文件上传成功,fileKey:[{}],响应:[{}]", fileKey, JsonUtils.objectToString(result));
             return;
         } catch (IOException ie) {
             log.error("文件上传失败", ie);
@@ -68,7 +70,9 @@ public class FileIntegrateService implements FileIntegrateFacade {
         try {
             PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, fileKey, file);
             PutObjectResult result = ossClient.putObject(putObjectRequest);
-            log.info("OSS文件上传成功,fileKey:[{}],响应:[{}]", fileKey, result.getResponse());
+            log.info("OSS文件上传成功,fileKey:[{}],响应:[{}]", fileKey, JsonUtils.objectToString(result));
+        } catch (IOException ie) {
+            log.error("文件上传失败", ie);
         } catch (OSSException oe) {
             log.error("阿里云OSS处理异常,Request ID:[{}], Error Message:[{}], Error Code:[{}], Host ID:[{}],",
                     oe.getRequestId(), oe.getErrorMessage(), oe.getErrorCode(), oe.getHostId(), oe);

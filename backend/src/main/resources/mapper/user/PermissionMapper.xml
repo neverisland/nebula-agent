@@ -16,13 +16,11 @@
 
     <!-- 新增数据 -->
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.yang.nebula.agent.business.user.dal.PermissionDo" useGeneratedKeys="true">
-        insert into permission (<include refid="Base_Query"/>)
+        insert into permission (id, mark, description)
         values (
             #{id, jdbcType=VARCHAR},
             #{mark, jdbcType=VARCHAR},
-            #{description, jdbcType=VARCHAR},
-            #{createTime, jdbcType=TIMESTAMP},
-            #{updateTime, jdbcType=TIMESTAMP}        )
+            #{description, jdbcType=VARCHAR}        )
     </insert>
 
     <!-- 新增数据(过滤为空数据) -->
@@ -32,28 +30,22 @@
                 <if test="id != null">id,</if>
                 <if test="mark != null">mark,</if>
                 <if test="description != null">description,</if>
-                <if test="createTime != null">create_time,</if>
-                <if test="updateTime != null">update_time,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
                 <if test="id != null">#{id, jdbcType=VARCHAR},</if>
                 <if test="mark != null">#{mark, jdbcType=VARCHAR},</if>
                 <if test="description != null">#{description, jdbcType=VARCHAR},</if>
-                <if test="createTime != null">#{createTime, jdbcType=TIMESTAMP},</if>
-                <if test="updateTime != null">#{updateTime, jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
 
     <!--批量插入员工数据-->
     <insert id="insertBatch" parameterType="java.util.List">
-        insert into permission(<include refid="Base_Query"/>)
+        insert into permission(id, mark, description)
         values
         <foreach collection="list" item="item" index="index" separator="," >
                ( #{item.id},
                 #{item.mark},
-                #{item.description},
-                #{item.createTime},
-                #{item.updateTime})
+                #{item.description})
         </foreach>
     </insert>
 
@@ -90,8 +82,6 @@
         <set>
             <if test="mark != null and mark != ''">mark = #{mark, jdbcType=VARCHAR},</if>
             <if test="description != null and description != ''">description = #{description, jdbcType=VARCHAR},</if>
-            <if test="createTime != null">create_time = #{createTime, jdbcType=TIMESTAMP},</if>
-            <if test="updateTime != null">update_time = #{updateTime, jdbcType=TIMESTAMP},</if>
         </set>
         where id = #{id, jdbcType=VARCHAR}
     </update>
@@ -99,8 +89,7 @@
     <!-- 修改数据根据id -->
     <update id="updateById" parameterType="cn.yang.nebula.agent.business.user.dal.PermissionDo">
         update permission
-        set description = #{description, jdbcType=VARCHAR},
-            update_time = #{updateTime, jdbcType=TIMESTAMP}
+        set description = #{description, jdbcType=VARCHAR}
         where id = #{id, jdbcType=VARCHAR}
     </update>
 
@@ -108,8 +97,7 @@
     <update id="batchUpdateDate">
         <foreach collection="list" item="item" separator=";">
             update permission
-            set description = #{item.description, jdbcType=VARCHAR},
-            update_time = #{item.updateTime, jdbcType=TIMESTAMP}
+            set description = #{item.description, jdbcType=VARCHAR}
             where id = #{item.id, jdbcType=BIGINT}
         </foreach>
     </update>
