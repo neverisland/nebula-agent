@@ -1,6 +1,6 @@
 <template>
   <a-layout>
-    <a-layout-header style="height: 150px; padding: 20px;">
+    <a-layout-header :style="headerStyle">
       <div class="title-row">
         <span class="title">文件库 - 我的文件</span>
         <a-space>
@@ -99,6 +99,7 @@ import FileUploadModal from "./FileUploadModal.vue";
 import { deleteFileLibrary, getFileLibraryPage, renameFileLibrary } from "@/api/FileLibraryApi.ts";
 import type { FileLibraryPageVo, FileLibraryPageDto } from "@/type/filelibrary/FileLibrary.ts";
 import type { PageResult } from "@/type/PageResult.ts";
+import { mapGetters } from 'vuex';
 
 /**
  * 文件库列表
@@ -106,6 +107,16 @@ import type { PageResult } from "@/type/PageResult.ts";
 export default {
   name: "FileLibraryList",
   components: { FileUploadModal, UploadOutlined, FileOutlined },
+  computed: {
+    ...mapGetters('theme', ['isDarkTheme']),
+    headerStyle() {
+      return {
+        height: '150px',
+        padding: '20px',
+        backgroundColor: this.isDarkTheme ? '#141414' : '#ffffff',
+      };
+    },
+  },
   data() {
     return {
       queryForm: {

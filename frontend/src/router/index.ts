@@ -78,7 +78,7 @@ let routes = [
                         // 文件库 - 我的分享（占位）
                         path: 'my-share',
                         name: 'my-share',
-                        component: OneselfSpace
+                        component: OneselfShare
                     }
                 ]
             }

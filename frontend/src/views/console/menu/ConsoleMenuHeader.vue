@@ -7,8 +7,29 @@
       <div class="content">
         <div class="social-links">
           <a-space>
+            <a-button type="text" @click="toggleTheme" size="small">
+              <template #icon>
+                <BulbOutlined v-if="!isDarkTheme" />
+                <BulbFilled v-else />
+              </template>
+            </a-button>
             <a-avatar :size="32" :src="avatarUrl"/>
-            <a-typography-text>{{ userInfo.nickname }}</a-typography-text>
+            <a-dropdown :trigger="['click']">
+              <a-typography-text style="cursor: pointer;">
+                {{ userInfo.nickname }}
+                <DownOutlined style="margin-left: 4px;" />
+              </a-typography-text>
+              <template #overlay>
+                <a-menu @click="handleMenuClick">
+                  <a-menu-item key="logout">
+                    <template #icon>
+                      <LogoutOutlined />
+                    </template>
+                    退出登录
+                  </a-menu-item>
+                </a-menu>
+              </template>
+            </a-dropdown>
           </a-space>
         </div>
       </div>
@@ -20,15 +41,50 @@
 import defaultAvatar from "@/assets/img/default-avatar.png";
 import store from "@/store/cache.ts";
 import {UserDto} from "@/type/user/UserDto.ts";
+import {DownOutlined, LogoutOutlined, BulbOutlined, BulbFilled} from "@ant-design/icons-vue";
+import {message} from "ant-design-vue";
 
 export default {
   name: "ConsoleMenuHeader",
+  components: {
+    DownOutlined,
+    LogoutOutlined,
+    BulbOutlined,
+    BulbFilled
+  },
   data() {
     return {
       avatarUrl: defaultAvatar,
       userInfo: store.getters["user/getUserInfo"] as UserDto
     }
   },
+  computed: {
+    isDarkTheme() {
+      return store.getters['theme/isDarkTheme'];
+    }
+  },
+  methods: {
+    handleMenuClick({ key }: { key: string }) {
+      if (key === 'logout') {
+        this.handleLogout();
+      }
+    },
+    toggleTheme() {
+      store.dispatch('theme/toggleTheme').then(() => {
+        const isDark = store.getters['theme/isDarkTheme'];
+        message.success(isDark ? '已切换到暗色模式' : '已切换到亮色模式');
+      });
+    },
+    async handleLogout() {
+      try {
+        await store.dispatch('user/logout');
+        this.$router.push('/login');
+        message.success('已成功退出登录');
+      } catch (error) {
+        message.error('退出登录失败');
+      }
+    }
+  }
 }
 </script>
 
@@ -59,4 +115,9 @@ export default {
   height: 54px;
 }
 
+.social-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 </style>

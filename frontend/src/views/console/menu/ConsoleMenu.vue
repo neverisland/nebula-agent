@@ -1,12 +1,12 @@
 <template>
-  <a-layout theme="light" style="min-height: 100vh;">
+  <a-layout style="min-height: 100vh;">
     <!--  头部  -->
-    <a-layout-header style="height: 55px; padding: 0 20px; border-bottom: 1px solid #f0f0f0;">
+    <a-layout-header :style="headerStyle" style="height: 55px; padding: 0 20px;">
       <ConsoleMenuHeader/>
     </a-layout-header>
     <a-layout>
       <!-- 菜单 -->
-      <a-layout-sider theme="light" width="200" style="border-right: 1px solid #f0f0f0;">
+      <a-layout-sider width="200" :style="siderStyle">
         <ConsoleMenuContent/>
       </a-layout-sider>
       <!-- 内容 -->
@@ -15,7 +15,7 @@
           <router-view/>
         </a-layout-content>
         <!-- 下角 -->
-        <a-layout-footer style="background-color: rgb(0, 0, 0, 2%); text-align: center;">
+        <a-layout-footer style="text-align: center;">
           <a-typography-text type="secondary">少年不惧岁月长,彼方尚有荣光在</a-typography-text>
         </a-layout-footer>
       </a-layout>
@@ -26,31 +26,37 @@
 <script lang="ts">
 import ConsoleMenuHeader from "./ConsoleMenuHeader.vue";
 import ConsoleMenuContent from "./ConsoleMenuContent.vue";
+import store from "@/store/cache.ts";
 
 export default {
   name: "ConsoleMenu",
   components: {ConsoleMenuContent, ConsoleMenuHeader},
+  computed: {
+    isDarkTheme() {
+      return store.getters['theme/isDarkTheme'];
+    },
+    headerStyle() {
+      return {
+        backgroundColor: this.isDarkTheme ? '#141414' : '#ffffff',
+        padding: '0 20px',
+        height: '55px',
+        lineHeight: '55px'
+      }
+    },
+    siderStyle() {
+      return {
+        backgroundColor: this.isDarkTheme ? '#141414' : '#ffffff'
+      }
+    }
+  }
 }
 </script>
 
 <style scoped>
-:deep(.ant-layout) {
-  background: #fff;
-}
-
-:deep(.ant-layout-header) {
-  padding: 0;
-  height: 55px;
-  line-height: 55px;
-  background: #fff;
-}
+/* Removed :deep(.ant-layout-header) as it is now handled by inline style */
 
 :deep(.ant-layout-footer) {
   padding: 3px 0;
-}
-
-header {
-  border-bottom: 1px solid #dcdfe6;
 }
 
 </style>

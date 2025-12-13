@@ -1,6 +1,6 @@
 <template>
   <a-layout>
-    <a-layout-header style="height: 150px; padding: 20px;">
+    <a-layout-header :style="headerStyle">
       <div>
         <span class="title">角色管理</span>
       </div>
@@ -102,10 +102,23 @@ import RoleAdd from "./RoleAdd.vue";
 import RoleEdit from "./RoleEdit.vue";
 import RoleDetail from "./RoleDetail.vue";
 import {roleEnumStore} from "@/enums/RoleTypeStore.ts";
+import store from "@/store/cache.ts";
 
 export default {
   name: "RoleManagement",
   components: {RoleDetail, RoleEdit, RoleAdd, PlusOutlined},
+  computed: {
+    isDarkTheme() {
+      return store.getters['theme/isDarkTheme'];
+    },
+    headerStyle() {
+      return {
+        backgroundColor: this.isDarkTheme ? '#141414' : '#ffffff',
+        height: '150px',
+        padding: '20px'
+      }
+    }
+  },
   data() {
     return {
       // 查询表单

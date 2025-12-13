@@ -1,5 +1,7 @@
 import request from "@/utils/request";
-import type { FileLibraryPageDto, FileLibraryUploadVo, FileLibraryPageVo } from "@/type/filelibrary/FileLibrary";
+import type { FileLibraryPageDto } from "@/type/filelibrary/FileLibraryPageDto";
+import type { FileLibraryUploadVo } from "@/type/filelibrary/FileLibraryUploadVo";
+import type { FileLibraryPageVo } from "@/type/filelibrary/FileLibraryPageVo";
 import type { PageResult } from "@/type/PageResult";
 import type { ResultVo } from "@/type/ResultVo";
 import { AxiosResponse } from "axios";

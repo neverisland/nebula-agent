@@ -387,7 +387,6 @@ export default defineComponent({
 /* 用户消息气泡 */
 .user-message-bubble {
   max-width: 70%;
-  background-color: #e6f7ff;
   border-radius: 8px;
   padding: 8px 12px;
   word-break: break-word;

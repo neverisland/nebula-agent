@@ -1,6 +1,6 @@
 <template>
   <a-layout>
-    <a-layout-header style="height: 150px; padding: 20px;">
+    <a-layout-header :style="headerStyle">
       <div>
         <span class="title">用户管理</span>
       </div>
@@ -118,10 +118,23 @@ import UserDetail from "./UserDetail.vue";
 import {enabledEnumStore} from "@/enums/EnabledStore.ts";
 import ResetPassword from "@/views/console/system-manage/user/ResetPassword.vue";
 import AssigningRole from "@/views/console/system-manage/user/AssigningRole.vue";
+import store from "@/store/cache.ts";
 
 export default {
   name: "UserManagement",
   components: {AssigningRole, ResetPassword, UserDetail, UserEdit, UserAdd, PlusOutlined},
+  computed: {
+    isDarkTheme() {
+      return store.getters['theme/isDarkTheme'];
+    },
+    headerStyle() {
+      return {
+        backgroundColor: this.isDarkTheme ? '#141414' : '#ffffff',
+        height: '150px',
+        padding: '20px'
+      }
+    }
+  },
   data() {
     return {
       // 查询表单

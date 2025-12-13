@@ -14,7 +14,7 @@
 
         <!-- 版本依赖管理 -->
         <spring-boot.version>3.5.7</spring-boot.version>
-        <reuse-dependencies.version>1.1.1</reuse-dependencies.version>
+        <reuse-dependencies.version>1.2.1</reuse-dependencies.version>
 
         <!-- 功能依赖 -->
         <sa-token.version>1.41.0</sa-token.version>
@@ -146,7 +146,6 @@
             <artifactId>thumbnailator</artifactId>
             <version>0.4.19</version>
         </dependency>
-
 
     </dependencies>
 

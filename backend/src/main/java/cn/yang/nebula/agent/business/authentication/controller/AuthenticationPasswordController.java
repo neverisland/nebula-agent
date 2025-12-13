@@ -1,5 +1,6 @@
 package cn.yang.nebula.agent.business.authentication.controller;
 
+import cn.yang.nebula.agent.aop.ParamLog;
 import cn.yang.nebula.agent.business.authentication.dto.PasswordLoginDto;
 import cn.yang.nebula.agent.business.authentication.dto.ResetPasswordDto;
 import cn.yang.nebula.agent.business.authentication.facade.AuthenticationPasswordFacade;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author : 未见清海
  */
+@ParamLog
 @RestController
 @RequestMapping("/authentication/password")
 public class AuthenticationPasswordController {

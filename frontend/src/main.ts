@@ -18,7 +18,16 @@ VMdPreview.use(githubTheme, {
     Hljs: hljs,
 });
 
+// 初始化主题设置
+const initTheme = () => {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    store.commit('theme/setTheme', savedTheme);
+};
+
 const pinia = createPinia();
+
+// 在应用启动前初始化主题
+initTheme();
 
 createApp(App)
     .use(pinia)

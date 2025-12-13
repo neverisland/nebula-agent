@@ -3,8 +3,7 @@
       :open="open"
       title="上传文件"
       width="820px"
-      :confirm-loading="uploading"
-      @ok="handleUpload"
+      :footer="null"
       @cancel="close"
   >
     <div class="upload-container" @paste="handlePaste">
@@ -28,49 +27,70 @@
       <div class="actions">
         <a-space>
           <a-button @click="clearFiles">清空列表</a-button>
-          <a-button type="primary" :loading="uploading" @click="handleUpload">开始上传</a-button>
+          <a-button type="primary" :loading="uploading" @click="handleUpload">
+            <UploadOutlined style="margin-right: 8px;" />
+            开始上传
+          </a-button>
         </a-space>
       </div>
       <div v-if="uploadedResults.length" class="result-list">
         <a-typography-title :level="5">上传结果</a-typography-title>
-        <a-list :data-source="uploadedResults">
-          <template #renderItem="{ item }">
-            <a-list-item>
-              <a-list-item-meta
-                  :title="item.name"
-                  :description="item.url"
-              />
-              <a-space>
-                <a-button type="link" size="small" :href="item.url" target="_blank">
-                  <template #icon><LinkOutlined /></template>
-                  预览
-                </a-button>
-                <a-button type="link" size="small" @click="copyLink(item.url)">
-                  <template #icon><CopyOutlined /></template>
-                  复制
-                </a-button>
-              </a-space>
-            </a-list-item>
-          </template>
-        </a-list>
+        <div class="result-scroll">
+          <a-list :data-source="uploadedResults">
+            <template #renderItem="{ item }">
+              <a-list-item>
+                <a-list-item-meta>
+                  <template #avatar>
+                    <a-image
+                        v-if="isImage(item.mimeType) || isImageByFilename(item.name)"
+                        :src="item.thumbnailsUrl || item.url"
+                        :width="40"
+                        :height="40"
+                        :fallback="item.mimeType ? getFileIcon(item.mimeType) : getFileIconByFilename(item.name)"
+                        :preview="false"
+                    />
+                    <img v-else :src="item.mimeType ? getFileIcon(item.mimeType) : getFileIconByFilename(item.name)" style="width: 40px; height: 40px; object-fit: contain;" />
+                  </template>
+                  <template #title>
+                    <span class="file-name">{{ item.name }}</span>
+                  </template>
+                  <template #description>
+                    <span class="file-url">{{ item.url }}</span>
+                  </template>
+                </a-list-item-meta>
+                <a-space>
+                  <a-button type="link" size="small" :href="item.url" target="_blank">
+                    <template #icon><LinkOutlined /></template>
+                    预览
+                  </a-button>
+                  <a-button type="link" size="small" @click="copyLink(item.url)">
+                    <template #icon><CopyOutlined /></template>
+                    复制
+                  </a-button>
+                </a-space>
+              </a-list-item>
+            </template>
+          </a-list>
+        </div>
       </div>
     </div>
   </a-modal>
 </template>
 
 <script lang="ts">
-import { InboxOutlined, LinkOutlined, CopyOutlined } from "@ant-design/icons-vue";
+import { InboxOutlined, LinkOutlined, CopyOutlined, UploadOutlined } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
 import type { UploadFile } from "ant-design-vue";
 import { uploadFileLibrary } from "@/api/FileLibraryApi.ts";
-import type { FileLibraryUploadVo } from "@/type/filelibrary/FileLibrary.ts";
+import type { FileLibraryUploadVo } from "@/type/filelibrary/FileLibraryUploadVo";
+import { isImage, getFileIcon, isImageByFilename, getFileIconByFilename } from "@/utils/fileUtils";
 
 /**
  * 文件上传弹窗
  */
 export default {
   name: "FileUploadModal",
-  components: { InboxOutlined, LinkOutlined, CopyOutlined },
+  components: { InboxOutlined, LinkOutlined, CopyOutlined, UploadOutlined },
   props: {
     open: {
       type: Boolean,
@@ -83,6 +103,20 @@ export default {
       fileList: [] as UploadFile[],
       uploading: false,
       uploadedResults: [] as FileLibraryUploadVo[],
+    }
+  },
+  computed: {
+    isImage() {
+      return (mimeType: string) => isImage(mimeType);
+    },
+    isImageByFilename() {
+      return isImageByFilename;
+    },
+    getFileIcon() {
+      return getFileIcon;
+    },
+    getFileIconByFilename() {
+      return getFileIconByFilename;
     }
   },
   methods: {
@@ -126,8 +160,21 @@ export default {
         return;
       }
       this.uploading = true;
-      this.uploadedResults = [];
-      for (const file of this.fileList) {
+
+      // 过滤出还未上传的文件
+      const filesToUpload = this.fileList.filter(file => {
+        return !this.uploadedResults.some(uploaded => {
+          return uploaded.name === file.name && uploaded.size === file.size;
+        });
+      });
+
+      if (filesToUpload.length === 0) {
+        message.warning('所有文件都已上传完成');
+        this.uploading = false;
+        return;
+      }
+
+      for (const file of filesToUpload) {
         if (!file.originFileObj) {
           message.warning(`${file.name} 无原始文件，已跳过`);
           continue;
@@ -140,7 +187,7 @@ export default {
             file.status = 'done';
             file.percent = 100;
             const data = res.data.data as FileLibraryUploadVo;
-            this.uploadedResults.push(data);
+            this.uploadedResults.unshift(data);
           } else {
             file.status = 'error';
             message.error(res.data.details || '上传失败');
@@ -151,6 +198,8 @@ export default {
         }
       }
       this.uploading = false;
+      // 清空已上传的文件列表
+      this.fileList = [];
       // 仅通知父级刷新列表，不自动关闭弹窗
       this.$emit('uploaded', this.uploadedResults.length);
     },
@@ -183,6 +232,21 @@ export default {
 }
 .result-list {
   margin-top: 16px;
+}
+.result-scroll {
+  max-height: 300px;
+  overflow-y: auto;
+  border-radius: 6px;
+  padding: 8px;
+}
+.file-name {
+  font-weight: 500;
+  margin-bottom: 4px;
+  display: block;
+}
+.file-url {
+  font-size: 12px;
+  word-break: break-all;
 }
 .upload-drag :deep(.ant-upload-drag) {
   padding: 40px 32px;

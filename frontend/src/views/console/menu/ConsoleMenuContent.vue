@@ -1,9 +1,10 @@
 <template>
-  <a-layout-sider width="200">
+  <a-layout-sider width="200" :style="{ backgroundColor: isDarkTheme ? '#141414' : '#ffffff' }">
     <a-menu
         v-model:selectedKeys="selectedKeys"
         mode="inline"
-        :style="{ height: '100%', borderRight: 1 }"
+        :theme="menuTheme"
+        :style="{ height: '100%', borderRight: 0 }"
         @click="handleMenuClick"
     >
       <a-menu-item key="/console/page/home">
@@ -35,8 +36,9 @@
 
 <script lang="ts">
 import { HomeOutlined, SettingOutlined, FolderOpenOutlined } from '@ant-design/icons-vue';
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import store from "@/store/cache.ts";
 
 /**
  * 菜单内容组件
@@ -57,9 +59,14 @@ export default {
       router.push(key);
     };
 
+    const isDarkTheme = computed(() => store.getters['theme/isDarkTheme']);
+    const menuTheme = computed(() => isDarkTheme.value ? 'dark' : 'light');
+
     return {
       selectedKeys,
       handleMenuClick,
+      isDarkTheme,
+      menuTheme
     };
   }
 }

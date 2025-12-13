@@ -5,6 +5,7 @@ import com.aliyun.oss.OSSClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.StringUtils;
 
 /**
  * @author : QingHai
@@ -22,6 +23,9 @@ public class OssConfig {
     public OSS ossClient() {
         String accessKeyId = System.getenv("ALI_YUN_ACCESS_KEY_ID");
         String secretAccessKey = System.getenv("ALI_YUN_ACCESS_SECRET_KEY");
+        if (!StringUtils.hasLength(accessKeyId) || !StringUtils.hasLength(secretAccessKey)) {
+            throw new RuntimeException("请设置环境变量 ALI_YUN_ACCESS_KEY_ID 和 ALI_YUN_ACCESS_SECRET_KEY");
+        }
         return new OSSClientBuilder().build(endpoint, accessKeyId, secretAccessKey);
     }
 }

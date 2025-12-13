@@ -4,6 +4,7 @@ import cn.yang.common.data.structure.enums.StatusCodeEnum;
 import cn.yang.common.data.structure.utils.bean.BeanConvertUtils;
 import cn.yang.common.data.structure.vo.result.ResultFactory;
 import cn.yang.common.data.structure.vo.result.ResultVo;
+import cn.yang.nebula.agent.aop.ParamLog;
 import cn.yang.nebula.agent.business.authentication.dto.CurrentUserInfoDto;
 import cn.yang.nebula.agent.business.authentication.dto.CurrentUserRoleDto;
 import cn.yang.nebula.agent.business.authentication.entity.UserInfo;
@@ -27,6 +28,7 @@ import java.util.List;
  *
  * @author : 未见清海
  */
+@ParamLog
 @RestController
 @RequestMapping("/authentication")
 public class AuthenticationController {
@@ -57,6 +59,7 @@ public class AuthenticationController {
      *
      * @return 是否认证
      */
+    @ParamLog(open = false)
     @GetMapping("/verifyWhetherAuthenticated")
     public ResultVo<Boolean> verifyWhetherAuthenticated() {
         Boolean flag = authenticationFacade.verifyWhetherAuthenticated();

@@ -1,5 +1,5 @@
 <template>
-  <div class="conversation-container">
+  <div class="conversation-container" :class="{ 'dark-mode': isDarkTheme }">
     <!-- 新建对话按钮 -->
     <div class="new-conversation">
       <a-button type="primary" block @click="createNewConversation">新建对话</a-button>
@@ -48,6 +48,7 @@ import {deleteChatById, selectChatList} from "@/api/ChatApi.ts";
 import {ChatDto} from "@/type/chat/ChatDto.ts";
 import {message, Modal} from "ant-design-vue";
 import UpdateChatTitle from "@/views/chat/UpdateChatTitle.vue";
+import {mapGetters} from 'vuex';
 
 export default defineComponent({
   name: "ChatSession",
@@ -57,6 +58,9 @@ export default defineComponent({
       type: Object,
       default: null
     }
+  },
+  computed: {
+    ...mapGetters('theme', ['isDarkTheme'])
   },
   watch: {
     newChat(newChatDto: ChatDto) {
@@ -211,8 +215,6 @@ export default defineComponent({
 
 .new-conversation {
   padding: 12px;
-  background-color: #fff;
-  border-bottom: 1px solid #e8e8e8;
   z-index: 1;
 }
 
@@ -220,7 +222,6 @@ export default defineComponent({
   flex: 1;
   overflow-y: auto;
   padding: 12px;
-  background-color: #fafafa;
 }
 
 .conversation-item {
@@ -229,13 +230,9 @@ export default defineComponent({
   position: relative;
 }
 
-.conversation-item:hover {
-  background-color: #f0f0f0;
-}
-
 .conversation-item.active {
-  background-color: #e6f4ff;
-  border-left: 3px solid #1890ff;
+  border-left: 3px solid;
+  border-left-color: var(--ant-color-primary);
 }
 
 :deep(.conversation-item .ant-list-item-action) {
@@ -248,7 +245,6 @@ export default defineComponent({
 .loading-more {
   text-align: center;
   padding: 10px;
-  color: #999;
 }
 
 :deep(.conversation-item .ant-list-item-meta-title) {
@@ -257,4 +253,29 @@ export default defineComponent({
   text-overflow: ellipsis; /*显示省略号（...）表示被截断*/
 }
 
+/* Dark Mode Styles */
+.conversation-container.dark-mode .conversation-item {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.conversation-container.dark-mode .conversation-item:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.conversation-container.dark-mode .conversation-item.active {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-left-color: #177ddc; /* Or usage var(--ant-color-primary) if verified valid in dark mode context */
+}
+
+.conversation-container.dark-mode :deep(.conversation-item .ant-list-item-meta-title) {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.conversation-container.dark-mode :deep(.ant-list-item-meta-description) {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.conversation-container.dark-mode .loading-more {
+  color: rgba(255, 255, 255, 0.45);
+}
 </style>

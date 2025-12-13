@@ -1,21 +1,21 @@
 <template>
-  <a-layout theme="light" style="min-height: 100vh;">
+  <a-layout style="min-height: 100vh;">
     <a-layout>
       <!-- 菜单 -->
-      <a-layout-sider theme="light" width="260" style="border-right: 1px solid #f0f0f0; overflow-y: auto; height: 100vh;">
+      <a-layout-sider width="260" :style="siderStyle" style="overflow-y: auto; height: 100vh;">
         <ChatSession :new-chat="newChatData"/>
       </a-layout-sider>
       <!-- 内容 -->
       <a-layout>
         <!--  头部  -->
-        <a-layout-header style="height: 57px; padding: 0 20px;">
+        <a-layout-header :style="headerStyle" style="height: 57px; padding: 0 20px;">
           <ChatHeader @change-prompt="handleChangePrompt" />
         </a-layout-header>
         <a-layout-content style="padding: 5px; height: calc(100vh - 84px);">
           <ChatContent @new-chat="handleNewChat" :new-prompt="newPromptData"/>
         </a-layout-content>
         <!-- 下角 -->
-<!--        <a-layout-footer style="background-color: rgb(0, 0, 0, 2%); text-align: center;">-->
+<!--        <a-layout-footer style="text-align: center;">-->
 <!--          <a-typography-text type="secondary">少年不惧岁月长,彼方尚有荣光在</a-typography-text>-->
 <!--        </a-layout-footer>-->
       </a-layout>
@@ -29,10 +29,28 @@ import ChatContent from "@/views/chat/ChatContent.vue";
 import ChatSession from "@/views/chat/ChatSession.vue";
 import ChatHeader from "@/views/chat/ChatHeader.vue";
 import {ChatDto} from "@/type/chat/ChatDto.ts";
+import {mapGetters} from 'vuex';
 
 export default defineComponent({
   name: "Chat",
   components: {ChatHeader, ChatSession, ChatContent},
+  computed: {
+    ...mapGetters('theme', ['isDarkTheme']),
+    siderStyle() {
+      return {
+        backgroundColor: this.isDarkTheme ? '#141414' : '#ffffff',
+        overflowY: 'auto',
+        height: '100vh'
+      }
+    },
+    headerStyle() {
+      return {
+        backgroundColor: this.isDarkTheme ? '#141414' : '#ffffff',
+        height: '57px',
+        padding: '0 20px'
+      }
+    }
+  },
   data() {
     return {
       newChatData: null as ChatDto | null,
@@ -57,23 +75,14 @@ export default defineComponent({
 
 <style scoped>
 
-:deep(.ant-layout) {
-  background: #fff;
-}
-
 :deep(.ant-layout-header) {
   padding: 0;
   height: 55px;
   line-height: 55px;
-  background: #fff;
 }
 
 :deep(.ant-layout-footer) {
   padding: 3px 0;
-}
-
-header {
-  border-bottom: 1px solid #dcdfe6;
 }
 
 </style>

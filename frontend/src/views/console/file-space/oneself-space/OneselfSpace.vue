@@ -13,7 +13,6 @@ export default {
 <style scoped>
 .placeholder {
   padding: 48px;
-  background: #fff;
   min-height: 480px;
 }
 </style>
