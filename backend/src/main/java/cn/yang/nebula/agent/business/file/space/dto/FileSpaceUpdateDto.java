@@ -20,7 +20,7 @@ public class FileSpaceUpdateDto implements Serializable {
     /**
      * 个人空间 ID
      */
-    @NotBlank(message = "id cannot be empty")
+    @NotBlank(message = "个人空间ID不能为空")
     private String id;
 
     /**

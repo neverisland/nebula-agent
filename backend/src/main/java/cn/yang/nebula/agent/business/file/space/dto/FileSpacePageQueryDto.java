@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class FileSpacePageQueryDto extends PageQuery implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -4219454573549526453L;
 
     /**
      * 个人空间名称(模糊)
