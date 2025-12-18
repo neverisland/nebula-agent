@@ -113,5 +113,16 @@ public class FileLibraryRepository {
     public int deleteById(String id) {
         return fileLibraryMapper.deleteById(id);
     }
+
+    /**
+     * 批量更新空间id
+     *
+     * @param currentUserId 当前登录用户id
+     * @param spaceId       空间id
+     * @param fileIds       文件id列表
+     */
+    public void updateSpaceId(String currentUserId, String spaceId, List<String> fileIds) {
+        fileLibraryMapper.updateSpaceId(spaceId, fileIds, currentUserId);
+    }
 }
 

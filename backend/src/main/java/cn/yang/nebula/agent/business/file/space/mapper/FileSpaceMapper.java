@@ -24,6 +24,14 @@ public interface FileSpaceMapper {
     List<FileSpaceDo> selectPageData(@Param("query") FileSpacePageQueryDto query);
 
     /**
+     * 根据用户id查询所有空间
+     *
+     * @param userId 用户id
+     * @return 列表
+     */
+    List<FileSpaceDo> selectListByUserId(@Param("userId") String userId);
+
+    /**
      * 新增数据
      *
      * @param fileSpaceDo 新增数据
@@ -38,4 +46,20 @@ public interface FileSpaceMapper {
      * @return int
      */
     int updateById(FileSpaceDo fileSpaceDo);
+
+    /**
+     * 根据id查询
+     *
+     * @param id id
+     * @return 数据
+     */
+    FileSpaceDo selectById(@Param("id") String id);
+
+    /**
+     * 根据id删除
+     *
+     * @param id id
+     * @return 删除条数
+     */
+    int deleteById(@Param("id") String id);
 }

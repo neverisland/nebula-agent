@@ -94,18 +94,21 @@
         <dependency>
             <groupId>cn.yang.common.data</groupId>
             <artifactId>common-data-structures</artifactId>
+            <version>${reuse-dependencies.version}</version>
         </dependency>
 
         <!-- 自行构建的工具类复用依赖 -->
         <dependency>
             <groupId>cn.yang.foundational.capability</groupId>
             <artifactId>foundational-capability-starter</artifactId>
+            <version>${reuse-dependencies.version}</version>
         </dependency>
 
         <!-- 自行构建的加密解密依赖 -->
         <dependency>
             <groupId>cn.yang.security.crypto</groupId>
             <artifactId>security-crypto-starter</artifactId>
+            <version>${reuse-dependencies.version}</version>
         </dependency>
 
         <!-- Sa-Token 权限认证，在线文档：https://sa-token.cc -->
@@ -131,6 +134,7 @@
         <dependency>
             <groupId>com.belerweb</groupId>
             <artifactId>pinyin4j</artifactId>
+            <version>2.5.1</version>
         </dependency>
 
         <!-- 阿里云 OSS -->

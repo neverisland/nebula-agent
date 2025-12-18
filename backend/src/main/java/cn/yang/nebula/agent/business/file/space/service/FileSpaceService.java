@@ -1,6 +1,7 @@
 package cn.yang.nebula.agent.business.file.space.service;
 
 import cn.yang.common.data.structure.utils.bean.BeanConvertUtils;
+import cn.yang.nebula.agent.business.file.space.dto.FileSpaceAllocateDto;
 import cn.yang.nebula.agent.business.file.space.dto.FileSpaceInsertDto;
 import cn.yang.nebula.agent.business.file.space.dto.FileSpaceUpdateDto;
 import cn.yang.nebula.agent.business.file.space.entity.FileSpace;
@@ -8,10 +9,14 @@ import cn.yang.nebula.agent.business.file.space.facade.FileSpaceFacade;
 import cn.yang.nebula.agent.business.file.space.repository.FileSpaceRepository;
 import cn.yang.nebula.agent.business.file.space.dto.FileSpacePageQueryDto;
 import cn.yang.nebula.agent.business.file.space.vo.FileSpaceVo;
+import cn.yang.nebula.agent.business.file.space.vo.FileSpaceSelectVo;
 import cn.yang.common.data.structure.vo.page.PageResult;
 import cn.yang.nebula.agent.business.authentication.facade.AuthenticationFacade;
+import cn.yang.nebula.agent.business.file.library.repository.FileLibraryRepository;
 import org.springframework.util.CollectionUtils;
 import java.util.List;
+import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
+import cn.yang.common.data.structure.exception.BusinessException;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +33,9 @@ public class FileSpaceService implements FileSpaceFacade {
 
     @Resource
     private AuthenticationFacade authenticationFacade;
+
+    @Resource
+    private FileLibraryRepository fileLibraryRepository;
 
     /**
      * 新增个人空间
@@ -70,5 +78,51 @@ public class FileSpaceService implements FileSpaceFacade {
 
         List<FileSpaceVo> list = BeanConvertUtils.convert(pageResult.getList(), FileSpaceVo.class);
         return pageResult.transLate(list);
+    }
+
+    /**
+     * 删除个人空间
+     *
+     * @param id id
+     */
+    @Override
+    public void deleteFileSpace(String id) {
+        String currentUserId = authenticationFacade.getCurrentUserId();
+        // 获取数据
+        FileSpace fileSpace = fileSpaceRepository.selectById(id);
+        if (!currentUserId.equals(fileSpace.getCreateUserId())) {
+            throw new BusinessException(ErrorStatusCodeEnum.PERMISSION_ERROR, "无权限.");
+        }
+        fileSpaceRepository.deleteById(id);
+    }
+
+    /**
+     * 分配文件至个人空间
+     *
+     * @param allocateDto 分配入参
+     */
+    @Override
+    public void allocateFilesToSpace(FileSpaceAllocateDto allocateDto) {
+        String currentUserId = authenticationFacade.getCurrentUserId();
+        // 校验空间是否属于自己
+        FileSpace fileSpace = fileSpaceRepository.selectById(allocateDto.getSpaceId());
+        if (!currentUserId.equals(fileSpace.getCreateUserId())) {
+            throw new BusinessException(ErrorStatusCodeEnum.PERMISSION_ERROR, "无权分配.");
+        }
+
+        // 分配文件
+        fileLibraryRepository.updateSpaceId(currentUserId, allocateDto.getSpaceId(), allocateDto.getFileIds());
+    }
+
+    /**
+     * 获取当前用户的所有文件空间列表
+     *
+     * @return 列表
+     */
+    @Override
+    public List<FileSpaceSelectVo> selectFileSpaces() {
+        String currentUserId = authenticationFacade.getCurrentUserId();
+        List<FileSpace> list = fileSpaceRepository.selectListByUserId(currentUserId);
+        return BeanConvertUtils.convert(list, FileSpaceSelectVo.class);
     }
 }

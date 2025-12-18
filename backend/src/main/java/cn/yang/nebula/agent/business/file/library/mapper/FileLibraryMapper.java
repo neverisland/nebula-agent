@@ -64,6 +64,16 @@ public interface FileLibraryMapper {
     int rename(FileLibraryDo fileLibraryDo);
 
     /**
+     * 批量更新空间id
+     *
+     * @param spaceId      空间id
+     * @param fileIds      文件id列表
+     * @param updateUserId 修改人id
+     * @return 影响行数
+     */
+    int updateSpaceId(@Param("spaceId") String spaceId, @Param("fileIds") List<String> fileIds, @Param("updateUserId") String updateUserId);
+
+    /**
      * 删除
      *
      * @param id 主键

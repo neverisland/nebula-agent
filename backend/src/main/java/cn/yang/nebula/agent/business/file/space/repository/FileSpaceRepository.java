@@ -1,6 +1,7 @@
 package cn.yang.nebula.agent.business.file.space.repository;
 
 import cn.yang.common.data.structure.annotation.assignment.BaseDataAssignment;
+import cn.yang.common.data.structure.exception.BusinessException;
 import cn.yang.common.data.structure.utils.bean.BeanConvertUtils;
 import cn.yang.common.data.structure.vo.page.PageResult;
 import cn.yang.common.data.structure.vo.page.PageUtils;
@@ -9,6 +10,7 @@ import cn.yang.nebula.agent.business.file.space.dal.FileSpaceDo;
 import cn.yang.nebula.agent.business.file.space.dto.FileSpacePageQueryDto;
 import cn.yang.nebula.agent.business.file.space.entity.FileSpace;
 import cn.yang.nebula.agent.business.file.space.mapper.FileSpaceMapper;
+import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -69,5 +71,39 @@ public class FileSpaceRepository {
 
         List<FileSpace> convert = BeanConvertUtils.convert(list, FileSpace.class);
         return fileSpaceDoPageResult.transLate(convert);
+    }
+
+    /**
+     * 根据id查询数据
+     *
+     * @param id id
+     * @return 个人空间实体
+     */
+    public FileSpace selectById(String id) {
+        FileSpaceDo fileSpaceDo = fileSpaceMapper.selectById(id);
+        if (fileSpaceDo == null) {
+            throw new BusinessException(ErrorStatusCodeEnum.DATA_DOES_NOT_EXIST, "空间不存在");
+        }
+        return BeanConvertUtils.convert(fileSpaceDo, FileSpace.class);
+    }
+
+    /**
+     * 根据id删除数据
+     *
+     * @param id id
+     */
+    public void deleteById(String id) {
+        fileSpaceMapper.deleteById(id);
+    }
+
+    /**
+     * 根据用户id查询所有空间
+     *
+     * @param userId 用户id
+     * @return 列表
+     */
+    public List<FileSpace> selectListByUserId(String userId) {
+        List<FileSpaceDo> fileSpaceDos = fileSpaceMapper.selectListByUserId(userId);
+        return BeanConvertUtils.convert(fileSpaceDos, FileSpace.class);
     }
 }
