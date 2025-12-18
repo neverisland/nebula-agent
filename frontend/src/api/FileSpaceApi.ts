@@ -1,0 +1,52 @@
+import request from "@/utils/request";
+import { ResultVo } from "@/type/ResultVo.ts";
+import { PageResult } from "@/type/PageResult.ts";
+import {
+    FileSpaceInsertDto,
+    FileSpaceUpdateDto,
+    FileSpacePageQueryDto,
+    FileSpaceVo
+} from "@/type/filespace/FileSpaceTypes.ts";
+
+/**
+ * 个人空间 API
+ */
+
+/**
+ * 新增个人空间
+ * @param data
+ */
+export function addFileSpace(data: FileSpaceInsertDto) {
+    return request.post<ResultVo<string>>("/file-space/add", data);
+}
+
+/**
+ * 更新个人空间
+ * @param data
+ */
+export function updateFileSpace(data: FileSpaceUpdateDto) {
+    return request.post<ResultVo<null>>("/file-space/update", data);
+}
+
+/**
+ * 分页查询个人空间
+ * @param query
+ */
+export function getFileSpacePage(query: FileSpacePageQueryDto) {
+    return request.post<ResultVo<PageResult<FileSpaceVo[]>>>("/file-space/page", query);
+}
+
+/**
+ * 删除个人空间
+ * @param id
+ */
+export function deleteFileSpace(id: string) {
+    return request.get<ResultVo<null>>(`/file-space/delete?id=${id}`);
+}
+
+/**
+ * 获取当前用户的所有的文件空间列表
+ */
+export function selectFileSpaces() {
+    return request.get<ResultVo<any[]>>("/file-space/selectFileSpaces");
+}

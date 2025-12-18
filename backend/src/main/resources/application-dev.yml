@@ -1,16 +1,16 @@
 spring:
   datasource:
-#    url: jdbc:mysql://192.168.3.122:3306/nebula-agent?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
-    url: jdbc:mysql://127.0.0.1:3306/nebula-agent?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    url: jdbc:mysql://192.168.3.122:3306/nebula-agent?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+#    url: jdbc:mysql://127.0.0.1:3306/nebula-agent?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
     username: root
-    password: mysql2024
+    password: root
   data:
     redis:
       # Redis服务器地址
-      host: 43.142.57.253
+      host: 192.168.3.122
       # Redis服务器连接端口
       port: 6379
       # Redis数据库索引（默认为0）
-      database: 13
+      database: 0
       # Redis服务器连接密码（默认为空）
       password: 'sf2!Ka2#tE2AD+9g'

@@ -9,7 +9,7 @@ import Chat from "@/views/chat/Chat.vue";
 import ConsoleMainPage from "@/views/console/page/ConsoleMainPage.vue";
 import FileLibraryList from "@/views/console/file-space/file-library/FileLibraryList.vue";
 import OneselfShare from "@/views/console/file-space/oneself-share/OneselfShare.vue";
-import OneselfSpace from "@/views/console/file-space/oneself-space/OneselfSpace.vue";
+import OneselfSpace from "@/views/console/file-space/oneself-space/FileSpaceModal.vue";
 
 let routes = [
     {
