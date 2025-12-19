@@ -63,4 +63,12 @@ public interface FileSpaceMapper {
      * @return 删除条数
      */
     int deleteById(@Param("id") String id);
+
+    /**
+     * 统计用户空间数量
+     *
+     * @param userId 用户id
+     * @return 空间数量
+     */
+    Integer countByUserId(@Param("userId") String userId);
 }

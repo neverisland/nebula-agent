@@ -129,4 +129,15 @@
             #{id, jdbcType=VARCHAR}
         </foreach>
     </update>
+
+    <!-- 统计用户文件数量 -->
+    <select id="countByUserId" resultType="java.lang.Integer">
+        select count(1) from file_library where create_user_id = #{userId, jdbcType=VARCHAR}
+    </select>
+
+    <!-- 统计用户总存储大小 -->
+    <select id="sumSizeByUserId" resultType="java.lang.Long">
+        select IFNULL(sum(size), 0) from file_library where create_user_id = #{userId, jdbcType=VARCHAR}
+    </select>
 </mapper>
+

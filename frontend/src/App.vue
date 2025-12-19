@@ -18,6 +18,14 @@ export default {
     // 使用computed来响应式地获取主题
     const antTheme = computed(() => {
       const currentTheme = store.getters['theme/currentTheme'];
+      
+      // 同步到 body 类名，方便全局 CSS 及非 Ant 组件适配主题
+      if (currentTheme === 'dark') {
+          document.body.classList.add('dark');
+      } else {
+          document.body.classList.remove('dark');
+      }
+
       return {
         algorithm: currentTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
         token: {

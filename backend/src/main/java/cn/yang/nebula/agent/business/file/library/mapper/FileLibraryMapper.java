@@ -89,5 +89,21 @@ public interface FileLibraryMapper {
      * @return 影响行数
      */
     int clearSpaceId(@Param("fileIds") List<String> fileIds, @Param("updateUserId") String updateUserId);
+
+    /**
+     * 统计用户文件数量
+     *
+     * @param userId 用户id
+     * @return 文件数量
+     */
+    Integer countByUserId(@Param("userId") String userId);
+
+    /**
+     * 统计用户总存储大小
+     *
+     * @param userId 用户id
+     * @return 总存储大小（字节）
+     */
+    Long sumSizeByUserId(@Param("userId") String userId);
 }
 
