@@ -265,5 +265,15 @@ public class FileLibraryService implements FileLibraryFacade {
         }
     }
 
-}
+    /**
+     * 将文件从空间移除（设置空间id为null）
+     *
+     * @param fileIds 文件id列表
+     */
+    @Override
+    public void removeFromSpace(List<String> fileIds) {
+        String currentUserId = authenticationFacade.getCurrentUserId();
+        fileLibraryRepository.clearSpaceId(currentUserId, fileIds);
+    }
 
+}

@@ -47,9 +47,19 @@
           :scroll="{ y: tableHeight }"
           rowKey="id"
       >
-        <a-table-column title="空间名称" dataIndex="name" key="name" :width="200"/>
+        <a-table-column title="空间名称" key="name" :width="200">
+          <template #default="{ record }">
+            <a @click="goToFiles(record)">{{ record.name }}</a>
+          </template>
+        </a-table-column>
+        <a-table-column title="文件数量" dataIndex="fileCount" key="fileCount" :width="100"/>
+        <a-table-column title="已用空间" key="totalSize" :width="120">
+          <template #default="{ record }">
+            {{ formatSize(record.totalSize) }}
+          </template>
+        </a-table-column>
         <a-table-column title="说明" dataIndex="remark" key="remark"/>
-        <a-table-column title="创建时间" dataIndex="createTime" key="createTime" :width="200"/>
+        <a-table-column title="创建时间" dataIndex="createTime" key="createTime" :width="180"/>
         <a-table-column title="操作" key="action" :width="200" align="center">
           <template #default="{ record }">
             <a-space>
@@ -135,6 +145,19 @@ export default {
     editData(record: FileSpaceVo) {
       this.selectData = record;
       this.dialogEdit = true;
+    },
+    formatSize(size: number) {
+      if (!size) return '0 B';
+      if (size < 1024) return `${size} B`;
+      if (size < 1024 * 1024) return `${(size / 1024).toFixed(1)} KB`;
+      if (size < 1024 * 1024 * 1024) return `${(size / 1024 / 1024).toFixed(1)} MB`;
+      return `${(size / 1024 / 1024 / 1024).toFixed(1)} GB`;
+    },
+    goToFiles(record: FileSpaceVo) {
+      this.$router.push({
+        name: 'file-library',
+        query: { spaceId: record.id, spaceName: record.name }
+      });
     },
     deleteData(id: string, name: string) {
       Modal.confirm({

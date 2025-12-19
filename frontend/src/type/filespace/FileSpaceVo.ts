@@ -18,6 +18,16 @@ export interface FileSpaceVo {
     remark: string;
 
     /**
+     * 文件数量
+     */
+    fileCount: number;
+
+    /**
+     * 空间大小
+     */
+    totalSize: number;
+
+    /**
      * 创建时间
      */
     createTime: string;

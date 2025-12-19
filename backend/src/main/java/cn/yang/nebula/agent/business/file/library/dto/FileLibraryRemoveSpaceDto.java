@@ -1,6 +1,5 @@
-package cn.yang.nebula.agent.business.file.space.dto;
+package cn.yang.nebula.agent.business.file.library.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
@@ -9,20 +8,15 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 分配文件至空间 入参
+ * 移除文件空间归属 入参
  *
  * @author : 未见清海
  */
 @Data
-public class FileSpaceAllocateDto implements Serializable {
+public class FileLibraryRemoveSpaceDto implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = -7849998486916459072L;
-    
-    /**
-     * 空间id
-     */
-    private String spaceId;
+    private static final long serialVersionUID = -8152347629845316852L;
 
     /**
      * 文件id列表

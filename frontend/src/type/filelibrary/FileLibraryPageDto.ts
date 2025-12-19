@@ -18,10 +18,6 @@ export interface FileLibraryPageDto {
      */
     searchText?: string;
 
-    /**
-     * MIME类型筛选
-     */
-    mimeType?: string;
 
     /**
      * 空间ID

@@ -11,7 +11,7 @@
  Target Server Version : 80042 (8.0.42)
  File Encoding         : 65001
 
- Date: 12/12/2025 18:12:36
+ Date: 19/12/2025 16:42:33
 */
 
 SET NAMES utf8mb4;
@@ -25,8 +25,8 @@ CREATE TABLE `authentication_historical_password`  (
   `id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Id',
   `user_id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户id',
   `password_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '密码的哈希值',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  `modify_time` datetime NOT NULL COMMENT '修改时间',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户历史密码' ROW_FORMAT = DYNAMIC;
 
@@ -40,8 +40,8 @@ CREATE TABLE `authentication_historical_password`  (
 DROP TABLE IF EXISTS `authentication_mini_program`;
 CREATE TABLE `authentication_mini_program`  (
   `id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户小程序id',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  `modify_time` datetime NOT NULL COMMENT '修改时间',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户微信小程序认证' ROW_FORMAT = DYNAMIC;
 
@@ -58,8 +58,8 @@ CREATE TABLE `authentication_password`  (
   `user_id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户id',
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '密码',
   `password_type` tinyint(1) NOT NULL COMMENT '密码类型，0-初始密码 1-自定义密码',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_time` datetime NOT NULL COMMENT '更新时间，密码修改时间',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间,密码修改时间',
   PRIMARY KEY (`id`, `user_id`) USING BTREE,
   UNIQUE INDEX `uk_user_id`(`user_id` ASC) USING BTREE COMMENT '用户id唯一'
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户密码认证' ROW_FORMAT = DYNAMIC;
@@ -67,35 +67,57 @@ CREATE TABLE `authentication_password`  (
 -- ----------------------------
 -- Records of authentication_password
 -- ----------------------------
-INSERT INTO `authentication_password` VALUES ('01KAJHRC878010GS3KCZHNKK72', '01KAJHFF6ZA4GRQPP40KZKZH0F', '0dc9f8f93c3c42d4a6eadd07f80348c75bbd71113cb0d2c88a9de97e7fbc0348e374f33525032d642aa835d221c04079', 0, '2025-11-21 14:31:20', '2025-11-21 14:35:56');
+INSERT INTO `authentication_password` VALUES ('01KCTPBXG6AY0CEEK3056EBXC9', '01KCTPBE8FFZJD49P0BF3WR6G5', '3850a8af4323e701c22adb26b81fffec6b8d7b38df743b41e2a5c606ab45b307a8fd31ab3c850215a8a8a40cd9727e3e', 0, '2025-12-19 14:57:14', '2025-12-19 15:06:31');
+INSERT INTO `authentication_password` VALUES ('01KCTPWPEA7FXFFQG9Y8154HG2', '01KCTPW8FY8FMHVZYX42M0DVS3', '058e157a3b8674985d74aca776154ca657e9bfb22661d81b573a47c35cf76b4c010423f0282ed37b69474d1088f84bde', 0, '2025-12-19 15:06:24', '2025-12-19 15:06:24');
 
 -- ----------------------------
 -- Table structure for file_library
 -- ----------------------------
 DROP TABLE IF EXISTS `file_library`;
 CREATE TABLE `file_library`  (
-  `id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键id',
-  `space_id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '空间id',
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '文件名称',
-  `mime_type` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '文件类型',
+  `id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键id',
+  `space_id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '空间id',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文件名称',
+  `mime_type` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文件类型',
   `size` bigint NOT NULL COMMENT '文件大小',
-  `path` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '文件存储相对路径',
-  `thumbnails` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '缩略图相对路径',
-  `create_user_id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建者id',
+  `path` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文件存储相对路径',
+  `thumbnails` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '缩略图相对路径',
+  `create_user_id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建者id',
   `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_user_id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新者id',
+  `update_user_id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新者id',
   `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_space_id`(`space_id` ASC) USING BTREE,
   INDEX `idx_name_path`(`name` ASC, `path` ASC) USING BTREE,
-  INDEX `idx_create_time`(`create_time` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件库' ROW_FORMAT = Dynamic;
+  INDEX `idx_create_time`(`create_time` ASC) USING BTREE,
+  CONSTRAINT `fx_file_library` FOREIGN KEY (`space_id`) REFERENCES `file_space` (`id`) ON DELETE SET NULL ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '文件库' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of file_library
 -- ----------------------------
-INSERT INTO `file_library` VALUES ('01KC8ZFC5ZK3N6ZA0YQ4BSHT82', NULL, 'IMG_2957.JPG', 'image/jpeg', 96914, '2025/12/12/e95b40a58b21445f811f274ed82b1481.JPG', '2025/12/12/e95b40a58b21445f811f274ed82b1481-thumbnail.JPG', '01KAJHFF6ZA4GRQPP40KZKZH0F', '2025-12-12 17:50:04', '01KAJHFF6ZA4GRQPP40KZKZH0F', '2025-12-12 17:50:04');
-INSERT INTO `file_library` VALUES ('01KC8ZFNZY5D6KYNKHV98WP15J', NULL, 'IMG_2957.JPG', 'image/jpeg', 96914, '2025/12/12/8bb93ac37dd34291b77a626dbd57fe75.JPG', '2025/12/12/8bb93ac37dd34291b77a626dbd57fe75-thumbnail.JPG', '01KAJHFF6ZA4GRQPP40KZKZH0F', '2025-12-12 17:50:14', '01KAJHFF6ZA4GRQPP40KZKZH0F', '2025-12-12 17:50:14');
+INSERT INTO `file_library` VALUES ('01KCTQ1ZKTEF9BBMATM53ABZ72', '01KCTR3ZGYEKN6D7CHNAZQW61Q', 'image.png', 'image/png', 3944, '2025/12/19/97c03352ee55468fa8ce5d2010115d43.png', '2025/12/19/97c03352ee55468fa8ce5d2010115d43-thumbnail.png', '01KCTPBE8FFZJD49P0BF3WR6G5', '2025-12-19 15:09:17', '01KCTPBE8FFZJD49P0BF3WR6G5', '2025-12-19 16:06:35');
+INSERT INTO `file_library` VALUES ('01KCTTGFKKYBX7VBV7JX8GWJJ7', NULL, 'image.png', 'image/png', 15673, '2025/12/19/44ab91025eb14e7f9d0f0d3735d21944.png', '2025/12/19/44ab91025eb14e7f9d0f0d3735d21944-thumbnail.png', '01KCTPBE8FFZJD49P0BF3WR6G5', '2025-12-19 16:09:38', '01KCTPBE8FFZJD49P0BF3WR6G5', '2025-12-19 16:41:34');
+
+-- ----------------------------
+-- Table structure for file_space
+-- ----------------------------
+DROP TABLE IF EXISTS `file_space`;
+CREATE TABLE `file_space`  (
+  `id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键id',
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '空间名称',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `create_user_id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建者id',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_user_id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新者id',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '个人空间' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of file_space
+-- ----------------------------
+INSERT INTO `file_space` VALUES ('01KCTR3ZGYEKN6D7CHNAZQW61Q', '图床', '/', '01KCTPBE8FFZJD49P0BF3WR6G5', '2025-12-19 15:27:51', '01KCTPBE8FFZJD49P0BF3WR6G5', '2025-12-19 15:39:22');
 
 -- ----------------------------
 -- Table structure for permission
@@ -105,8 +127,8 @@ CREATE TABLE `permission`  (
   `id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '权限id',
   `mark` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '权限标识',
   `description` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '权限描述',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_time` datetime NOT NULL COMMENT '更新时间',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_mark`(`mark` ASC) USING BTREE COMMENT '权限标识唯一'
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '权限' ROW_FORMAT = DYNAMIC;
@@ -114,8 +136,8 @@ CREATE TABLE `permission`  (
 -- ----------------------------
 -- Records of permission
 -- ----------------------------
-INSERT INTO `permission` VALUES ('01KAG9F9HGART922VBBAEHW0KZ', 'management_role', '管理角色权限', '2025-11-20 17:28:04', '2025-11-20 17:28:04');
-INSERT INTO `permission` VALUES ('01KAG9F9HGWT5EJKY0T8TW1KGT', 'basic_permissions', '基础权限', '2025-11-20 17:28:04', '2025-11-20 17:28:04');
+INSERT INTO `permission` VALUES ('01KCTPABZSEDPM7Z2JRN6RR2AE', 'basic_permissions', '基础权限', '2025-12-19 14:56:23', '2025-12-19 14:56:23');
+INSERT INTO `permission` VALUES ('01KCTPABZT7ZS1N1S2DD9KKT56', 'management_role', '管理角色权限', '2025-12-19 14:56:23', '2025-12-19 14:56:23');
 
 -- ----------------------------
 -- Table structure for role
@@ -127,10 +149,10 @@ CREATE TABLE `role`  (
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色名称',
   `description` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '角色描述',
   `type` tinyint NOT NULL DEFAULT 1 COMMENT '角色类型 0 内置角色 1 自定义角色',
-  `create_user_id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '创建人id',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_user_id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '更新人id',
-  `update_time` datetime NOT NULL COMMENT '更新时间',
+  `create_user_id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建者id',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_user_id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新者id',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_mark`(`mark` ASC) USING BTREE COMMENT '角色标识唯一'
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色' ROW_FORMAT = DYNAMIC;
@@ -138,8 +160,8 @@ CREATE TABLE `role`  (
 -- ----------------------------
 -- Records of role
 -- ----------------------------
-INSERT INTO `role` VALUES ('01KAG9RBTA8SGDV0A1ADZ4E4VG', 'system_administrator', '系统管理员', '系统管理员角色,负责系统的维护使用', 0, '', '2025-11-20 17:33:02', '', '2025-11-20 17:33:02');
-INSERT INTO `role` VALUES ('01KAG9RBTBMV7D4XR7CGD114ZA', 'ordinary_users', '普通用户', '系统普通用户', 0, '', '2025-11-20 17:33:02', '', '2025-11-20 17:33:02');
+INSERT INTO `role` VALUES ('01KCTPAC1WGY185XA2QJ5S72AJ', 'system_administrator', '系统管理员', '系统管理员角色,负责系统的维护使用', 0, '', '2025-12-19 14:56:23', '', '2025-12-19 14:56:23');
+INSERT INTO `role` VALUES ('01KCTPAC1XDNM6YMCGVQYPYCJ9', 'ordinary_users', '普通用户', '系统普通用户', 0, '', '2025-12-19 14:56:23', '', '2025-12-19 14:56:23');
 
 -- ----------------------------
 -- Table structure for role_permission
@@ -159,9 +181,9 @@ CREATE TABLE `role_permission`  (
 -- ----------------------------
 -- Records of role_permission
 -- ----------------------------
-INSERT INTO `role_permission` VALUES ('01KAG9RBTBR875KRQ4GG8MJ5PR', '01KAG9RBTA8SGDV0A1ADZ4E4VG', '01KAG9F9HGWT5EJKY0T8TW1KGT');
-INSERT INTO `role_permission` VALUES ('01KAG9RBTBX9ABS44BAPM2QGXY', '01KAG9RBTBMV7D4XR7CGD114ZA', '01KAG9F9HGWT5EJKY0T8TW1KGT');
-INSERT INTO `role_permission` VALUES ('01KAG9RBTBZDYF78A09290KPZ5', '01KAG9RBTA8SGDV0A1ADZ4E4VG', '01KAG9F9HGART922VBBAEHW0KZ');
+INSERT INTO `role_permission` VALUES ('01KCTPAC1X9VAV75JGWVARVPED', '01KCTPAC1XDNM6YMCGVQYPYCJ9', '01KCTPABZSEDPM7Z2JRN6RR2AE');
+INSERT INTO `role_permission` VALUES ('01KCTPAC1XKWZJE0T8EBFEQ3FH', '01KCTPAC1WGY185XA2QJ5S72AJ', '01KCTPABZSEDPM7Z2JRN6RR2AE');
+INSERT INTO `role_permission` VALUES ('01KCTPAC1XNFDYBHHYM0FTDEQN', '01KCTPAC1WGY185XA2QJ5S72AJ', '01KCTPABZT7ZS1N1S2DD9KKT56');
 
 -- ----------------------------
 -- Table structure for user
@@ -176,11 +198,11 @@ CREATE TABLE `user`  (
   `account_non_locked` tinyint NOT NULL DEFAULT 1 COMMENT '是否未锁定 0 锁定 1 解锁',
   `locked_time` datetime NULL DEFAULT NULL COMMENT '锁定时间',
   `enabled` tinyint NOT NULL DEFAULT 1 COMMENT '是否启用 0 禁用 1 启用',
-  `create_user_id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '创建人id',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_user_id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '更新人id',
-  `update_time` datetime NOT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`, `username`) USING BTREE,
+  `create_user_id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建者id',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_user_id` varchar(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新者id',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_username`(`username` ASC) USING BTREE COMMENT '用户名唯一',
   INDEX `id`(`id` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户' ROW_FORMAT = DYNAMIC;
@@ -188,7 +210,7 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('01KAJHFF6ZA4GRQPP40KZKZH0F', 'yangyi', '杨依', '15715822290', '1216288809@qq.com', 1, NULL, 1, '', '2025-11-21 14:26:28', '', '2025-11-21 15:23:44');
+INSERT INTO `user` VALUES ('01KCTPBE8FFZJD49P0BF3WR6G5', 'yangyi', '杨依', '15715822290', '1216288809@qq.com', 1, NULL, 1, '', '2025-12-19 14:56:58', '', '2025-12-19 14:56:58');
 
 -- ----------------------------
 -- Table structure for user_role
@@ -208,6 +230,6 @@ CREATE TABLE `user_role`  (
 -- ----------------------------
 -- Records of user_role
 -- ----------------------------
-INSERT INTO `user_role` VALUES ('01KAX4DGG5NZJG3QV6EWKMXNQK', '01KAJHFF6ZA4GRQPP40KZKZH0F', '01KAG9RBTA8SGDV0A1ADZ4E4VG');
+INSERT INTO `user_role` VALUES ('01KCTPBE93RA2MG58XK8M8HMJP', '01KCTPBE8FFZJD49P0BF3WR6G5', '01KCTPAC1WGY185XA2QJ5S72AJ');
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -32,4 +32,14 @@ public class FileSpace extends BaseEntity implements Serializable {
      * 备注
      */
     private String remark;
+
+    /**
+     * 文件数量
+     */
+    private Integer fileCount;
+
+    /**
+     * 空间大小
+     */
+    private Long totalSize;
 }

@@ -8,6 +8,8 @@ import cn.yang.nebula.agent.business.file.library.dto.FileLibraryUploadVo;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * 文件库 门面接口
  *
@@ -52,5 +54,12 @@ public interface FileLibraryFacade {
      * @param response     响应
      */
     void downloadPreview(String relativePath, HttpServletResponse response);
+
+    /**
+     * 将文件从空间移除（设置空间id为null）
+     *
+     * @param fileIds 文件id列表
+     */
+    void removeFromSpace(List<String> fileIds);
 }
 

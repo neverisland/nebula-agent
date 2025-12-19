@@ -124,5 +124,15 @@ public class FileLibraryRepository {
     public void updateSpaceId(String currentUserId, String spaceId, List<String> fileIds) {
         fileLibraryMapper.updateSpaceId(spaceId, fileIds, currentUserId);
     }
+
+    /**
+     * 清除文件的空间id（设置为null）
+     *
+     * @param updateUserId 修改人id
+     * @param fileIds      文件id列表
+     */
+    public void clearSpaceId(String updateUserId, List<String> fileIds) {
+        fileLibraryMapper.clearSpaceId(fileIds, updateUserId);
+    }
 }
 

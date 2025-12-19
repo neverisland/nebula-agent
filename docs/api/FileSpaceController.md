@@ -65,7 +65,9 @@
 | id | String | ID |
 | name | String | 名称 |
 | remark | String | 备注 |
-| createTime | Date | 创建时间 |
+| fileCount | Number | 文件数量 |
+| totalSize | Number | 已用空间（字节） |
+| createTime | String | 创建时间 |
 
 ## 4. 删除个人空间
 

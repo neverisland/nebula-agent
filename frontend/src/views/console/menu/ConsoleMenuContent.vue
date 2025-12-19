@@ -1,6 +1,7 @@
 <template>
   <a-menu
       v-model:selectedKeys="selectedKeys"
+      v-model:openKeys="openKeys"
       mode="inline"
       :theme="menuTheme"
       :style="{ height: '100%', borderRight: 0 }"
@@ -49,8 +50,31 @@ export default {
     const router = useRouter();
     const selectedKeys = ref([route.path]);
 
+    // 定义路由与子菜单的映射关系
+    const subMenuMap: Record<string, string> = {
+      '/console/page/role': '1',
+      '/console/page/user': '1',
+      '/console/page/file-library': '2',
+      '/console/page/personal-space': '2',
+      '/console/page/my-share': '2',
+    };
+
+    // 根据路径获取应该展开的子菜单key
+    const getOpenKeyFromPath = (path: string): string[] => {
+      const subMenuKey = subMenuMap[path];
+      return subMenuKey ? [subMenuKey] : [];
+    };
+
+    // 初始化时根据当前路由设置展开的菜单
+    const openKeys = ref(getOpenKeyFromPath(route.path));
+
     watch(() => route.path, (newPath) => {
       selectedKeys.value = [newPath];
+      // 当路由变化时，确保对应的父菜单展开
+      const newOpenKeys = getOpenKeyFromPath(newPath);
+      if (newOpenKeys.length > 0 && !openKeys.value.includes(newOpenKeys[0])) {
+        openKeys.value = [...openKeys.value, ...newOpenKeys];
+      }
     });
 
     const handleMenuClick = ({ key }: { key: string }) => {
@@ -62,6 +86,7 @@ export default {
 
     return {
       selectedKeys,
+      openKeys,
       handleMenuClick,
       isDarkTheme,
       menuTheme

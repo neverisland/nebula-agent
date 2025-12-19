@@ -4,6 +4,12 @@
       <div class="title-row">
         <span class="title">我的文件</span>
         <a-space>
+          <a-button v-if="selectedRowKeys.length > 0" @click="openMoveModal">
+            移动至
+          </a-button>
+          <a-button v-if="selectedRowKeys.length > 0 && queryForm.spaceId" @click="confirmRemoveFromSpace">
+            移除空间
+          </a-button>
           <a-button type="primary" @click="uploadVisible = true">
             <template #icon>
               <UploadOutlined/>
@@ -17,15 +23,21 @@
         <a-row style="width: 100%;" justify="space-between">
           <a-col>
             <a-space wrap>
+              <a-form-item label="所属空间">
+                <a-select v-model:value="queryForm.spaceId"
+                          placeholder="选择空间"
+                          style="width: 200px"
+                          allow-clear
+                          @change="search">
+                  <a-select-option value="">未归类</a-select-option>
+                  <a-select-option v-for="space in displaySpaces" :key="space.id" :value="space.id">
+                    {{ space.name }}
+                  </a-select-option>
+                </a-select>
+              </a-form-item>
               <a-form-item label="关键字">
                 <a-input v-model:value="queryForm.searchText"
                          placeholder="名称 / 路径"
-                         allow-clear
-                         @keyup.enter="search"/>
-              </a-form-item>
-              <a-form-item label="文件类型">
-                <a-input v-model:value="queryForm.mimeType"
-                         placeholder="image/ 或 video/"
                          allow-clear
                          @keyup.enter="search"/>
               </a-form-item>
@@ -40,7 +52,7 @@
     </a-layout-header>
     <a-layout-content style="padding: 0 20px;">
       <a-table
-          :scroll="{ y: tableHeight }"
+          :scroll="{ x: 1000, y: tableHeight }"
           :data-source="tableData"
           :loading="loading"
           :pagination="{
@@ -52,29 +64,28 @@
             showTotal: (total: number) => `共 ${total} 条`,
           }"
           row-key="id"
+          :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange, fixed: true }"
           @change="handleTableChange"
       >
-        <a-table-column title="预览" key="preview" :width="120">
+        <a-table-column title="预览" key="preview" :width="100" fixed="left">
           <template #default="{ record }">
-            <a-image
+            <img
                 v-if="isImage(record.mimeType)"
                 :src="record.thumbnailsUrl || record.url"
-                :width="70"
-                :height="70"
-                :fallback="getFileIcon('file')"
-                :preview="false"
+                style="width: 70px; height: 70px; object-fit: cover; cursor: pointer; border-radius: 4px;"
+                @click="openImagePreview(record)"
             />
             <img v-else :src="getFileIcon(record.mimeType)" style="width: 70px; height: 70px; object-fit: contain;"/>
           </template>
         </a-table-column>
-        <a-table-column title="文件名" dataIndex="name" key="name"/>
-        <a-table-column title="大小" key="size" :width="140">
+        <a-table-column title="文件名" dataIndex="name" key="name" :ellipsis="true"/>
+        <a-table-column title="大小" key="size" :width="100">
           <template #default="{ record }">
             {{ formatSize(record.size) }}
           </template>
         </a-table-column>
-        <a-table-column title="上传时间" dataIndex="createTime" key="createTime" :width="200"/>
-        <a-table-column title="操作" key="action" :width="260">
+        <a-table-column title="上传时间" dataIndex="createTime" key="createTime" :width="180"/>
+        <a-table-column title="操作" key="action" :width="330" fixed="right">
           <template #default="{ record }">
             <a-space>
               <a-button type="link" @click="copyLink(record)">复制链接</a-button>
@@ -91,7 +102,35 @@
       <a-input v-model:value="renameForm.name" placeholder="请输入文件名称"/>
     </a-modal>
 
+    <a-modal v-model:open="moveVisible" title="移动至空间" @ok="confirmMove">
+      <a-form layout="vertical">
+        <a-form-item label="目标空间">
+          <a-select v-model:value="moveSpaceId" placeholder="请选择目标空间">
+            <a-select-option v-for="space in spaces" :key="space.id" :value="space.id">
+              {{ space.name }}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+      </a-form>
+    </a-modal>
+
     <FileUploadModal v-model:open="uploadVisible" @uploaded="handleUploaded"/>
+
+    <a-modal
+        v-model:open="previewVisible"
+        :title="previewTitle"
+        :footer="null"
+        :width="previewWidth"
+        centered
+    >
+      <div style="display: flex; justify-content: center; align-items: center; min-height: 200px;">
+        <img
+            :src="previewUrl"
+            :style="{ maxWidth: '100%', maxHeight: '70vh', objectFit: 'contain' }"
+            @load="onPreviewImageLoad"
+        />
+      </div>
+    </a-modal>
   </a-layout>
 </template>
 
@@ -99,7 +138,8 @@
 import {FileOutlined, UploadOutlined} from '@ant-design/icons-vue';
 import {message, Modal, TablePaginationConfig} from 'ant-design-vue';
 import FileUploadModal from "./FileUploadModal.vue";
-import {deleteFileLibrary, getFileLibraryPage, renameFileLibrary} from "@/api/FileLibraryApi.ts";
+import {deleteFileLibrary, getFileLibraryPage, removeFromSpace, renameFileLibrary} from "@/api/FileLibraryApi.ts";
+import {allocateFilesToSpace, selectFileSpaces} from "@/api/FileSpaceApi.ts";
 import type {PageResult} from "@/type/PageResult.ts";
 import {FileLibraryPageDto} from "@/type/filelibrary/FileLibraryPageDto.ts";
 import {FileLibraryPageVo} from "@/type/filelibrary/FileLibraryPageVo.ts";
@@ -110,16 +150,27 @@ import {FileLibraryPageVo} from "@/type/filelibrary/FileLibraryPageVo.ts";
 export default {
   name: "FileLibraryList",
   components: {FileUploadModal, UploadOutlined, FileOutlined},
-  computed: {},
+  computed: {
+    displaySpaces() {
+      // 如果正式列表还没加载完，但路由里有传过来的空间信息，先造个假数据占位，避免回显 ID
+      const routeSpaceId = this.$route.query.spaceId as string;
+      const routeSpaceName = this.$route.query.spaceName as string;
+      
+      if (this.spaces.length === 0 && routeSpaceId && routeSpaceName) {
+        return [{ id: routeSpaceId, name: routeSpaceName }];
+      }
+      return this.spaces;
+    }
+  },
   data() {
     return {
       queryForm: {
         current: 1,
         size: 10,
         searchText: '',
-        mimeType: '',
         spaceId: ''
       } as FileLibraryPageDto,
+      spaces: [] as any[],
       tableData: [] as FileLibraryPageVo[],
       total: 0,
       loading: false,
@@ -130,12 +181,27 @@ export default {
         name: ''
       },
       tableHeight: 0,
+      selectedRowKeys: [] as string[],
+      moveVisible: false,
+      moveSpaceId: '',
+      previewVisible: false,
+      previewUrl: '',
+      previewTitle: '',
+      previewWidth: 600,
     }
   },
   mounted() {
     this.calculateTableHeight();
     window.addEventListener('resize', this.calculateTableHeight);
+
+    // 处理路由传参
+    const routeSpaceId = this.$route.query.spaceId as string;
+    if (routeSpaceId) {
+      this.queryForm.spaceId = routeSpaceId;
+    }
+
     this.loadData();
+    this.loadSpaces();
   },
   beforeUnmount() {
     window.removeEventListener('resize', this.calculateTableHeight);
@@ -143,6 +209,16 @@ export default {
   methods: {
     calculateTableHeight() {
       this.tableHeight = window.innerHeight - 365;
+    },
+    async loadSpaces() {
+      try {
+        const res = await selectFileSpaces();
+        if (res.data.code === 0) {
+          this.spaces = res.data.data;
+        }
+      } catch (e) {
+        console.error('获取文件空间失败', e);
+      }
     },
     async loadData() {
       this.loading = true;
@@ -171,10 +247,77 @@ export default {
     },
     reset() {
       this.queryForm.searchText = '';
-      this.queryForm.mimeType = '';
+      this.queryForm.spaceId = '';
       this.queryForm.current = 1;
       this.queryForm.size = 10;
       this.loadData();
+    },
+    onSelectChange(selectedRowKeys: string[]) {
+      this.selectedRowKeys = selectedRowKeys;
+    },
+    openMoveModal() {
+      this.moveSpaceId = '';
+      this.moveVisible = true;
+    },
+    openImagePreview(record: FileLibraryPageVo) {
+      this.previewUrl = record.url;
+      this.previewTitle = record.name;
+      this.previewWidth = 600;
+      this.previewVisible = true;
+    },
+    onPreviewImageLoad(event: Event) {
+      const img = event.target as HTMLImageElement;
+      const naturalWidth = img.naturalWidth;
+      const maxWidth = window.innerWidth * 0.8;
+      this.previewWidth = Math.min(naturalWidth + 48, maxWidth, 1200);
+    },
+    confirmRemoveFromSpace() {
+      if (this.selectedRowKeys.length === 0) {
+        message.warning('请先选择文件');
+        return;
+      }
+      Modal.confirm({
+        title: '移除确认',
+        content: `确定将选中的 ${this.selectedRowKeys.length} 个文件从当前空间移除吗？`,
+        okText: '确定',
+        cancelText: '取消',
+        onOk: async () => {
+          try {
+            const res = await removeFromSpace(this.selectedRowKeys);
+            if (res.data.code === 0) {
+              message.success('移除成功');
+              this.selectedRowKeys = [];
+              this.loadData();
+            } else {
+              message.error(res.data.details || '移除失败');
+            }
+          } catch (e) {
+            message.error('移除失败');
+          }
+        }
+      });
+    },
+    async confirmMove() {
+      if (this.selectedRowKeys.length === 0) {
+        message.warning('请先选择文件');
+        return;
+      }
+      try {
+        const res = await allocateFilesToSpace({
+          spaceId: this.moveSpaceId,
+          fileIds: this.selectedRowKeys
+        });
+        if (res.data.code === 0) {
+          message.success('移动成功');
+          this.moveVisible = false;
+          this.selectedRowKeys = [];
+          this.loadData();
+        } else {
+          message.error(res.data.details || '移动失败');
+        }
+      } catch (e) {
+        message.error('移动失败');
+      }
     },
     handleTableChange(pagination: TablePaginationConfig) {
       this.queryForm.current = pagination.current || 1;

@@ -37,4 +37,9 @@ export interface FileLibraryPageVo {
      * 创建时间
      */
     createTime?: string;
+
+    /**
+     * 空间ID
+     */
+    spaceId?: string;
 }

@@ -8,6 +8,7 @@ import cn.yang.common.data.structure.vo.result.ResultVo;
 import cn.yang.nebula.agent.aop.ParamLog;
 import cn.yang.nebula.agent.business.file.library.dto.FileLibraryPageDto;
 import cn.yang.nebula.agent.business.file.library.dto.FileLibraryPageVo;
+import cn.yang.nebula.agent.business.file.library.dto.FileLibraryRemoveSpaceDto;
 import cn.yang.nebula.agent.business.file.library.dto.FileLibraryRenameDto;
 import cn.yang.nebula.agent.business.file.library.dto.FileLibraryUploadVo;
 import cn.yang.nebula.agent.business.file.library.facade.FileLibraryFacade;
@@ -86,6 +87,18 @@ public class FileLibraryController {
     public ResultVo<?> delete(@PathVariable("id") @NotBlank(message = "文件id不能为空") String id) {
         fileLibraryFacade.delete(id);
         return ResultFactory.success(StatusCodeEnum.SUCCESS, "删除成功");
+    }
+
+    /**
+     * 将文件从空间移除
+     *
+     * @param removeSpaceDto 移除空间入参
+     * @return 成功
+     */
+    @PostMapping("/removeFromSpace")
+    public ResultVo<?> removeFromSpace(@RequestBody @Validated FileLibraryRemoveSpaceDto removeSpaceDto) {
+        fileLibraryFacade.removeFromSpace(removeSpaceDto.getFileIds());
+        return ResultFactory.success(StatusCodeEnum.SUCCESS, "移除成功");
     }
 
 }

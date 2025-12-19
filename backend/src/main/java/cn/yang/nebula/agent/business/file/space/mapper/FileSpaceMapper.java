@@ -2,6 +2,7 @@ package cn.yang.nebula.agent.business.file.space.mapper;
 
 import cn.yang.nebula.agent.business.file.space.dal.FileSpaceDo;
 import cn.yang.nebula.agent.business.file.space.dto.FileSpacePageQueryDto;
+import cn.yang.nebula.agent.business.file.space.entity.FileSpace;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -21,7 +22,7 @@ public interface FileSpaceMapper {
      * @param query 查询条件
      * @return 数据
      */
-    List<FileSpaceDo> selectPageData(@Param("query") FileSpacePageQueryDto query);
+    List<FileSpace> selectPageData(@Param("query") FileSpacePageQueryDto query);
 
     /**
      * 根据用户id查询所有空间

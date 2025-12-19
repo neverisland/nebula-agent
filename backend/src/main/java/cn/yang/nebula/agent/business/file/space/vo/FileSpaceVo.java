@@ -34,6 +34,16 @@ public class FileSpaceVo implements Serializable {
     private String remark;
 
     /**
+     * 文件数量
+     */
+    private Integer fileCount;
+
+    /**
+     * 空间大小
+     */
+    private Long totalSize;
+
+    /**
      * 创建时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

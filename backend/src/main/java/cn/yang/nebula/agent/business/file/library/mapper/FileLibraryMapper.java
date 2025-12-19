@@ -80,5 +80,14 @@ public interface FileLibraryMapper {
      * @return 影响行数
      */
     int deleteById(String id);
+
+    /**
+     * 清除文件的空间id（设置为null）
+     *
+     * @param fileIds      文件id列表
+     * @param updateUserId 修改人id
+     * @return 影响行数
+     */
+    int clearSpaceId(@Param("fileIds") List<String> fileIds, @Param("updateUserId") String updateUserId);
 }
 

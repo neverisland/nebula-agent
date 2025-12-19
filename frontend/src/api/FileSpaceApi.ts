@@ -5,6 +5,7 @@ import { FileSpaceInsertDto } from "@/type/filespace/FileSpaceInsertDto.ts";
 import { FileSpaceUpdateDto } from "@/type/filespace/FileSpaceUpdateDto.ts";
 import { FileSpacePageQueryDto } from "@/type/filespace/FileSpacePageQueryDto.ts";
 import { FileSpaceVo } from "@/type/filespace/FileSpaceVo.ts";
+import { FileSpaceAllocateDto } from "@/type/filespace/FileSpaceAllocateDto.ts";
 
 /**
  * 个人空间 API
@@ -47,4 +48,12 @@ export function deleteFileSpace(id: string) {
  */
 export function selectFileSpaces() {
     return request.get<ResultVo<any[]>>("/file-space/selectFileSpaces");
+}
+
+/**
+ * 分配文件至个人空间
+ * @param data
+ */
+export function allocateFilesToSpace(data: FileSpaceAllocateDto) {
+    return request.post<ResultVo<null>>("/file-space/allocate", data);
 }

@@ -26,10 +26,6 @@ public class FileLibraryPageDto extends PageQuery {
      */
     private String spaceId;
 
-    /**
-     * MIME 类型过滤
-     */
-    private String mimeType;
 
     /**
      * 用户id

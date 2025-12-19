@@ -62,15 +62,8 @@ public class FileSpaceRepository {
      * @return 分页结果
      */
     public PageResult<FileSpace> page(FileSpacePageQueryDto query) {
-        PageResult<FileSpaceDo> fileSpaceDoPageResult = PageUtils.doSelectPage(query, () ->
+        return PageUtils.doSelectPage(query, () ->
                 fileSpaceMapper.selectPageData(query));
-        List<FileSpaceDo> list = fileSpaceDoPageResult.getList();
-        if (CollectionUtils.isEmpty(list)) {
-            return PageResult.empty(query);
-        }
-
-        List<FileSpace> convert = BeanConvertUtils.convert(list, FileSpace.class);
-        return fileSpaceDoPageResult.transLate(convert);
     }
 
     /**

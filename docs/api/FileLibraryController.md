@@ -52,8 +52,7 @@
 | current | Number | 是 | 当前页 |
 | size | Number | 是 | 每页大小 |
 | searchText | String | 否 | 名称或路径模糊匹配 |
-| mimeType | String | 否 | MIME 前缀过滤，如 `image/` |
-| spaceId | String | 否 | 空间ID（预留） |
+| spaceId | String | 否 | 空间ID，为空表示查询所有个人文件 |
 
 ### 响应参数
 
@@ -70,6 +69,7 @@
 | data.records[].size | Number | 大小（字节） |
 | data.records[].url | String | 文件访问地址 |
 | data.records[].thumbnailsUrl | String | 缩略图访问地址 |
+| data.records[].spaceId | String | 空间ID（可为空） |
 | data.records[].createTime | String | 上传时间 |
 
 ### 响应示例
@@ -87,6 +87,7 @@
         "size": 10240,
         "url": "2025/12/11/xxxxx.jpg",
         "thumbnailsUrl": null,
+        "spaceId": "space123",
         "createTime": "2025-12-11 10:00:00"
       }
     ],
@@ -155,4 +156,35 @@
 
 - 返回文件流，`Content-Type` 为文件 MIME。
 
+---
 
+## 6. 移除空间
+
+**URL**: `/file-library/removeFromSpace`
+**Method**: `POST`
+
+### 请求参数
+
+| 参数名 | 类型 | 必填 | 描述 |
+| :--- | :--- | :--- | :--- |
+| fileIds | Array | 是 | 文件ID列表 |
+
+### 请求示例
+
+```json
+{
+  "fileIds": ["id1", "id2", "id3"]
+}
+```
+
+### 响应参数
+
+| 字段名 | 类型 | 描述 |
+| :--- | :--- | :--- |
+| code | Number | 状态码（0 成功） |
+| msg | String | 提示信息 |
+| data | null | - |
+
+### 说明
+
+将指定文件从当前空间移除，文件的 `spaceId` 将被设置为 `null`，回到"未归类"状态。

@@ -77,3 +77,16 @@ export const buildFileDownloadUrl = (relativePath: string): string => {
   return `/api/file/${path}`;
 }
 
+/**
+ * 将文件从空间移除
+ * @param fileIds 文件id列表
+ * @returns Promise<AxiosResponse<ResultVo<void>>> 操作结果
+ */
+export const removeFromSpace = (fileIds: string[]): Promise<AxiosResponse<ResultVo<void>>> => {
+  return request({
+    url: '/file-library/removeFromSpace',
+    method: 'post',
+    data: { fileIds },
+  });
+}
+

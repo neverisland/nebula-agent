@@ -42,12 +42,14 @@
                 (name like concat('%', #{query.searchText, jdbcType=VARCHAR}, '%')
                 or path like concat('%', #{query.searchText, jdbcType=VARCHAR}, '%'))
             </if>
-            <if test="query.spaceId != null and query.spaceId.trim() != ''">
-                and space_id = #{query.spaceId, jdbcType=VARCHAR}
-            </if>
-            <if test="query.mimeType != null and query.mimeType != ''">
-                and mime_type like concat(#{query.mimeType, jdbcType=VARCHAR}, '%')
-            </if>
+            <choose>
+                <when test="query.spaceId != null and query.spaceId.trim() != ''">
+                    and space_id = #{query.spaceId, jdbcType=VARCHAR}
+                </when>
+                <otherwise>
+                    and (space_id is null or space_id = '')
+                </otherwise>
+            </choose>
         </where>
     </select>
 
@@ -61,12 +63,14 @@
                 (name like concat('%', #{query.searchText, jdbcType=VARCHAR}, '%')
                 or path like concat('%', #{query.searchText, jdbcType=VARCHAR}, '%'))
             </if>
-            <if test="query.spaceId != null and query.spaceId.trim() != ''">
-                and space_id = #{query.spaceId, jdbcType=VARCHAR}
-            </if>
-            <if test="query.mimeType != null and query.mimeType != ''">
-                and mime_type like concat(#{query.mimeType, jdbcType=VARCHAR}, '%')
-            </if>
+            <choose>
+                <when test="query.spaceId != null and query.spaceId.trim() != ''">
+                    and space_id = #{query.spaceId, jdbcType=VARCHAR}
+                </when>
+                <otherwise>
+                    and (space_id is null or space_id = '')
+                </otherwise>
+            </choose>
             <if test="query.userId != null and query.userId.trim() != ''">
                 and create_user_id = #{query.userId, jdbcType=VARCHAR}
             </if>
@@ -114,4 +118,15 @@
         from file_library
         where id = #{id, jdbcType=VARCHAR}
     </delete>
+
+    <!-- 清除文件的空间id（设置为null） -->
+    <update id="clearSpaceId">
+        update file_library
+        set space_id = null,
+            update_user_id = #{updateUserId, jdbcType=VARCHAR}
+        where id in
+        <foreach collection="fileIds" item="id" open="(" separator="," close=")">
+            #{id, jdbcType=VARCHAR}
+        </foreach>
+    </update>
 </mapper>

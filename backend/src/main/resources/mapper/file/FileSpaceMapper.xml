@@ -12,6 +12,18 @@
         <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId"/>
     </resultMap>
 
+    <resultMap id="FileSpaceResultMap" type="cn.yang.nebula.agent.business.file.space.entity.FileSpace">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_user_id" jdbcType="VARCHAR" property="updateUserId"/>
+        <result column="file_count" jdbcType="INTEGER" property="fileCount"/>
+        <result column="total_size" jdbcType="BIGINT" property="totalSize"/>
+    </resultMap>
+
     <sql id="Base_Query">
         id, name, remark, create_time, create_user_id, update_time, update_user_id
     </sql>
@@ -50,17 +62,19 @@
     </select>
 
     <!-- 查询分页数据 -->
-    <select id="selectPageData" resultMap="BaseResultMap">
+    <select id="selectPageData" resultMap="FileSpaceResultMap">
         select
-        <include refid="Base_Query"/>
-        from file_space
+        fs.id, fs.name, fs.remark, fs.create_time, fs.create_user_id, fs.update_time, fs.update_user_id,
+        IFNULL((select count(1) from file_library fl where fl.space_id = fs.id), 0) as file_count,
+        IFNULL((select sum(size) from file_library fl where fl.space_id = fs.id), 0) as total_size
+        from file_space fs
         <where>
-            create_user_id = #{query.createUserId}
+            fs.create_user_id = #{query.createUserId}
             <if test="query.name != null and query.name != ''">
-                and name like concat('%', #{query.name}, '%')
+                and fs.name like concat('%', #{query.name}, '%')
             </if>
         </where>
-        order by create_time desc
+        order by fs.create_time desc
     </select>
 
     <!-- 根据用户id查询所有空间 -->
