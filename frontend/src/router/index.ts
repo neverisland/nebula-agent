@@ -5,7 +5,6 @@ import ConsoleMenu from "@/views/console/menu/ConsoleMenu.vue";
 import RoleManagement from "@/views/console/system-manage/role/RoleManagement.vue";
 import UserManagement from "@/views/console/system-manage/user/UserManagement.vue";
 import { useTimerStore } from "@/store/timer.ts";
-import Chat from "@/views/chat/Chat.vue";
 import ConsoleMainPage from "@/views/console/page/ConsoleMainPage.vue";
 import FileLibraryList from "@/views/console/file-space/file-library/FileLibraryList.vue";
 import OneselfShare from "@/views/console/file-space/oneself-share/OneselfShare.vue";
@@ -14,16 +13,11 @@ import FileSpace from "@/views/console/file-space/file-space/FileSpace.vue";
 let routes = [
     {
         path: '/',
-        redirect: '/chat',
+        redirect: '/console',
     },
     {
         path: '/home',
         component: HelloWorld,
-    },
-    {
-        path: '/chat', // chat
-        name: 'chat',
-        component: Chat,
     },
     {
         // 后台根路由
