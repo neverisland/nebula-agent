@@ -1,5 +1,5 @@
 /**
- * 修改用户入参
+ * 用户修改入参
  */
 export interface UserUpdateDto {
 
@@ -9,12 +9,7 @@ export interface UserUpdateDto {
     id: string;
 
     /**
-     * 用户名
-     */
-    username: string;
-
-    /**
-     * 昵称
+     * 姓名
      */
     nickname: string;
 
@@ -29,7 +24,7 @@ export interface UserUpdateDto {
     email: string;
 
     /**
-     * 角色ID列表
+     * 角色id列表
      */
     roleIdList: string[];
 }

@@ -6,7 +6,7 @@ export interface ChatRecordQueryDto {
     /**
      * 会话id
      */
-    chatId: string;
+    chatId?: string | null;
 
     /**
      * 查询数量
@@ -16,5 +16,5 @@ export interface ChatRecordQueryDto {
     /**
      * 消息时间
      */
-    messageData: string;
+    messageData?: string | null;
 }

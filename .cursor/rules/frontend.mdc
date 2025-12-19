@@ -47,9 +47,11 @@ globs: frontend/**/*.ts,frontend/**/*.vue
     - **正则**: `{ pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' }`
 
 ### 3.4 类型定义 (Types)
-- 所有的入参和出参必须定义 TypeScript 接口 (`interface`)。
-- 类型定义文件放在 `src/type` 目录下。
-- 入参类型统一以 `XxxxPo` 结尾（Parameter Object），出参/数据返回类型统一以 `XxxxRo` 结尾（Response Object），与后端命名保持一致。
+- **定义位置**: 所有的出入参必须在 `frontend/src/type` 目录下定义。
+- **文件拆分**: 每个出参和入参必须单独定义一个文件，严禁多个类型定义合并在同一个文件中。
+- **注释规范**: 每一个字段都必须添加 JSDoc 注释，说明字段含义。
+- **命名规范**: 入参类型统一以 `XxxxDto` 结尾（Data Transfer Object），出参/数据返回类型统一以 `XxxxVo` 结尾（Value Object），必须与后端命名保持完全一致。
+- 所有 API 调用和数据传递必须有明确的 TypeScript 类型定义。
 
 ## 4. 代码示例 (Code Examples)
 
@@ -57,14 +59,17 @@ globs: frontend/**/*.ts,frontend/**/*.vue
 ```typescript
 // src/api/UserApi.ts
 import request from "@/utils/request";
-import type { UserPageQuery, UserPageDto } from "@/type/user";
+import type { UserPageDto } from "@/type/user/UserPageDto";
+import type { UserPageVo } from "@/type/user/UserPageVo";
+import type { ResultVo } from "@/type/ResultVo";
+import type { PageResult } from "@/type/PageResult";
 
 /**
  * 分页查询用户列表
  * @param data 查询条件
  * @returns 用户列表分页数据
  */
-export const getUserPage = (data: UserPageQuery): Promise<ResultVo<PageResult<UserPageDto>>> => {
+export const getUserPage = (data: UserPageDto): Promise<ResultVo<PageResult<UserPageVo>>> => {
     return request({
         url: '/user/page',
         method: 'post',

@@ -1,19 +1,19 @@
 import request from "../utils/request";
-import {ResultVo} from "../type/ResultVo";
-import {AxiosResponse} from "axios";
-import {NewChatDto} from "@/type/chat/NewChatDto.ts";
-import {ChatDto} from "@/type/chat/ChatDto.ts";
-import {ChatQueryDto} from "@/type/chat/ChatQueryDto.ts";
-import {ChatRecordQueryDto} from "@/type/chat/ChatRecordQueryDto.ts";
-import {ChatRecordDto} from "@/type/chat/ChatRecordDto.ts";
-import {UpdateChatTitleDto} from "@/type/chat/UpdateChatTitleDto.ts";
+import { ResultVo } from "../type/ResultVo";
+import { AxiosResponse } from "axios";
+import { NewChatDto } from "@/type/chat/NewChatDto.ts";
+import { ChatVo } from "@/type/chat/ChatVo.ts";
+import { ChatQueryDto } from "@/type/chat/ChatQueryDto.ts";
+import { ChatRecordQueryDto } from "@/type/chat/ChatRecordQueryDto.ts";
+import { ChatRecordVo } from "@/type/chat/ChatRecordVo.ts";
+import { UpdateChatTitleDto } from "@/type/chat/UpdateChatTitleDto.ts";
 
 type ConfigType<T = ResultVo> = Promise<AxiosResponse<T>>
 
 /**
  * 新建会话
  */
-export const newChat = (data: NewChatDto): ConfigType<ResultVo<ChatDto>> => {
+export const newChat = (data: NewChatDto): ConfigType<ResultVo<ChatVo>> => {
     return request({
         url: "/chat/newChat",
         method: 'POST',
@@ -24,7 +24,7 @@ export const newChat = (data: NewChatDto): ConfigType<ResultVo<ChatDto>> => {
 /**
  * 获取会话消息
  */
-export const selectChatList = (data: ChatQueryDto): ConfigType<ResultVo<ChatDto[]>> => {
+export const selectChatList = (data: ChatQueryDto): ConfigType<ResultVo<ChatVo[]>> => {
     return request({
         url: "/chat/selectChatList",
         method: 'POST',
@@ -35,7 +35,7 @@ export const selectChatList = (data: ChatQueryDto): ConfigType<ResultVo<ChatDto[
 /**
  * 获取会话记录
  */
-export const selectChatRecordList = (data: ChatRecordQueryDto): ConfigType<ResultVo<ChatRecordDto[]>> => {
+export const selectChatRecordList = (data: ChatRecordQueryDto): ConfigType<ResultVo<ChatRecordVo[]>> => {
     return request({
         url: "/chat/selectChatRecordList",
         method: 'POST',
@@ -70,7 +70,7 @@ export const updateChatTitle = (data: UpdateChatTitleDto): ConfigType<ResultVo<n
  * 根据taskId获取消息记录信息
  * @param taskId 任务id
  */
-export const selectChatRecordDtoByTaskId = (taskId: string): ConfigType<ResultVo<ChatRecordDto>> => {
+export const selectChatRecordDtoByTaskId = (taskId: string): ConfigType<ResultVo<ChatRecordVo>> => {
     return request({
         url: "/chat/selectChatRecordDtoByTaskId?taskId=" + taskId,
         method: 'GET',

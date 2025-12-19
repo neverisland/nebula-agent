@@ -11,5 +11,5 @@ export interface ChatQueryDto {
     /**
      * 消息时间
      */
-    chatTime: string;
+    chatTime?: string | null;
 }

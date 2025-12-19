@@ -15,9 +15,9 @@
 <script lang="ts">
 import { message } from 'ant-design-vue';
 import { selectRoleById } from "@/api/RoleApi.ts";
-import { SysRoleDto } from "@/type/role/SysRoleDto.ts";
+import { SysRoleVo } from "@/type/role/SysRoleVo.ts";
 import { selectAllAuthorityList } from "@/api/AuthorityApi.ts";
-import { SysPermissionDto } from "@/type/permission/SysPermissionDto.ts";
+import { SysPermissionVo } from "@/type/permission/SysPermissionVo.ts";
 import { roleEnumStore } from "@/enums/RoleTypeStore.ts";
 
 export default {
@@ -25,8 +25,8 @@ export default {
   data() {
     return {
       id: this.selectId, // 详情id
-      data: {} as SysRoleDto, // 权限数据
-      permissionList: [] as SysPermissionDto[] | undefined, // 权限列表
+      data: {} as SysRoleVo, // 权限数据
+      permissionList: [] as SysPermissionVo[] | undefined, // 权限列表
       roleTypeEnums: roleEnumStore() // store 实例  角色类型枚举
     }
   },
@@ -60,7 +60,7 @@ export default {
     /**
      * 获取权限列表字符串格式
      */
-    getPermissionListStr(permissionList: SysPermissionDto[]): string {
+    getPermissionListStr(permissionList: SysPermissionVo[]): string {
       let returnStr = '';
       if (permissionList) {
         for (let item of permissionList) {

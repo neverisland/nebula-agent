@@ -1,14 +1,14 @@
 import request from "../utils/request";
-import {ResultVo} from "../type/ResultVo.ts";
-import {AxiosResponse} from "axios";
-import {CurrentUserInfoDto} from "../type/authorization/CurrentUserInfoDto.ts";
+import { ResultVo } from "../type/ResultVo.ts";
+import { AxiosResponse } from "axios";
+import { CurrentUserInfoVo } from "../type/authorization/CurrentUserInfoVo.ts";
 
 type ConfigType<T = ResultVo> = Promise<AxiosResponse<T>>
 
 /**
  * 获取当前登录用户信息
  */
-export const getCurrentUserInfo = (): ConfigType<ResultVo<CurrentUserInfoDto>> => {
+export const getCurrentUserInfo = (): ConfigType<ResultVo<CurrentUserInfoVo>> => {
     return request({
         url: "/authentication/getCurrentUserInfo",
         method: 'GET'

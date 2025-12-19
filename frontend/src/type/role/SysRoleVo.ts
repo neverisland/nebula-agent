@@ -1,9 +1,9 @@
-import {SysPermissionDto} from "@/type/permission/SysPermissionDto.ts";
+import { SysPermissionVo } from "@/type/permission/SysPermissionVo";
 
 /**
  * 角色详情出参
  */
-export interface SysRoleDto {
+export interface SysRoleVo {
 
     /**
      * 角色id
@@ -28,5 +28,5 @@ export interface SysRoleDto {
     /**
      * 权限列表
      */
-    permissionList: SysPermissionDto[];
+    permissionList: SysPermissionVo[];
 }

@@ -1,7 +1,7 @@
 /**
  * 查询角色出参
  */
-export interface SysRolePageDto {
+export interface SysRolePageVo {
 
     /**
      * 角色id

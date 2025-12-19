@@ -44,7 +44,7 @@
             total: total,
             showSizeChanger: true,
             pageSizeOptions: ['10', '50', '100'],
-            showTotal: total => `共 ${total} 条`,
+            showTotal: (total: number) => `共 ${total} 条`,
           }"
           @change="handleTableChange"
           :scroll="{ y: tableHeight }"
@@ -56,7 +56,7 @@
                         dataIndex="type"
                         key="type"
                         :width="220"
-                        :customRender="({ text }) => getType(text)"
+                        :customRender="renderType"
         />
         <a-table-column title="操作" key="action" :width="220">
           <template #default="{ record }">
@@ -97,7 +97,7 @@
 import {PlusOutlined} from '@ant-design/icons-vue';
 import {message, Modal, TablePaginationConfig} from 'ant-design-vue';
 import {deleteRoleById, selectRoleList} from "@/api/RoleApi.ts";
-import {SysRolePageDto} from "@/type/role/SysRolePageDto.ts";
+import {SysRolePageVo} from "@/type/role/SysRolePageVo.ts";
 import RoleAdd from "./RoleAdd.vue";
 import RoleEdit from "./RoleEdit.vue";
 import RoleDetail from "./RoleDetail.vue";
@@ -117,7 +117,7 @@ export default {
         searchText: ''
       },
       // 表格数据
-      tableData: [] as SysRolePageDto[] | undefined, // 表格数据,
+      tableData: [] as SysRolePageVo[] | undefined, // 表格数据,
       // 总条数
       total: 0,
       // 表格高度
@@ -174,12 +174,15 @@ export default {
      * 修改每页条数
      */
     handleTableChange(pagination: TablePaginationConfig) {
-      this.queryForm.current = pagination.current;
-      this.queryForm.size = pagination.pageSize;
+      this.queryForm.current = pagination.current || 1;
+      this.queryForm.size = pagination.pageSize || 10;
       this.query();
     },
+    renderType({ text }: { text: number }) {
+      return this.getType(text);
+    },
     /**
-     * 获取角色类型描述
+     * 根据类型返回描述
      */
     getType(type: number) {
       return this.roleTypeEnums.getDescriptionByType(type);

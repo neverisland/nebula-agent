@@ -11,5 +11,5 @@ export interface DisableEnableUserDto {
     /**
      * 禁用状态
      */
-    enabled: string;
+    enabled: boolean;
 }

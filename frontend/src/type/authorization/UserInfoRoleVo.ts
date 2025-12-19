@@ -1,7 +1,7 @@
 /**
  * 当前登录用户信息的角色出参
  */
-export interface UserInfoRoleDto {
+export interface UserInfoRoleVo {
     /**
      * 角色id
      */
@@ -16,5 +16,4 @@ export interface UserInfoRoleDto {
      * 角色名称
      */
     name: string;
-
 }

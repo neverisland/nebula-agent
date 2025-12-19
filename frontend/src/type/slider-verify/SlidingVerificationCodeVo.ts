@@ -1,7 +1,7 @@
 /**
  * 滑动验证码出参
  */
-export interface SlidingVerificationCodeDto {
+export interface SlidingVerificationCodeVo {
 
     /**
      * 背景图片base64

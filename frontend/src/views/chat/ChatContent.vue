@@ -40,10 +40,10 @@ import {defineComponent} from "vue";
 import {newChat, selectChatRecordDtoByTaskId, selectChatRecordList} from "@/api/ChatApi.ts";
 import {message} from "ant-design-vue";
 import {readStream} from "@/utils/streamReader.ts";
-import {ChatRecordDto} from "@/type/chat/ChatRecordDto.ts";
+import {ChatRecordVo} from "@/type/chat/ChatRecordVo.ts";
 import {format} from "date-fns";
 import {PollingTimer} from "@/utils/PollingTimer.ts";
-import {SendMessageResultDto} from "@/type/chat/SendMessageResultDto.ts";
+import {SendMessageResultVo} from "@/type/chat/SendMessageResultVo.ts";
 import {ChatRecordTypeEnum} from "@/enums/ChatRecordTypeStore.ts";
 
 export default defineComponent({
@@ -81,7 +81,7 @@ export default defineComponent({
   data() {
     return {
       chatId: null as null | string, // 当前会话的id
-      chatRecordList: [] as ChatRecordDto[], // 当前会话的内容
+      chatRecordList: [] as ChatRecordVo[], // 当前会话的内容
       inputText: '', // 输入的文本
       loading: false, // 发送按钮的加载状态
       disabled: true, // 发送按钮的禁用状态
@@ -113,7 +113,7 @@ export default defineComponent({
       // 获取会话数据
       this.selectChatRecord();
     },
-    handleScrollTop(e) {
+    handleScrollTop(e: any) {
       const container = e.target;
       if (!container) return;
       // 加载小一点
@@ -142,7 +142,6 @@ export default defineComponent({
             if (!this.oldestMessageTime) {
               this.scrollToBottom(true); // 滚动到底部
             }
-            this.isLoad = true;
             this.oldestMessageTime = res.data.data[0].createTime
             // 记录是否存在没有图片的消息
             this.handlingUnGeneratedImages(res.data.data);
@@ -157,7 +156,7 @@ export default defineComponent({
      * 处理未生成的图片
      * @param dataList 消息记录列表
      */
-    handlingUnGeneratedImages(dataList: ChatRecordDto[]) {
+    handlingUnGeneratedImages(dataList: ChatRecordVo[]) {
       for (let data of dataList) {
         if (data.type === 2 && !data.imgPath) {
           const timer = new PollingTimer(() => this.handlerChatImageRecord(data.taskId), 1000);
@@ -190,7 +189,7 @@ export default defineComponent({
     /**
      * 新建会话
      */
-    newChat() {
+    resetChatData() {
       // 初始化数据
       this.chatId = null;
       this.chatRecordList = [];
@@ -220,7 +219,7 @@ export default defineComponent({
         this.scrollToBottom(); // 滚动到底部
         this.sendMessageReq();
       } else {
-        this.newChat();
+        this.createNewChatSession();
       }
     },
     /**
@@ -244,7 +243,7 @@ export default defineComponent({
       readStream({
         url: '/api/chat/sendMessage',
         body: param,
-        onMessage: (msg: SendMessageResultDto) => {
+        onMessage: (msg: string) => {
           let message = JSON.parse(msg);
           const lastIndex = this.chatRecordList.length - 1
           const lastItem = this.chatRecordList[lastIndex]
@@ -275,14 +274,14 @@ export default defineComponent({
           console.error('出错了:', err)
         },
         debug: true,
-      }).finally(f => {
+      }).finally(() => {
         this.switchSendMessageStatus();
       })
     },
     /**
      * 新建会话
      */
-    newChat() {
+    createNewChatSession() {
       const param = {
         content: this.inputText
       }
@@ -321,7 +320,7 @@ export default defineComponent({
      * 判断是否需要自动置底
      */
     shouldAutoScroll() {
-      const container = this.$refs.messageListRef;
+      const container = this.$refs.messageListRef as HTMLElement;
       if (!container) return false;
       // 判断当前是否已经接近底部（允许误差 50px）
       const threshold = 100;
@@ -334,7 +333,7 @@ export default defineComponent({
     scrollToBottom(force = false) {
       console.log('触发滚动到底部..')
       this.$nextTick(() => {
-        const container = this.$refs.messageListRef;
+        const container = this.$refs.messageListRef as HTMLElement;
         if (container && (force || this.shouldAutoScroll())) {
           container.scrollTop = container.scrollHeight;
         }

@@ -2,7 +2,7 @@
   <a-layout>
     <a-layout-header class="file-library-header">
       <div class="title-row">
-        <span class="title">文件库 - 我的文件</span>
+        <span class="title">我的文件</span>
         <a-space>
           <a-button type="primary" @click="uploadVisible = true">
             <template #icon>
@@ -49,7 +49,7 @@
             total: total,
             showSizeChanger: true,
             pageSizeOptions: ['10','20','50'],
-            showTotal: total => `共 ${total} 条`,
+            showTotal: (total: number) => `共 ${total} 条`,
           }"
           row-key="id"
           @change="handleTableChange"
@@ -150,7 +150,7 @@ export default {
         const res = await getFileLibraryPage(this.queryForm);
         console.log('分页查询结果:', res.data);
         if (res.data.code === 0) {
-          const page = res.data.data as PageResult<FileLibraryPageVo[]>;
+          const page = res.data.data as PageResult<FileLibraryPageVo>;
           console.log('PageResult:', page);
           const records = (page as any).records || page.list || [];
           console.log('记录数:', records.length, '总记录数:', page.total);

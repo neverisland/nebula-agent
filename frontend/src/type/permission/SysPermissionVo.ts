@@ -1,12 +1,12 @@
 /**
  * 权限类型出参
  */
-export interface SysPermissionDto {
+export interface SysPermissionVo {
 
     /**
      * 权限id
      */
-     id: string;
+    id: string;
 
     /**
      * 权限标识

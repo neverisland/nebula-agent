@@ -1,5 +1,5 @@
 /**
- * 查询角色列表入参
+ * 角色分页查询入参
  */
 export interface SysRoleQueryDto {
 
@@ -14,7 +14,7 @@ export interface SysRoleQueryDto {
     current: number;
 
     /**
-     * 当前页条数
+     * 当前页大小
      */
     size: number;
 }

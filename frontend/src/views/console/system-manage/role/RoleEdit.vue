@@ -37,14 +37,14 @@
 import {FormInstance, message} from 'ant-design-vue';
 import {selectAllAuthorityList} from "@/api/AuthorityApi.ts";
 import {selectRoleById, updateRole} from "@/api/RoleApi.ts";
-import {SysPermissionDto} from "@/type/permission/SysPermissionDto.ts";
+import {SysPermissionVo} from "@/type/permission/SysPermissionVo.ts";
 
 export default {
   name: "RoleEdit",
   data() {
     return {
       id: this.selectId, // 详情id
-      permissionList: [] as SysPermissionDto[] | undefined, // 权限列表
+      permissionList: [] as SysPermissionVo[] | undefined, // 权限列表
       // 角色表单数据
       form: {
         id: "",
@@ -105,7 +105,7 @@ export default {
     /**
      * 设置整行选中
      */
-    handleRowClick(record: SysPermissionDto) {
+    handleRowClick(record: SysPermissionVo) {
       const index = this.form.permissionIdList.indexOf(record.id);
       if (index === -1) {
         this.form.permissionIdList.push(record.id);
@@ -118,7 +118,7 @@ export default {
      * @param refresh 是否需要刷新
      */
     close(refresh: boolean) {
-      this.$emit('closeDialogEdit', false, refresh);
+      this.$emit('closeDialogEdit', refresh);
     },
     /**
      * 保存角色

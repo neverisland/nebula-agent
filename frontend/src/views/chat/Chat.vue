@@ -28,7 +28,7 @@ import {defineComponent} from 'vue'
 import ChatContent from "@/views/chat/ChatContent.vue";
 import ChatSession from "@/views/chat/ChatSession.vue";
 import ChatHeader from "@/views/chat/ChatHeader.vue";
-import {ChatDto} from "@/type/chat/ChatDto.ts";
+import {ChatVo} from "@/type/chat/ChatVo.ts";
 
 export default defineComponent({
   name: "Chat",
@@ -37,7 +37,7 @@ export default defineComponent({
   },
   data() {
     return {
-      newChatData: null as ChatDto | null,
+      newChatData: null as ChatVo | null,
       newPromptData: '' as string,
     }
   },
@@ -46,7 +46,7 @@ export default defineComponent({
      * 新建会话处理
      * @param newChat 新建的会话
      */
-    handleNewChat(newChat: ChatDto) {
+    handleNewChat(newChat: ChatVo) {
       this.newChatData = newChat;
     },
     handleChangePrompt(newPrompt: string) {

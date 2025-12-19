@@ -6,15 +6,15 @@ export interface ChatConfig {
     /**
      * 模型标识
      */
-    model: string;
+    model?: string;
 
     /**
-     * 是否联网
+     * 是否开启联网
      */
-    networking: boolean;
+    networking?: boolean;
 
     /**
-     * 是否深度思考
+     * 是否开启深度思考
      */
-    deepThinking: boolean;
+    deepThinking?: boolean;
 }

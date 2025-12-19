@@ -40,7 +40,7 @@
 <script lang="ts">
 import defaultAvatar from "@/assets/img/default-avatar.png";
 import store from "@/store/cache.ts";
-import {UserDto} from "@/type/user/UserDto.ts";
+import {UserVo} from "@/type/user/UserVo.ts";
 import {DownOutlined, LogoutOutlined, BulbOutlined, BulbFilled} from "@ant-design/icons-vue";
 import {message} from "ant-design-vue";
 
@@ -55,7 +55,7 @@ export default {
   data() {
     return {
       avatarUrl: defaultAvatar,
-      userInfo: store.getters["user/getUserInfo"] as UserDto
+      userInfo: store.getters["user/getUserInfo"] as UserVo
     }
   },
   computed: {

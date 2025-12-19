@@ -1,7 +1,9 @@
+import { SysRoleVo } from "@/type/role/SysRoleVo";
+
 /**
- * 用户数据出参
+ * 用户数据列表页出参
  */
-export interface UserPageDto {
+export interface UserPageVo {
 
     /**
      * 用户id
@@ -16,7 +18,7 @@ export interface UserPageDto {
     /**
      * 昵称
      */
-    nickName: string;
+    nickname: string;
 
     /**
      * 手机号
@@ -41,5 +43,5 @@ export interface UserPageDto {
     /**
      * 角色列表
      */
-    roles?: any[];
+    roles?: SysRoleVo[];
 }

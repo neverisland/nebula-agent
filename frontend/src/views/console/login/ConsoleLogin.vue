@@ -119,10 +119,10 @@ export default {
      * 获取当前登录用户信息
      */
     getCurrentUserInfo() {
-      store.dispatch('user/loginGetUserInfo').then(res => {
+      store.dispatch('user/loginGetUserInfo').then(() => {
         message.success("登录成功");
         this.$router.push({name: 'console'})
-      }).catch(error => {
+      }).catch((error: any) => {
         console.log("登录失败", error)
         message.error("登录失败");
       })
@@ -131,7 +131,7 @@ export default {
      * 滑动验证成功
      * 成功后调取 获取验证码接口
      */
-    onSuccess(captcha: { nonceStr: string, value: string }) {
+    onSuccess(captcha: { nonceStr: string, value: number }) {
       this.formData.cacheSlidingVerificationCode = captcha.nonceStr;
       this.formData.userSlideDistance = captcha.value;
       this.login();

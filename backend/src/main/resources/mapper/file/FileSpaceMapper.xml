@@ -50,7 +50,7 @@
     </select>
 
     <!-- 查询分页数据 -->
-    <select id="selectPageData" resultType="cn.yang.nebula.agent.business.file.space.dal.FileSpaceDo">
+    <select id="selectPageData" resultMap="BaseResultMap">
         select
         <include refid="Base_Query"/>
         from file_space

@@ -19,7 +19,7 @@ export interface SysRoleUpdateDto {
     description: string;
 
     /**
-     * 权限id列表
+     * 权限列表id
      */
     permissionIdList: string[];
 }

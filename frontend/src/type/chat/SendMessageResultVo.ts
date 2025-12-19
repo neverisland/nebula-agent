@@ -1,25 +1,25 @@
 /**
  * 消息发送的返回信息
  */
-export interface SendMessageResultDto {
+export interface SendMessageResultVo {
 
     /**
      * 发送响应的id
      */
-    requestId: string,
+    requestId: string;
 
     /**
      * 消息类型
      */
-    type: number,
+    type: number;
 
     /**
      * 文本消息内容
      */
-    content: string,
+    content: string;
 
     /**
      * 图片消息任务id
      */
-    taskId: string,
+    taskId: string;
 }

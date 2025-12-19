@@ -11,7 +11,7 @@ export interface UserQueryDto {
     /**
      * 用户状态
      */
-    enabled: boolean | null;
+    enabled?: boolean | null;
 
     /**
      * 当前页

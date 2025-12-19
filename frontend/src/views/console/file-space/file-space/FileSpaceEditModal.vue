@@ -1,7 +1,7 @@
 <template>
   <a-modal
       :open="open"
-      :title="isEdit ? '编辑空间' : '新增空间'"
+      title="编辑空间"
       @ok="handleOk"
       @cancel="handleCancel"
       :confirmLoading="loading"
@@ -25,11 +25,11 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue';
 import { message } from 'ant-design-vue';
-import { addFileSpace, updateFileSpace } from "@/api/FileSpaceApi.ts";
-import type { FileSpaceVo } from "@/type/filespace/FileSpaceTypes.ts";
+import { updateFileSpace } from "@/api/FileSpaceApi.ts";
+import type { FileSpaceVo } from "@/type/filespace/FileSpaceVo.ts";
 
 export default defineComponent({
-  name: "FileSpaceModal",
+  name: "FileSpaceEditModal",
   props: {
     open: {
       type: Boolean,
@@ -44,7 +44,6 @@ export default defineComponent({
   setup(props, { emit }) {
     const formRef = ref();
     const loading = ref(false);
-    const isEdit = ref(false);
 
     const formState = ref({
       id: '',
@@ -63,22 +62,12 @@ export default defineComponent({
     };
 
     watch(() => props.open, (newVal) => {
-      if (newVal) {
-        if (props.editData) {
-          isEdit.value = true;
-          formState.value = {
-            id: props.editData.id,
-            name: props.editData.name,
-            remark: props.editData.remark || '',
-          };
-        } else {
-          isEdit.value = false;
-          formState.value = {
-            id: '',
-            name: '',
-            remark: '',
-          };
-        }
+      if (newVal && props.editData) {
+        formState.value = {
+          id: props.editData.id,
+          name: props.editData.name,
+          remark: props.editData.remark || '',
+        };
       }
     });
 
@@ -87,22 +76,14 @@ export default defineComponent({
         await formRef.value.validateFields();
         loading.value = true;
         
-        let res;
-        if (isEdit.value) {
-          res = await updateFileSpace({
-            id: formState.value.id,
-            name: formState.value.name,
-            remark: formState.value.remark,
-          });
-        } else {
-          res = await addFileSpace({
-            name: formState.value.name,
-            remark: formState.value.remark,
-          });
-        }
+        const res = await updateFileSpace({
+          id: formState.value.id,
+          name: formState.value.name,
+          remark: formState.value.remark,
+        });
 
         if (res.data.code === 0) {
-          message.success(isEdit.value ? '更新成功' : '新增成功');
+          message.success('更新成功');
           emit('success');
           handleCancel();
         } else {
@@ -125,7 +106,6 @@ export default defineComponent({
       formState,
       rules,
       loading,
-      isEdit,
       handleOk,
       handleCancel,
     };

@@ -1,7 +1,9 @@
+import { SysRoleVo } from "@/type/role/SysRoleVo";
+
 /**
- * 用户详情
+ * 用户详情出参
  */
-export interface UserDto {
+export interface UserVo {
 
     /**
      * 用户id
@@ -51,5 +53,5 @@ export interface UserDto {
     /**
      * 角色列表
      */
-    roles?: any[];
+    roles?: SysRoleVo[];
 }

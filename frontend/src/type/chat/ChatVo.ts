@@ -1,7 +1,7 @@
 /**
  * 新增会话出参
  */
-export interface ChatDto {
+export interface ChatVo {
 
     /**
      * 会话id

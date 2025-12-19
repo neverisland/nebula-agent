@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import {message} from 'ant-design-vue';
-import {UserDto} from "@/type/user/UserDto.ts";
+import {UserVo} from "@/type/user/UserVo.ts";
 import {selectUserById} from "@/api/UserApi.ts";
 import {enabledEnumStore} from "@/enums/EnabledStore.ts";
 import {lockStatusStore} from "@/enums/LockStatusStore.ts";
@@ -36,7 +36,7 @@ export default {
   data() {
     return {
       id: this.selectId, // 详情id
-      data: {} as UserDto, // 用户数据
+      data: {} as UserVo, // 用户数据
       enableEnums: enabledEnumStore(), // Store 实例
       lockStatusEnums: lockStatusStore() // Store 实例
     }

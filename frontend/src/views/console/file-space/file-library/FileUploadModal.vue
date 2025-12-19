@@ -142,13 +142,13 @@ export default {
       for (let i = 0; i < files.length; i++) {
         const file = files.item(i);
         if (file) {
-          const uploadFile: UploadFile = {
+          const uploadFile = {
             uid: `${Date.now()}-${i}`,
             name: file.name,
             size: file.size,
             type: file.type,
             originFileObj: file,
-          };
+          } as any;
           this.fileList.push(uploadFile);
         }
       }
@@ -164,7 +164,7 @@ export default {
       // 过滤出还未上传的文件
       const filesToUpload = this.fileList.filter(file => {
         return !this.uploadedResults.some(uploaded => {
-          return uploaded.name === file.name && uploaded.size === file.size;
+          return uploaded.name === file.name;
         });
       });
 

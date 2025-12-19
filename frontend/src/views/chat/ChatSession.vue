@@ -45,7 +45,7 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import {deleteChatById, selectChatList} from "@/api/ChatApi.ts";
-import {ChatDto} from "@/type/chat/ChatDto.ts";
+import {ChatVo} from "@/type/chat/ChatVo.ts";
 import {message, Modal} from "ant-design-vue";
 import UpdateChatTitle from "@/views/chat/UpdateChatTitle.vue";
 import {mapGetters} from 'vuex';
@@ -63,7 +63,7 @@ export default defineComponent({
     ...mapGetters('theme', ['isDarkTheme'])
   },
   watch: {
-    newChat(newChatDto: ChatDto) {
+    newChat(newChatDto: ChatVo) {
       if (newChatDto) {
         this.chatList.unshift(newChatDto);
         this.chatId = newChatDto.id
@@ -72,7 +72,7 @@ export default defineComponent({
   },
   data() {
     return {
-      chatList: [] as ChatDto[], // 消息记录列表
+      chatList: [] as ChatVo[], // 消息记录列表
       loadingMore: false,
       chatId: null as null | string, // 当前会话
       lastChatTime: null as null | string, // 最后的消息时间
@@ -90,7 +90,7 @@ export default defineComponent({
     }
   },
   methods: {
-    handleClick(item) {
+    handleClick(item: any) {
       this.chatId = item.id;
       // 跳转路由
       this.$router.push({path: '/chat', query: {'s': item.id}})
@@ -99,7 +99,7 @@ export default defineComponent({
      * 修改标题
      * @param item 数据
      */
-    editTitle(item) {
+    editTitle(item: any) {
       this.selectId = item.id;
       this.selectTitle = item.title;
       this.dialogUpdateChatTitle = true;
@@ -133,7 +133,7 @@ export default defineComponent({
         }
       });
     },
-    handleScroll(e) {
+    handleScroll(e: any) {
       const container = e.target;
       if (container.scrollHeight - container.scrollTop <= container.clientHeight + 10 && !this.loadingMore) {
         this.loadMore();
@@ -173,7 +173,7 @@ export default defineComponent({
       }).catch(e => {
         console.error('获取消息失败', e)
         message.error('系统异常,获取消息失败')
-      }).finally(f => {
+      }).finally(() => {
         this.loadingMore = false;
       })
     },

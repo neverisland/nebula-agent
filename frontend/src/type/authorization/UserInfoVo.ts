@@ -1,10 +1,7 @@
 /**
  * 用户信息
  */
-/**
- * 用户信息
- */
-export interface UserInfoDto {
+export interface UserInfoVo {
     /**
      * 当前登录用户id
      */

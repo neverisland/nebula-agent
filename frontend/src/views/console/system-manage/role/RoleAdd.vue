@@ -38,13 +38,13 @@ import {FormInstance, message} from 'ant-design-vue';
 import {reactive} from 'vue';
 import {insertRole} from "@/api/RoleApi.ts";
 import {selectAllAuthorityList} from "@/api/AuthorityApi.ts";
-import {SysPermissionDto} from "@/type/permission/SysPermissionDto.ts";
+import {SysPermissionVo} from "@/type/permission/SysPermissionVo.ts";
 
 export default {
   name: "RoleAdd",
   data() {
     return {
-      permissionList: [] as SysPermissionDto[] | undefined, // 权限列表
+      permissionList: [] as SysPermissionVo[] | undefined, // 权限列表
       // 新增权限初始化数据
       form: reactive({
         name: "",

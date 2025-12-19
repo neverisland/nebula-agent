@@ -1,12 +1,10 @@
 import request from "@/utils/request";
 import { ResultVo } from "@/type/ResultVo.ts";
 import { PageResult } from "@/type/PageResult.ts";
-import {
-    FileSpaceInsertDto,
-    FileSpaceUpdateDto,
-    FileSpacePageQueryDto,
-    FileSpaceVo
-} from "@/type/filespace/FileSpaceTypes.ts";
+import { FileSpaceInsertDto } from "@/type/filespace/FileSpaceInsertDto.ts";
+import { FileSpaceUpdateDto } from "@/type/filespace/FileSpaceUpdateDto.ts";
+import { FileSpacePageQueryDto } from "@/type/filespace/FileSpacePageQueryDto.ts";
+import { FileSpaceVo } from "@/type/filespace/FileSpaceVo.ts";
 
 /**
  * 个人空间 API

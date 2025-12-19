@@ -1,15 +1,15 @@
-import {createRouter, createWebHistory} from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import HelloWorld from "@/views/home/HelloWorld.vue";
 import ConsoleLogin from "@/views/console/login/ConsoleLogin.vue";
 import ConsoleMenu from "@/views/console/menu/ConsoleMenu.vue";
 import RoleManagement from "@/views/console/system-manage/role/RoleManagement.vue";
 import UserManagement from "@/views/console/system-manage/user/UserManagement.vue";
-import {useTimerStore} from "@/store/timer.ts";
+import { useTimerStore } from "@/store/timer.ts";
 import Chat from "@/views/chat/Chat.vue";
 import ConsoleMainPage from "@/views/console/page/ConsoleMainPage.vue";
 import FileLibraryList from "@/views/console/file-space/file-library/FileLibraryList.vue";
 import OneselfShare from "@/views/console/file-space/oneself-share/OneselfShare.vue";
-import OneselfSpace from "@/views/console/file-space/oneself-space/FileSpaceModal.vue";
+import FileSpace from "@/views/console/file-space/file-space/FileSpace.vue";
 
 let routes = [
     {
@@ -72,7 +72,7 @@ let routes = [
                         // 文件库 - 个人空间（占位）
                         path: 'personal-space',
                         name: 'personal-space',
-                        component: OneselfSpace
+                        component: FileSpace
                     },
                     {
                         // 文件库 - 我的分享（占位）

@@ -57,7 +57,7 @@
           total: total,
           showSizeChanger: true,
           pageSizeOptions: ['10', '50', '100'],
-          showTotal: total => `共 ${total} 条`,
+          showTotal: (total: number) => `共 ${total} 条`,
         }"
           @change="handleTableChange"
           :scroll="{ y: tableHeight }"
@@ -66,7 +66,7 @@
         <a-table-column title="用户名" dataIndex="username" key="username" :width="150"/>
         <a-table-column title="昵称" dataIndex="nickname" key="nickname" :width="150"/>
         <a-table-column title="手机号" dataIndex="phone" key="phone" :width="150"/>
-        <a-table-column title="用户状态" key="status" :width="120" :align="center">
+        <a-table-column title="用户状态" key="status" :width="120" align="center">
           <template #default="{ record }">
             <a-switch
                 v-model:checked="record.enabled"
@@ -111,7 +111,7 @@
 import {PlusOutlined} from '@ant-design/icons-vue';
 import {message, Modal, TablePaginationConfig} from 'ant-design-vue';
 import {deleteUserById, disableEnableUser, selectUserList} from "@/api/UserApi.ts";
-import {UserPageDto} from "@/type/user/UserPageDto.ts";
+import {UserPageVo} from "@/type/user/UserPageVo.ts";
 import UserAdd from "./UserAdd.vue";
 import UserEdit from "./UserEdit.vue";
 import UserDetail from "./UserDetail.vue";
@@ -134,7 +134,7 @@ export default {
         enabled: undefined as boolean | undefined
       },
       // 表格数据
-      tableData: [] as UserPageDto[],
+      tableData: [] as UserPageVo[],
       // 总条数
       total: 0,
       // 表格高度
@@ -198,21 +198,24 @@ export default {
      * 修改每页条数
      */
     handleTableChange(pagination: TablePaginationConfig) {
-      this.queryForm.current = pagination.current;
-      this.queryForm.size = pagination.pageSize;
+      this.queryForm.current = pagination.current || 1;
+      this.queryForm.size = pagination.pageSize || 10;
       this.query();
     },
     /**
      * 修改用户状态
      */
-    changeStatus(row: UserPageDto) {
+    changeStatus(row: UserPageVo) {
       return new Promise((resolve) => {
         const status = row.enabled ? '禁用' : '启用';
         Modal.confirm({
           title: '提示',
           content: `确定要${status}用户 ${row.nickname} 吗？`,
           onOk: () => {
-            disableEnableUser(row.id).then(res => {
+            disableEnableUser({
+              userId: row.id,
+              enabled: !row.enabled
+            }).then(res => {
               if (res.data.code === 0) {
                 message.success(`${status}成功`);
                 resolve(true);

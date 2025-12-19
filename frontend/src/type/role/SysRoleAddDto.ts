@@ -4,7 +4,7 @@
 export interface SysRoleAddDto {
 
     /**
-     * 角色新增
+     * 角色名称
      */
     name: string;
 
@@ -14,7 +14,7 @@ export interface SysRoleAddDto {
     description: string;
 
     /**
-     * 权限id列表
+     * 权限列表
      */
     permissionIdList: string[];
 }

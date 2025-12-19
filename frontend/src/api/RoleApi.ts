@@ -1,11 +1,11 @@
 import request from "../utils/request";
 import { ResultVo } from "../type/ResultVo.ts";
 import { AxiosResponse } from "axios";
-import { SysRolePageDto } from "../type/role/SysRolePageDto.ts";
+import { SysRolePageVo } from "../type/role/SysRolePageVo.ts";
 import { SysRoleQueryDto } from "../type/role/SysRoleQueryDto.ts";
 import { PageResult } from "../type/PageResult.ts";
 import { SysRoleAddDto } from "../type/role/SysRoleAddDto.ts";
-import { SysRoleDto } from "../type/role/SysRoleDto.ts";
+import { SysRoleVo } from "../type/role/SysRoleVo.ts";
 import { SysRoleUpdateDto } from "../type/role/SysRoleUpdateDto.ts";
 
 
@@ -15,7 +15,7 @@ type ConfigType<T = ResultVo> = Promise<AxiosResponse<T>>
  * 查询角色分页列表接口
  * @param data 查询入参
  */
-export const selectRoleList = (data: SysRoleQueryDto): ConfigType<ResultVo<PageResult<SysRolePageDto[]>>> => {
+export const selectRoleList = (data: SysRoleQueryDto): ConfigType<ResultVo<PageResult<SysRolePageVo[]>>> => {
     return request({
         url: "/role/page",
         method: 'POST',
@@ -39,7 +39,7 @@ export const insertRole = (data: SysRoleAddDto): ConfigType<ResultVo<null>> => {
  * 查询角色详情
  * @param data 角色数据id
  */
-export const selectRoleById = (data: string): ConfigType<ResultVo<SysRoleDto>> => {
+export const selectRoleById = (data: string): ConfigType<ResultVo<SysRoleVo>> => {
     return request({
         url: "/role/selectById?id=" + data,
         method: 'GET'
@@ -73,7 +73,7 @@ export const deleteRoleById = (id: string): ConfigType<ResultVo<null>> => {
 /**
  * 查询所有角色列表（不分页）
  */
-export const selectAllRoles = (): ConfigType<ResultVo<SysRoleDto[]>> => {
+export const selectAllRoles = (): ConfigType<ResultVo<SysRoleVo[]>> => {
     return request({
         url: "/role/selectAll",
         method: 'GET'
