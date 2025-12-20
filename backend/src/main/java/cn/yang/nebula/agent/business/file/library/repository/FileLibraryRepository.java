@@ -52,8 +52,8 @@ public class FileLibraryRepository {
      * @return 分页结果
      */
     public PageResult<FileLibrary> pageData(FileLibraryPageDto fileLibraryPageDto) {
-        PageResult<FileLibraryDo> fileLibraryDoPageResult = PageUtils.doSelectPage(fileLibraryPageDto, () ->
-                fileLibraryMapper.selectPageData(fileLibraryPageDto));
+        PageResult<FileLibraryDo> fileLibraryDoPageResult = PageUtils.doSelectPage(fileLibraryPageDto,
+                () -> fileLibraryMapper.selectPageData(fileLibraryPageDto));
         List<FileLibraryDo> list = fileLibraryDoPageResult.getList();
         if (CollectionUtils.isEmpty(list)) {
             return PageResult.empty(fileLibraryPageDto);
@@ -134,5 +134,24 @@ public class FileLibraryRepository {
     public void clearSpaceId(String updateUserId, List<String> fileIds) {
         fileLibraryMapper.clearSpaceId(fileIds, updateUserId);
     }
-}
 
+    /**
+     * 统计用户文件数量
+     *
+     * @param userId 用户id
+     * @return 数量
+     */
+    public Integer countByUserId(String userId) {
+        return fileLibraryMapper.countByUserId(userId);
+    }
+
+    /**
+     * 统计用户存储大小
+     *
+     * @param userId 用户id
+     * @return 字节数
+     */
+    public Long sumSizeByUserId(String userId) {
+        return fileLibraryMapper.sumSizeByUserId(userId);
+    }
+}

@@ -62,8 +62,7 @@ public class FileSpaceRepository {
      * @return 分页结果
      */
     public PageResult<FileSpace> page(FileSpacePageQueryDto query) {
-        return PageUtils.doSelectPage(query, () ->
-                fileSpaceMapper.selectPageData(query));
+        return PageUtils.doSelectPage(query, () -> fileSpaceMapper.selectPageData(query));
     }
 
     /**
@@ -98,5 +97,15 @@ public class FileSpaceRepository {
     public List<FileSpace> selectListByUserId(String userId) {
         List<FileSpaceDo> fileSpaceDos = fileSpaceMapper.selectListByUserId(userId);
         return BeanConvertUtils.convert(fileSpaceDos, FileSpace.class);
+    }
+
+    /**
+     * 统计用户空间数量
+     *
+     * @param userId 用户id
+     * @return 数量
+     */
+    public Integer countByUserId(String userId) {
+        return fileSpaceMapper.countByUserId(userId);
     }
 }

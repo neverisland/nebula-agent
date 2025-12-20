@@ -1,16 +1,11 @@
 /**
- * 主页统计数据 VO
+ * 文件库统计 VO
  */
-export interface HomeStatisticsVo {
+export interface FileLibraryStatisticsVo {
     /**
      * 文件数量
      */
     fileCount: number;
-
-    /**
-     * 空间数量
-     */
-    spaceCount: number;
 
     /**
      * 存储大小（字节）

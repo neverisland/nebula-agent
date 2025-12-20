@@ -6,6 +6,7 @@ import { FileSpaceUpdateDto } from "@/type/filespace/FileSpaceUpdateDto.ts";
 import { FileSpacePageQueryDto } from "@/type/filespace/FileSpacePageQueryDto.ts";
 import { FileSpaceVo } from "@/type/filespace/FileSpaceVo.ts";
 import { FileSpaceAllocateDto } from "@/type/filespace/FileSpaceAllocateDto.ts";
+import { FileSpaceStatisticsVo } from "@/type/filespace/FileSpaceStatisticsVo.ts";
 
 /**
  * 个人空间 API
@@ -56,4 +57,12 @@ export function selectFileSpaces() {
  */
 export function allocateFilesToSpace(data: FileSpaceAllocateDto) {
     return request.post<ResultVo<null>>("/file-space/allocate", data);
+}
+
+/**
+ * 获取空间统计数据
+ * @returns Promise<AxiosResponse<ResultVo<FileSpaceStatisticsVo>>> 统计结果
+ */
+export function getFileSpaceStatistics() {
+    return request.get<ResultVo<FileSpaceStatisticsVo>>("/file-space/statistics");
 }

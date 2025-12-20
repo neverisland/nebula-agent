@@ -4,6 +4,7 @@ import cn.yang.common.data.structure.vo.page.PageResult;
 import cn.yang.nebula.agent.business.file.library.dto.FileLibraryPageDto;
 import cn.yang.nebula.agent.business.file.library.dto.FileLibraryPageVo;
 import cn.yang.nebula.agent.business.file.library.dto.FileLibraryRenameDto;
+import cn.yang.nebula.agent.business.file.library.dto.FileLibraryStatisticsVo;
 import cn.yang.nebula.agent.business.file.library.dto.FileLibraryUploadVo;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,5 +62,11 @@ public interface FileLibraryFacade {
      * @param fileIds 文件id列表
      */
     void removeFromSpace(List<String> fileIds);
-}
 
+    /**
+     * 获取文件库统计信息
+     *
+     * @return 统计结果
+     */
+    FileLibraryStatisticsVo getFileLibraryStatistics();
+}

@@ -14,6 +14,7 @@ import cn.yang.nebula.agent.business.file.space.dto.FileSpaceUpdateDto;
 import cn.yang.nebula.agent.business.file.space.facade.FileSpaceFacade;
 import cn.yang.nebula.agent.business.file.space.vo.FileSpaceVo;
 import cn.yang.nebula.agent.business.file.space.vo.FileSpaceSelectVo;
+import cn.yang.nebula.agent.business.file.space.vo.FileSpaceStatisticsVo;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -109,5 +110,16 @@ public class FileSpaceController {
     public ResultVo<List<FileSpaceSelectVo>> selectFileSpaces() {
         List<FileSpaceSelectVo> list = fileSpaceFacade.selectFileSpaces();
         return ResultFactory.success(StatusCodeEnum.SUCCESS, "查询成功", list);
+    }
+
+    /**
+     * 获取统计数据
+     *
+     * @return 统计数据
+     */
+    @GetMapping("/statistics")
+    public ResultVo<FileSpaceStatisticsVo> getStatistics() {
+        FileSpaceStatisticsVo statistics = fileSpaceFacade.getFileSpaceStatistics();
+        return ResultFactory.success(StatusCodeEnum.SUCCESS, "查询成功", statistics);
     }
 }

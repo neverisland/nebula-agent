@@ -6,6 +6,7 @@ import cn.yang.nebula.agent.business.file.space.dto.FileSpaceUpdateDto;
 import cn.yang.nebula.agent.business.file.space.dto.FileSpacePageQueryDto;
 import cn.yang.nebula.agent.business.file.space.vo.FileSpaceVo;
 import cn.yang.nebula.agent.business.file.space.vo.FileSpaceSelectVo;
+import cn.yang.nebula.agent.business.file.space.vo.FileSpaceStatisticsVo;
 import cn.yang.common.data.structure.vo.page.PageResult;
 import java.util.List;
 
@@ -59,4 +60,11 @@ public interface FileSpaceFacade {
      * @return 列表
      */
     List<FileSpaceSelectVo> selectFileSpaces();
+
+    /**
+     * 获取空间统计信息
+     *
+     * @return 统计结果
+     */
+    FileSpaceStatisticsVo getFileSpaceStatistics();
 }

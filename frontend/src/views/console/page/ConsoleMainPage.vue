@@ -1,14 +1,18 @@
 <template>
-  <div class="console-main-page" :class="{ 'dark-theme': isDarkTheme }">
+  <div class="console-main-page">
     <!-- 欢迎横幅 -->
-    <div class="welcome-banner">
+    <a-card class="welcome-banner" :bordered="false">
       <div class="welcome-content">
         <div class="welcome-text">
-          <h1>👋 欢迎回来</h1>
-          <p class="welcome-subtitle">今天是个好日子，让我们开始高效工作吧！</p>
+          <a-typography-title :level="2" class="welcome-title">👋 欢迎回来</a-typography-title>
+          <a-typography-paragraph class="welcome-subtitle">
+            今天是个好日子，让我们开始高效工作吧！
+          </a-typography-paragraph>
         </div>
         <div class="date-display">
           <div class="date-box">
+            <div class="time-main">{{ currentDate.time }}</div>
+            <div class="date-sep"></div>
             <span class="date-day">{{ currentDate.day }}</span>
             <div class="date-info">
               <span class="date-month">{{ currentDate.month }}</span>
@@ -17,21 +21,22 @@
           </div>
         </div>
       </div>
-    </div>
+    </a-card>
 
     <!-- 统计卡片 -->
     <div class="stats-section">
       <a-row :gutter="[24, 24]">
         <a-col :xs="24" :sm="12" :lg="8" v-for="stat in stats" :key="stat.title">
-          <div class="stat-card" :style="{ '--accent-color': stat.color }">
-            <div class="stat-icon">
-              <component :is="stat.icon" />
+          <a-card hoverable class="stat-card" :body-style="{ padding: '24px' }">
+            <div class="stat-card-inner">
+              <div class="stat-icon-wrapper" :style="{ color: stat.color, background: `${stat.color}15` }">
+                <component :is="stat.icon" />
+              </div>
+              <a-statistic :title="stat.title" :value="stat.value" class="stat-content">
+                <template #suffix v-if="stat.suffix">{{ stat.suffix }}</template>
+              </a-statistic>
             </div>
-            <div class="stat-info">
-              <span class="stat-value">{{ stat.value }}</span>
-              <span class="stat-title">{{ stat.title }}</span>
-            </div>
-          </div>
+          </a-card>
         </a-col>
       </a-row>
     </div>
@@ -44,13 +49,15 @@
       </h2>
       <a-row :gutter="[16, 16]">
         <a-col :xs="24" :sm="8" v-for="action in quickActions" :key="action.title">
-          <div class="quick-action-card" @click="handleQuickAction(action)">
+          <a-card hoverable class="quick-action-card" @click="handleQuickAction(action)">
             <div class="action-icon" :style="{ background: action.gradient }">
               <component :is="action.icon" />
             </div>
-            <span class="action-title">{{ action.title }}</span>
-            <span class="action-desc">{{ action.description }}</span>
-          </div>
+            <div class="action-info">
+              <div class="action-title">{{ action.title }}</div>
+              <div class="action-desc">{{ action.description }}</div>
+            </div>
+          </a-card>
         </a-col>
       </a-row>
     </div>
@@ -58,6 +65,7 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue';
 import {
   FileOutlined,
   FolderOutlined,
@@ -66,9 +74,10 @@ import {
   ThunderboltOutlined,
   PlusOutlined
 } from '@ant-design/icons-vue';
-import { getHomeStatistics } from '@/api/HomeApi';
+import { getFileLibraryStatistics } from "@/api/FileLibraryApi";
+import { getFileSpaceStatistics } from "@/api/FileSpaceApi";
 
-export default {
+export default defineComponent({
   name: "ConsoleMainPage",
   components: {
     FileOutlined,
@@ -80,10 +89,12 @@ export default {
   },
   data() {
     return {
+      timer: null as any,
+      currentTime: new Date(),
       stats: [
-        { title: '我的文件', value: 0, icon: 'FileOutlined', color: '#1890ff' },
-        { title: '个人空间', value: 0, icon: 'FolderOutlined', color: '#52c41a' },
-        { title: '存储已用', value: '0 B', icon: 'CloudUploadOutlined', color: '#fa8c16' }
+        { title: '我的文件', value: 0, icon: 'FileOutlined', color: '#1890ff', suffix: '' },
+        { title: '个人空间', value: 0, icon: 'FolderOutlined', color: '#52c41a', suffix: '' },
+        { title: '存储已用', value: '0', icon: 'CloudUploadOutlined', color: '#fa8c16', suffix: 'B' }
       ],
       quickActions: [
         {
@@ -111,35 +122,69 @@ export default {
     };
   },
   computed: {
-    isDarkTheme() {
-      return this.$store.getters['theme/isDarkTheme'];
-    },
     currentDate() {
-      const now = new Date();
+      const now = this.currentTime;
       const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
       const months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+      
+      const formatNumber = (n: number) => n < 10 ? `0${n}` : n;
+      const hours = formatNumber(now.getHours());
+      const minutes = formatNumber(now.getMinutes());
+      const seconds = formatNumber(now.getSeconds());
+
       return {
         day: now.getDate(),
         month: months[now.getMonth()],
-        weekday: weekdays[now.getDay()]
+        weekday: weekdays[now.getDay()],
+        time: `${hours}:${minutes}:${seconds}`
       };
     }
   },
   mounted() {
     this.loadStatistics();
+    this.startTimer();
+  },
+  beforeUnmount() {
+    this.stopTimer();
   },
   methods: {
+    /**
+     * 启动定时器
+     */
+    startTimer() {
+      this.timer = setInterval(() => {
+        this.currentTime = new Date();
+      }, 1000);
+    },
+    /**
+     * 停止定时器
+     */
+    stopTimer() {
+      if (this.timer) {
+        clearInterval(this.timer);
+      }
+    },
     /**
      * 加载统计数据
      */
     async loadStatistics() {
       try {
-        const res = await getHomeStatistics();
-        if (res.data && res.data.data) {
-          const data = res.data.data;
+        const [libraryRes, spaceRes] = await Promise.all([
+          getFileLibraryStatistics(),
+          getFileSpaceStatistics()
+        ]);
+
+        if (libraryRes.data && libraryRes.data.data) {
+          const data = libraryRes.data.data;
           this.stats[0].value = data.fileCount;
+          const { value, suffix } = this.formatBytes(data.storageUsed);
+          this.stats[2].value = value;
+          this.stats[2].suffix = suffix;
+        }
+
+        if (spaceRes.data && spaceRes.data.data) {
+          const data = spaceRes.data.data;
           this.stats[1].value = data.spaceCount;
-          this.stats[2].value = this.formatBytes(data.storageUsed);
         }
       } catch (error) {
         console.error('Failed to load statistics:', error);
@@ -148,12 +193,15 @@ export default {
     /**
      * 格式化字节数
      */
-    formatBytes(bytes: number): string {
-      if (bytes === 0) return '0 B';
+    formatBytes(bytes: number): { value: string | number, suffix: string } {
+      if (bytes === 0) return { value: 0, suffix: 'B' };
       const k = 1024;
       const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
       const i = Math.floor(Math.log(bytes) / Math.log(k));
-      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+      return {
+        value: parseFloat((bytes / Math.pow(k, i)).toFixed(2)),
+        suffix: sizes[i]
+      };
     },
     /**
      * 处理快捷入口点击
@@ -164,28 +212,20 @@ export default {
       }
     }
   }
-};
+});
 </script>
 
 <style scoped>
 .console-main-page {
   padding: 24px;
   min-height: 100%;
-  background-color: #f0f2f5;
 }
 
-/* 黑暗模式适配 - 如果使用了 ant-design-vue 的 dark theme，通常会在 html 或 body 上加 data-theme='dark' 或 class='dark' */
-:deep(.ant-layout-content) {
-  background-color: #f0f2f5;
-}
-
-/* 欢迎横幅 */
+/* 欢迎横幅 - 保持渐变效果但使用 a-card 封装 */
 .welcome-banner {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 16px;
-  padding: 32px;
   margin-bottom: 24px;
-  box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
   color: white;
 }
 
@@ -195,27 +235,39 @@ export default {
   align-items: center;
 }
 
-.welcome-text h1 {
-  color: white;
-  font-size: 28px;
-  font-weight: 600;
-  margin: 0 0 8px 0;
+.welcome-title {
+  color: white !important;
+  margin: 0 0 8px 0 !important;
 }
 
 .welcome-subtitle {
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.85) !important;
   font-size: 16px;
-  margin: 0;
+  margin-bottom: 0 !important;
 }
 
 .date-box {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
   padding: 16px 24px;
   border-radius: 12px;
+}
+
+.time-main {
+  font-size: 32px;
+  font-weight: 700;
+  color: white;
+  line-height: 1;
+  font-family: monospace;
+}
+
+.date-sep {
+  width: 1px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .date-day {
@@ -228,7 +280,6 @@ export default {
 .date-info {
   display: flex;
   flex-direction: column;
-  gap: 2px;
 }
 
 .date-month,
@@ -242,72 +293,34 @@ export default {
   margin-bottom: 24px;
 }
 
-.stat-card {
-  background: white;
-  border-radius: 12px;
-  padding: 24px;
+.stat-card-inner {
   display: flex;
   align-items: center;
   gap: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  border: 1px solid #f0f0f0;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
 }
 
-.stat-card::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background: var(--accent-color);
-}
-
-.stat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  border-color: var(--accent-color);
-}
-
-.stat-icon {
-  width: 56px;
-  height: 56px;
+.stat-icon-wrapper {
+  width: 48px;
+  height: 48px;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 24px;
-  color: var(--accent-color);
-  background: color-mix(in srgb, var(--accent-color) 10%, #f9f9f9);
 }
 
-.stat-info {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+.stat-content :deep(.ant-statistic-title) {
+  margin-bottom: 4px;
 }
 
-.stat-value {
-  font-size: 28px;
+.stat-content :deep(.ant-statistic-content) {
   font-weight: 700;
-  color: rgba(0, 0, 0, 0.85);
-  line-height: 1.2;
-}
-
-.stat-title {
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.45);
-  margin-top: 4px;
 }
 
 /* 章节标题 */
 .section-title {
   font-size: 18px;
   font-weight: 600;
-  color: rgba(0, 0, 0, 0.85);
   margin: 0 0 16px 0;
   display: flex;
   align-items: center;
@@ -319,25 +332,13 @@ export default {
   margin-bottom: 24px;
 }
 
-.quick-action-card {
-  background: white;
-  border-radius: 12px;
+.quick-action-card :deep(.ant-card-body) {
   padding: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: 12px;
-  cursor: pointer;
-  border: 1px solid #f0f0f0;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
-.quick-action-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
-  border-color: #1890ff;
 }
 
 .action-icon {
@@ -349,44 +350,17 @@ export default {
   justify-content: center;
   font-size: 24px;
   color: white;
+  margin-bottom: 8px;
 }
 
 .action-title {
   font-size: 15px;
   font-weight: 600;
-  color: rgba(0, 0, 0, 0.85);
 }
 
 .action-desc {
   font-size: 12px;
-  color: rgba(0, 0, 0, 0.45);
-}
-
-/* 黑暗模式强制覆盖 - 挂载到 body.dark */
-:global(body.dark) .console-main-page {
-  background-color: #141414 !important;
-}
-
-:global(body.dark) .stat-card,
-:global(body.dark) .quick-action-card {
-  background-color: #1f1f1f !important;
-  border-color: #303030 !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
-}
-
-:global(body.dark) .stat-value,
-:global(body.dark) .section-title,
-:global(body.dark) .action-title {
-  color: rgba(255, 255, 255, 0.85) !important;
-}
-
-:global(body.dark) .stat-title,
-:global(body.dark) .action-desc {
-  color: rgba(255, 255, 255, 0.45) !important;
-}
-
-:global(body.dark) .stat-icon {
-  background: rgba(255, 255, 255, 0.05) !important;
+  opacity: 0.6;
 }
 
 /* 响应式 */
@@ -401,8 +375,8 @@ export default {
     text-align: center;
   }
 
-  .welcome-text h1 {
-    font-size: 22px;
+  .welcome-title {
+    font-size: 24px !important;
   }
 
   .date-box {

@@ -188,3 +188,37 @@
 ### 说明
 
 将指定文件从当前空间移除，文件的 `spaceId` 将被设置为 `null`，回到"未归类"状态。
+
+---
+
+## 7. 获取文件库统计
+
+**URL**: `/file-library/statistics`
+**Method**: `GET`
+
+### 请求参数
+
+无
+
+### 响应参数
+
+| 字段名 | 类型 | 描述 |
+| :--- | :--- | :--- |
+| code | Number | 状态码（0 成功） |
+| msg | String | 提示信息 |
+| data | Object | 统计结果 |
+| data.fileCount | Number | 文件总数 |
+| data.storageUsed | Number | 已用存储空间（字节） |
+
+### 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "查询成功",
+  "data": {
+    "fileCount": 100,
+    "storageUsed": 104857600
+  }
+}
+```

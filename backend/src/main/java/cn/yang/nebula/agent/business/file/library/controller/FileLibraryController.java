@@ -10,6 +10,7 @@ import cn.yang.nebula.agent.business.file.library.dto.FileLibraryPageDto;
 import cn.yang.nebula.agent.business.file.library.dto.FileLibraryPageVo;
 import cn.yang.nebula.agent.business.file.library.dto.FileLibraryRemoveSpaceDto;
 import cn.yang.nebula.agent.business.file.library.dto.FileLibraryRenameDto;
+import cn.yang.nebula.agent.business.file.library.dto.FileLibraryStatisticsVo;
 import cn.yang.nebula.agent.business.file.library.dto.FileLibraryUploadVo;
 import cn.yang.nebula.agent.business.file.library.facade.FileLibraryFacade;
 import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
@@ -57,7 +58,8 @@ public class FileLibraryController {
      */
     @PostMapping("/page")
     public ResultVo<PageResult<FileLibraryPageVo>> page(@Validated @RequestBody FileLibraryPageDto fileLibraryPageDto) {
-        if (fileLibraryPageDto == null || fileLibraryPageDto.getCurrent() == null || fileLibraryPageDto.getSize() == null) {
+        if (fileLibraryPageDto == null || fileLibraryPageDto.getCurrent() == null
+                || fileLibraryPageDto.getSize() == null) {
             throw new BusinessException(ErrorStatusCodeEnum.PARAMETER_VERIFICATION_EXCEPTION, "分页参数不能为空");
         }
 
@@ -99,6 +101,17 @@ public class FileLibraryController {
     public ResultVo<?> removeFromSpace(@RequestBody @Validated FileLibraryRemoveSpaceDto removeSpaceDto) {
         fileLibraryFacade.removeFromSpace(removeSpaceDto.getFileIds());
         return ResultFactory.success(StatusCodeEnum.SUCCESS, "移除成功");
+    }
+
+    /**
+     * 获取文件库统计数据
+     *
+     * @return 统计数据
+     */
+    @GetMapping("/statistics")
+    public ResultVo<FileLibraryStatisticsVo> getStatistics() {
+        FileLibraryStatisticsVo statistics = fileLibraryFacade.getFileLibraryStatistics();
+        return ResultFactory.success(StatusCodeEnum.SUCCESS, "查询成功", statistics);
     }
 
 }

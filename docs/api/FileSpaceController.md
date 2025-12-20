@@ -55,8 +55,13 @@
 
 | 字段名 | 类型 | 描述 |
 | :--- | :--- | :--- |
-| total | long | 总条数 |
-| list | List<FileSpaceVo> | 数据列表 |
+| code | Number | 状态码 |
+| msg | String | 提示信息 |
+| data | Object | 分页结果 |
+| data.total | Number | 总条数 |
+| data.records | Array | 数据列表 |
+| data.current | Number | 当前页 |
+| data.size | Number | 每页大小 |
 
 #### FileSpaceVo 结构
 
@@ -79,7 +84,7 @@
 
 | 参数名 | 类型 | 必填 | 描述 |
 | :--- | :--- | :--- | :--- |
-| id | String | 是 | 个人空间 ID |
+| id | String | 是 | 个人空间 ID (查询参数) |
 
 ### 响应参数 (ResultVo)
 
@@ -127,5 +132,37 @@
 
 | 字段名 | 类型 | 描述 |
 | :--- | :--- | :--- |
-| id | String | ID |
+| id | String | 是 | ID |
 | name | String | 名称 |
+
+---
+
+## 7. 获取个人空间统计
+
+**URL**: `/file-space/statistics`
+**Method**: `GET`
+
+### 请求参数
+
+无
+
+### 响应参数
+
+| 字段名 | 类型 | 描述 |
+| :--- | :--- | :--- |
+| code | Number | 状态码（0 成功） |
+| msg | String | 提示信息 |
+| data | Object | 统计结果 |
+| data.spaceCount | Number | 空间总数 |
+
+### 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "查询成功",
+  "data": {
+    "spaceCount": 5
+  }
+}
+```

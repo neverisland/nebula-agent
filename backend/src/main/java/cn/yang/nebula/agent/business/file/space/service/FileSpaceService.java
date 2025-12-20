@@ -10,6 +10,7 @@ import cn.yang.nebula.agent.business.file.space.repository.FileSpaceRepository;
 import cn.yang.nebula.agent.business.file.space.dto.FileSpacePageQueryDto;
 import cn.yang.nebula.agent.business.file.space.vo.FileSpaceVo;
 import cn.yang.nebula.agent.business.file.space.vo.FileSpaceSelectVo;
+import cn.yang.nebula.agent.business.file.space.vo.FileSpaceStatisticsVo;
 import cn.yang.common.data.structure.vo.page.PageResult;
 import cn.yang.nebula.agent.business.authentication.facade.AuthenticationFacade;
 import cn.yang.nebula.agent.business.file.library.repository.FileLibraryRepository;
@@ -125,5 +126,19 @@ public class FileSpaceService implements FileSpaceFacade {
         List<FileSpace> list = fileSpaceRepository.selectListByUserId(currentUserId);
         return BeanConvertUtils.convert(list, FileSpaceSelectVo.class);
     }
-}
 
+    /**
+     * 获取空间统计信息
+     *
+     * @return 统计结果
+     */
+    @Override
+    public FileSpaceStatisticsVo getFileSpaceStatistics() {
+        String currentUserId = authenticationFacade.getCurrentUserId();
+        Integer spaceCount = fileSpaceRepository.countByUserId(currentUserId);
+
+        return FileSpaceStatisticsVo.builder()
+                .spaceCount(spaceCount)
+                .build();
+    }
+}

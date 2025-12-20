@@ -8,6 +8,7 @@ import cn.yang.nebula.agent.business.authentication.facade.AuthenticationFacade;
 import cn.yang.nebula.agent.business.file.library.dto.FileLibraryPageDto;
 import cn.yang.nebula.agent.business.file.library.dto.FileLibraryPageVo;
 import cn.yang.nebula.agent.business.file.library.dto.FileLibraryRenameDto;
+import cn.yang.nebula.agent.business.file.library.dto.FileLibraryStatisticsVo;
 import cn.yang.nebula.agent.business.file.library.dto.FileLibraryUploadVo;
 import cn.yang.nebula.agent.business.file.library.entity.FileLibrary;
 import cn.yang.nebula.agent.business.file.library.facade.FileLibraryFacade;
@@ -100,7 +101,8 @@ public class FileLibraryService implements FileLibraryFacade {
         }
 
         String path = fileLibrary.getPath();
-        String thumbnails = path.substring(0, path.lastIndexOf(".")) + "-thumbnail" + path.substring(path.lastIndexOf("."));
+        String thumbnails = path.substring(0, path.lastIndexOf(".")) + "-thumbnail"
+                + path.substring(path.lastIndexOf("."));
         // 缩略图
         try {
             if (file.getSize() >= 100 * 1024) {
@@ -130,13 +132,15 @@ public class FileLibraryService implements FileLibraryFacade {
         String originalFilename = file.getOriginalFilename();
         String fileName = StringUtils.hasText(originalFilename) ? originalFilename : "unknown";
         // 媒体类型
-        String mimeType = StringUtils.hasText(file.getContentType()) ? file.getContentType() : URLConnection.guessContentTypeFromName(fileName);
+        String mimeType = StringUtils.hasText(file.getContentType()) ? file.getContentType()
+                : URLConnection.guessContentTypeFromName(fileName);
         if (!StringUtils.hasText(mimeType)) {
             // 兜底的
             mimeType = "application/octet-stream";
         }
         // 后缀
-        String extension = (!StringUtils.hasText(fileName) || !fileName.contains(".")) ? "" : fileName.substring(fileName.lastIndexOf("."));
+        String extension = (!StringUtils.hasText(fileName) || !fileName.contains(".")) ? ""
+                : fileName.substring(fileName.lastIndexOf("."));
         String datePath = LocalDate.now().format(DATE_PATH_FORMATTER);
         String relativePath = datePath + "/" + UUID.randomUUID().toString().replace("-", "") + extension;
         return new FileLibrary(fileName, mimeType, file.getSize(), relativePath);
@@ -236,8 +240,10 @@ public class FileLibraryService implements FileLibraryFacade {
         try {
             FileLibrary fileLibrary = fileLibraryRepository.selectByPath(relativePath);
             // 获取请求头
-            String mimeType = StringUtils.hasText(fileLibrary.getMimeType()) ? fileLibrary.getMimeType() : "application/octet-stream";
-            String fileName = StringUtils.hasText(fileLibrary.getName()) ? fileLibrary.getName() : relativePath.substring(relativePath.lastIndexOf("/") + 1);
+            String mimeType = StringUtils.hasText(fileLibrary.getMimeType()) ? fileLibrary.getMimeType()
+                    : "application/octet-stream";
+            String fileName = StringUtils.hasText(fileLibrary.getName()) ? fileLibrary.getName()
+                    : relativePath.substring(relativePath.lastIndexOf("/") + 1);
 
             InputStream inputStream = fileIntegrateFacade.obtainFile(fileLibrary.getPath());
             // 设置响应头
@@ -276,4 +282,20 @@ public class FileLibraryService implements FileLibraryFacade {
         fileLibraryRepository.clearSpaceId(currentUserId, fileIds);
     }
 
+    /**
+     * 获取文件库统计信息
+     *
+     * @return 统计结果
+     */
+    @Override
+    public FileLibraryStatisticsVo getFileLibraryStatistics() {
+        String currentUserId = authenticationFacade.getCurrentUserId();
+        Integer fileCount = fileLibraryRepository.countByUserId(currentUserId);
+        Long storageUsed = fileLibraryRepository.sumSizeByUserId(currentUserId);
+
+        return FileLibraryStatisticsVo.builder()
+                .fileCount(fileCount)
+                .storageUsed(storageUsed)
+                .build();
+    }
 }

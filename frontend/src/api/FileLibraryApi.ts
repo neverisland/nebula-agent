@@ -4,6 +4,7 @@ import type { FileLibraryUploadVo } from "@/type/filelibrary/FileLibraryUploadVo
 import type { FileLibraryPageVo } from "@/type/filelibrary/FileLibraryPageVo";
 import type { PageResult } from "@/type/PageResult";
 import type { ResultVo } from "@/type/ResultVo";
+import type { FileLibraryStatisticsVo } from "@/type/filelibrary/FileLibraryStatisticsVo";
 import { AxiosResponse } from "axios";
 
 /**
@@ -90,3 +91,13 @@ export const removeFromSpace = (fileIds: string[]): Promise<AxiosResponse<Result
   });
 }
 
+/**
+ * 获取文件库统计数据
+ * @returns Promise<AxiosResponse<ResultVo<FileLibraryStatisticsVo>>> 统计结果，包含文件数量和存储已用大小
+ */
+export const getFileLibraryStatistics = (): Promise<AxiosResponse<ResultVo<FileLibraryStatisticsVo>>> => {
+  return request({
+    url: '/file-library/statistics',
+    method: 'get',
+  });
+}
