@@ -169,7 +169,9 @@ public class FileLibraryService implements FileLibraryFacade {
         List<FileLibraryPageVo> fileLibraryPageVos = resultList.stream().map(item -> {
             FileLibraryPageVo fileLibraryPageVo = BeanConvertUtils.convert(item, FileLibraryPageVo.class);
             fileLibraryPageVo.setUrl(fileAccessAddress + FILE_ACCESS_PREFIX + item.getPath());
-            fileLibraryPageVo.setThumbnailsUrl(fileAccessAddress + FILE_ACCESS_PREFIX + item.getThumbnails());
+            if (StringUtils.hasLength(item.getThumbnails())) {
+                fileLibraryPageVo.setThumbnailsUrl(fileAccessAddress + FILE_ACCESS_PREFIX + item.getThumbnails());
+            }
             return fileLibraryPageVo;
         }).toList();
 

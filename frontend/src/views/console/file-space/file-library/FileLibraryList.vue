@@ -16,6 +16,10 @@
             </template>
             上传
           </a-button>
+          <a-radio-group v-model:value="viewMode" button-style="solid">
+            <a-radio-button value="list"><UnorderedListOutlined /></a-radio-button>
+            <a-radio-button value="grid"><AppstoreOutlined /></a-radio-button>
+          </a-radio-group>
         </a-space>
       </div>
       <a-divider style="margin: 10px 0;"/>
@@ -51,7 +55,9 @@
       </a-form>
     </a-layout-header>
     <a-layout-content style="padding: 0 20px;">
+      <!-- 列表视图 -->
       <a-table
+          v-if="viewMode === 'list'"
           :scroll="{ x: 1000, y: tableHeight }"
           :data-source="tableData"
           :loading="loading"
@@ -84,19 +90,96 @@
             {{ formatSize(record.size) }}
           </template>
         </a-table-column>
-        <a-table-column title="上传时间" dataIndex="createTime" key="createTime" :width="180"/>
-        <a-table-column title="操作" key="action" :width="330" fixed="right">
+        <a-table-column title="上传时间" key="createTime" :width="180">
+          <template #default="{ record }">
+            {{ formatDateTime(record.createTime || '') }}
+          </template>
+        </a-table-column>
+        <a-table-column title="操作" key="action" :width="400" fixed="right">
           <template #default="{ record }">
             <a-space>
               <a-button type="link" @click="copyLink(record)">复制链接</a-button>
               <a-button type="link" @click="download(record)">下载</a-button>
               <a-button type="link" @click="openRename(record)">重命名</a-button>
+              <a-button type="link" @click="showDetail(record)">详情</a-button>
               <a-button type="link" danger @click="confirmDelete(record)">删除</a-button>
             </a-space>
           </template>
         </a-table-column>
       </a-table>
+
+      <!-- 网格视图 -->
+      <div v-else class="grid-container">
+        <a-spin :spinning="loading">
+          <a-row :gutter="[16, 16]">
+            <a-col v-for="item in tableData" :key="item.id" :xs="24" :sm="12" :md="8" :lg="6" :xl="4">
+              <a-card
+                  hoverable
+                  size="small"
+                  :class="{ 'grid-card-selected': selectedRowKeys.includes(item.id) }"
+                  @contextmenu.prevent="showContextMenu($event, item)"
+              >
+                <template #cover>
+                  <div class="card-cover" @click="toggleCardSelect(item.id)">
+                    <a-checkbox
+                        class="card-checkbox"
+                        :checked="selectedRowKeys.includes(item.id)"
+                        @click.stop
+                        @change="toggleCardSelect(item.id)"
+                    />
+                    <img
+                        v-if="isImage(item.mimeType)"
+                        :src="item.thumbnailsUrl || item.url"
+                        @click.stop="openImagePreview(item)"
+                    />
+                    <img v-else :src="getFileIcon(item.mimeType)" class="file-icon" />
+                  </div>
+                </template>
+                <a-card-meta>
+                  <template #title>
+                    <a-tooltip :title="item.name">
+                      <span class="card-filename">{{ item.name }}</span>
+                    </a-tooltip>
+                  </template>
+                </a-card-meta>
+              </a-card>
+            </a-col>
+          </a-row>
+          <div v-if="tableData.length === 0 && !loading" class="grid-empty">
+            <a-empty description="暂无数据" />
+          </div>
+        </a-spin>
+        <!-- 网格视图分页 -->
+        <div class="grid-pagination">
+          <a-pagination
+              v-model:current="queryForm.current"
+              v-model:pageSize="queryForm.size"
+              :total="total"
+              :showSizeChanger="true"
+              :pageSizeOptions="['10', '20', '50']"
+              :showTotal="(t: number) => `共 ${t} 条`"
+              @change="handleGridPageChange"
+          />
+        </div>
+      </div>
     </a-layout-content>
+
+    <!-- 右键菜单 -->
+    <div
+        v-show="contextMenuVisible"
+        class="context-menu-wrapper"
+        :style="contextMenuStyle"
+        @click.stop
+    >
+      <a-menu mode="vertical" @click="handleContextMenuClick">
+        <a-menu-item key="copy"><CopyOutlined /> 复制链接</a-menu-item>
+        <a-menu-item key="download"><DownloadOutlined /> 下载</a-menu-item>
+        <a-menu-item key="rename"><EditOutlined /> 重命名</a-menu-item>
+        <a-menu-item key="detail"><InfoCircleOutlined /> 详情</a-menu-item>
+        <a-menu-divider />
+        <a-menu-item key="delete" danger><DeleteOutlined /> 删除</a-menu-item>
+      </a-menu>
+    </div>
 
     <a-modal v-model:open="renameVisible" title="重命名" @ok="submitRename">
       <a-input v-model:value="renameForm.name" placeholder="请输入文件名称"/>
@@ -131,11 +214,44 @@
         />
       </div>
     </a-modal>
+
+    <!-- 详情弹窗 -->
+    <a-modal v-model:open="detailVisible" title="文件详情" :footer="null" width="600px">
+      <div v-if="detailRecord" class="file-detail-content">
+        <!-- 缩略图预览区 -->
+        <div v-if="isImage(detailRecord.mimeType) && (detailRecord.thumbnailsUrl || detailRecord.url)" class="detail-preview">
+          <img :src="detailRecord.thumbnailsUrl || detailRecord.url" alt="缩略图" />
+        </div>
+        <!-- 文件信息 -->
+        <a-descriptions :column="1" style="padding: 16px 0;">
+          <a-descriptions-item label="文件名">{{ detailRecord.name }}</a-descriptions-item>
+          <a-descriptions-item label="文件大小">{{ formatSize(detailRecord.size) }}</a-descriptions-item>
+          <a-descriptions-item label="文件类型">{{ detailRecord.mimeType }}</a-descriptions-item>
+          <a-descriptions-item label="上传时间">{{ formatDateTime(detailRecord.createTime || '') }}</a-descriptions-item>
+          <a-descriptions-item label="文件链接">
+            <a-button type="primary" size="small" @click="copyDetailLink">
+              <template #icon><CopyOutlined /></template>
+              复制链接
+            </a-button>
+          </a-descriptions-item>
+        </a-descriptions>
+      </div>
+    </a-modal>
   </a-layout>
 </template>
 
 <script lang="ts">
-import {FileOutlined, UploadOutlined} from '@ant-design/icons-vue';
+import {
+  FileOutlined,
+  UploadOutlined,
+  UnorderedListOutlined,
+  AppstoreOutlined,
+  CopyOutlined,
+  DownloadOutlined,
+  EditOutlined,
+  InfoCircleOutlined,
+  DeleteOutlined
+} from '@ant-design/icons-vue';
 import {message, Modal, TablePaginationConfig} from 'ant-design-vue';
 import FileUploadModal from "./FileUploadModal.vue";
 import {deleteFileLibrary, getFileLibraryPage, removeFromSpace, renameFileLibrary} from "@/api/FileLibraryApi.ts";
@@ -149,7 +265,18 @@ import {FileLibraryPageVo} from "@/type/filelibrary/FileLibraryPageVo.ts";
  */
 export default {
   name: "FileLibraryList",
-  components: {FileUploadModal, UploadOutlined, FileOutlined},
+  components: {
+    FileUploadModal,
+    UploadOutlined,
+    FileOutlined,
+    UnorderedListOutlined,
+    AppstoreOutlined,
+    CopyOutlined,
+    DownloadOutlined,
+    EditOutlined,
+    InfoCircleOutlined,
+    DeleteOutlined
+  },
   computed: {
     displaySpaces() {
       // 如果正式列表还没加载完，但路由里有传过来的空间信息，先造个假数据占位，避免回显 ID
@@ -188,6 +315,15 @@ export default {
       previewUrl: '',
       previewTitle: '',
       previewWidth: 600,
+      // 视图模式：list 列表，grid 网格
+      viewMode: 'list' as 'list' | 'grid',
+      // 右键菜单
+      contextMenuVisible: false,
+      contextMenuStyle: { left: '0px', top: '0px' },
+      contextRecord: null as FileLibraryPageVo | null,
+      // 详情弹窗
+      detailVisible: false,
+      detailRecord: null as FileLibraryPageVo | null,
     }
   },
   mounted() {
@@ -443,6 +579,100 @@ export default {
       }
       this.loadData();
     },
+    // ========== 网格视图相关方法 ==========
+    /**
+     * 切换卡片选中状态
+     */
+    toggleCardSelect(id: string) {
+      const idx = this.selectedRowKeys.indexOf(id);
+      if (idx > -1) {
+        this.selectedRowKeys.splice(idx, 1);
+      } else {
+        this.selectedRowKeys.push(id);
+      }
+    },
+    /**
+     * 显示右键菜单
+     */
+    showContextMenu(event: MouseEvent, record: FileLibraryPageVo) {
+      this.contextRecord = record;
+      this.contextMenuStyle = {
+        left: `${event.clientX}px`,
+        top: `${event.clientY}px`
+      };
+      this.contextMenuVisible = true;
+      // 点击其他地方关闭菜单
+      document.addEventListener('click', this.hideContextMenu, { once: true });
+    },
+    /**
+     * 隐藏右键菜单
+     */
+    hideContextMenu() {
+      this.contextMenuVisible = false;
+    },
+    /**
+     * 处理右键菜单点击
+     */
+    handleContextMenuClick({ key }: { key: string }) {
+      this.contextMenuVisible = false;
+      const record = this.contextRecord;
+      if (!record) return;
+
+      switch (key) {
+        case 'copy':
+          this.copyLink(record);
+          break;
+        case 'download':
+          this.download(record);
+          break;
+        case 'rename':
+          this.openRename(record);
+          break;
+        case 'detail':
+          this.showDetail(record);
+          break;
+        case 'delete':
+          this.confirmDelete(record);
+          break;
+      }
+    },
+    /**
+     * 网格视图分页变化
+     */
+    handleGridPageChange(page: number, pageSize: number) {
+      this.queryForm.current = page;
+      this.queryForm.size = pageSize;
+      this.loadData();
+    },
+    /**
+     * 显示文件详情
+     */
+    showDetail(record: FileLibraryPageVo) {
+      this.detailRecord = record;
+      this.detailVisible = true;
+    },
+    /**
+     * 格式化时间显示
+     */
+    formatDateTime(dateTime: string) {
+      if (!dateTime) return '';
+      // 将 2025-12-19 04-09-38 格式转为 2025-12-19 04:09:38
+      return dateTime.replace(/(\d{2})-(\d{2})-(\d{2})$/, '$1:$2:$3');
+    },
+    /**
+     * 复制详情弹窗中的文件链接
+     */
+    copyDetailLink() {
+      if (!this.detailRecord?.url) {
+        message.warning('无可复制的链接');
+        return;
+      }
+      navigator.clipboard.writeText(this.detailRecord.url).then(() => {
+        message.success('已复制文件链接');
+      }).catch(() => {
+        message.error('复制失败');
+      });
+    },
   }
 }
 </script>
@@ -463,6 +693,147 @@ export default {
   height: 150px;
   padding: 20px;
   background-color: var(--ant-color-bg-container);
+}
+
+/* 网格视图容器 */
+.grid-container {
+  padding: 16px 0;
+  min-height: 400px;
+}
+
+/* 网格视图分页 */
+.grid-pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+  padding: 16px 0;
+}
+
+/* 卡片封面 */
+.card-cover {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: var(--ant-color-bg-layout);
+  cursor: pointer;
+}
+
+.card-cover img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+.card-cover .file-icon {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+/* 卡片复选框 */
+.card-checkbox {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.card-cover:hover .card-checkbox,
+.grid-card-selected .card-checkbox {
+  opacity: 1;
+}
+
+/* 卡片选中态 */
+.grid-card-selected {
+  border-color: var(--ant-color-primary) !important;
+  box-shadow: 0 0 0 2px var(--ant-color-primary-bg);
+}
+
+/* 卡片文件名 */
+.card-filename {
+  display: block;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 空状态 */
+.grid-empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+/* 右键菜单 */
+.context-menu-wrapper {
+  position: fixed;
+  z-index: 1050;
+  background-color: var(--ant-color-bg-elevated);
+  border-radius: 8px;
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08),
+              0 3px 6px -4px rgba(0, 0, 0, 0.12),
+              0 9px 28px 8px rgba(0, 0, 0, 0.05);
+}
+
+.context-menu-wrapper :deep(.ant-menu) {
+  border-radius: 8px;
+  min-width: 140px;
+  border: none;
+}
+
+.context-menu-wrapper :deep(.ant-menu-item) {
+  margin: 4px 8px;
+  padding: 5px 12px;
+  border-radius: 4px;
+  height: auto;
+  line-height: 22px;
+}
+
+/* 消除菜单选中态 */
+.context-menu-wrapper :deep(.ant-menu-item-selected) {
+  background-color: transparent !important;
+  color: inherit;
+}
+
+/* 修复 hover 样式 */
+.context-menu-wrapper :deep(.ant-menu-item:hover) {
+  background-color: var(--ant-color-bg-text-hover) !important;
+}
+
+.context-menu-wrapper :deep(.ant-menu-item-active) {
+  background-color: var(--ant-color-bg-text-hover) !important;
+}
+
+/* 详情弹窗预览区 */
+.file-detail-content {
+  padding: 0 16px;
+}
+
+.detail-preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  margin-bottom: 8px;
+  background-color: var(--ant-color-bg-layout);
+  border-radius: 8px;
+  min-height: 150px;
+  max-height: 300px;
+  overflow: hidden;
+}
+
+.detail-preview img {
+  max-width: 100%;
+  max-height: 280px;
+  object-fit: contain;
+  border-radius: 4px;
 }
 </style>
 
