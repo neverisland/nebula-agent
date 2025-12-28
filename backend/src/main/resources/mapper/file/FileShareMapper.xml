@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.yang.nebula.agent.business.file.share.mapper.FileShareMapper">
+
+    <resultMap id="BaseResultMap" type="cn.yang.nebula.agent.business.file.share.dal.FileShareDo">
+        <id column="id" property="id" />
+        <result column="share_type" property="shareType" />
+        <result column="name" property="name" />
+        <result column="password" property="password" />
+        <result column="enable_password" property="enablePassword" />
+        <result column="expire_time" property="expireTime" />
+        <result column="enable_expire" property="enableExpire" />
+        <result column="is_expired" property="isExpired" />
+        <result column="visit_count" property="visitCount" />
+        <result column="download_count" property="downloadCount" />
+        <result column="create_user_id" property="createUserId" />
+        <result column="update_user_id" property="updateUserId" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, share_type, name, password, enable_password, expire_time, enable_expire,
+        is_expired, visit_count, download_count, create_user_id, update_user_id, create_time, update_time
+    </sql>
+
+    <insert id="insert">
+        INSERT INTO file_share (
+            id, share_type, name, password, enable_password,
+            expire_time, enable_expire, is_expired, visit_count, download_count,
+            create_user_id, update_user_id
+        ) VALUES (
+            #{id}, #{shareType}, #{name}, #{password}, #{enablePassword},
+            #{expireTime}, #{enableExpire}, #{isExpired}, #{visitCount}, #{downloadCount},
+            #{createUserId}, #{updateUserId}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE file_share
+        SET name = #{name},
+            enable_password = #{enablePassword},
+            password = #{password},
+            enable_expire = #{enableExpire},
+            expire_time = #{expireTime},
+            update_user_id = #{updateUserId}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM file_share WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteBatchIds">
+        DELETE FROM file_share WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM file_share
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectPageData" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM file_share
+        <where>
+            <if test="query.name != null and query.name != ''">
+                AND name LIKE CONCAT('%', #{query.name}, '%')
+            </if>
+            <if test="query.shareType != null">
+                AND share_type = #{query.shareType}
+            </if>
+            <if test="query.isExpired != null">
+                AND is_expired = #{query.isExpired}
+            </if>
+            <if test="query.userId != null">
+                AND create_user_id = #{query.userId}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+</mapper>

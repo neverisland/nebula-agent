@@ -11,7 +11,7 @@ export interface ResultVo<T = any> {
     /**
      * 状态码描述
      */
-    codeMsg: string,
+    msg: string,
 
     /**
      * 详细描述

@@ -108,4 +108,18 @@ public class FileSpaceRepository {
     public Integer countByUserId(String userId) {
         return fileSpaceMapper.countByUserId(userId);
     }
+
+    /**
+     * 根据id列表查询数据
+     *
+     * @param fileSpaceIdList id列表
+     * @return 列表
+     */
+    public List<FileSpace> selectByIds(List<String> fileSpaceIdList) {
+        if (CollectionUtils.isEmpty(fileSpaceIdList)) {
+            return List.of();
+        }
+        List<FileSpaceDo> fileSpaceDoList = fileSpaceMapper.selectByIds(fileSpaceIdList);
+        return BeanConvertUtils.convert(fileSpaceDoList, FileSpace.class);
+    }
 }

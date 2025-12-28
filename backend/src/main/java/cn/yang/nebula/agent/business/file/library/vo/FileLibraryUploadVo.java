@@ -1,4 +1,4 @@
-package cn.yang.nebula.agent.business.file.library.dto;
+package cn.yang.nebula.agent.business.file.library.vo;
 
 import lombok.Data;
 

@@ -100,3 +100,5 @@ sa-token:
 file:
   access:
     address: http://127.0.0.1:9000
+  share:
+    address: http://127.0.0.1:5100/share/

@@ -1,0 +1,114 @@
+---
+trigger: always_on
+---
+
+---
+description: 前端 Vue 3 + TypeScript 开发规范 (详细版)
+globs: frontend/**/*.ts,frontend/**/*.vue
+---
+
+# 前端开发规范 (Frontend Rules)
+
+## 1. 技术栈 (Tech Stack)
+- **框架**: Vue 3 (Composition API)
+- **构建工具**: Vite
+- **语言**: TypeScript
+- **UI 组件库**: Ant Design Vue
+- **状态管理**: Pinia
+- **HTTP 客户端**: Axios
+
+## 2. 目录结构 (Directory Structure)
+- `frontend/src/api`: API 接口定义，对应后端的 Controller。
+- `frontend/src/views`: 页面组件，按业务模块划分文件夹。
+- `frontend/src/components`: 公共组件。
+- `frontend/src/type`: TypeScript 类型定义 (DTO)。
+- `frontend/src/utils`: 工具函数。
+
+## 3. 编码规范 (Coding Standards)
+
+### 3.1 组件与页面 (Components & Views)
+- **文件命名**: PascalCase (e.g., `UserList.vue`).
+- **CRUD 规范**:
+    - **禁止**在一个页面完成所有操作（新增、修改、详情）。
+    - **列表页**: 仅展示数据列表和搜索条件，包含“新增”、“编辑”、“详情”、“删除”按钮。
+    - **新增/编辑页**: 使用单独的页面或弹窗组件（推荐复杂表单用单独页面，简单表单用 Modal），与列表页解耦。
+    - **详情页**: 使用单独的页面展示详细信息。
+- **注释规范**:
+    - 每个 Vue 组件 `<script>` 顶部需添加组件功能说明。
+    - 每个函数必须添加 JSDoc 注释，说明功能、参数和返回值。
+
+### 3.2 API 调用
+- 所有 API 请求必须封装在 `src/api` 目录下。
+- **禁止**在组件中直接调用 `axios`。
+- API 函数命名应与后端 Controller 方法名保持语义一致。
+
+### 3.3 表单校验 (Validation)
+- 使用 Ant Design Vue 的 `Form` 组件进行校验。
+- 校验规则 (`rules`) 必须定义在 `script` 中，并绑定到 `Form` 组件。
+- 常见校验场景：
+    - **必填**: `{ required: true, message: '请输入xxx', trigger: 'blur' }`
+    - **长度**: `{ min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }`
+    - **正则**: `{ pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' }`
+
+### 3.4 类型定义 (Types)
+- **定义位置**: 所有的出入参必须在 `frontend/src/type` 目录下定义。
+- **文件拆分**: 每个出参和入参必须单独定义一个文件，严禁多个类型定义合并在同一个文件中。
+- **注释规范**: 每一个字段都必须添加 JSDoc 注释，说明字段含义。
+- **命名规范**: 入参类型统一以 `XxxxDto` 结尾（Data Transfer Object），出参/数据返回类型统一以 `XxxxVo` 结尾（Value Object），必须与后端命名保持完全一致。
+- 所有 API 调用和数据传递必须有明确的 TypeScript 类型定义。
+
+## 4. 代码示例 (Code Examples)
+
+### API 定义示例
+```typescript
+// src/api/UserApi.ts
+import request from "@/utils/request";
+import type { UserPageDto } from "@/type/user/UserPageDto";
+import type { UserPageVo } from "@/type/user/UserPageVo";
+import type { ResultVo } from "@/type/ResultVo";
+import type { PageResult } from "@/type/PageResult";
+
+/**
+ * 分页查询用户列表
+ * @param data 查询条件
+ * @returns 用户列表分页数据
+ */
+export const getUserPage = (data: UserPageDto): Promise<ResultVo<PageResult<UserPageVo>>> => {
+    return request({
+        url: '/user/page',
+        method: 'post',
+        data
+    });
+}
+```
+
+### 列表页逻辑示例
+```typescript
+// src/views/user/UserList.vue
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { getUserPage } from '@/api/UserApi';
+
+/**
+ * 加载用户数据
+ * 页面挂载时调用
+ */
+const loadData = async () => {
+    loading.value = true;
+    try {
+        const res = await getUserPage(queryParams.value);
+        tableData.value = res.data.records;
+    } finally {
+        loading.value = false;
+    }
+}
+</script>
+```
+
+## 5. 注意事项 (Notes)
+1.  **类型安全**: 所有 API 调用和数据传递必须有明确的 TypeScript 类型定义。
+2.  **组件解耦**: 避免在一个组件中处理过多业务逻辑，保持组件单一职责。
+3.  **编译验证**: 完成代码修改后，**必须**执行编译和类型检查，确保没有错误。
+    - 使用命令行：`npm run build` 或 `npm run type-check`
+    - 解决所有 TypeScript 类型错误和编译警告
+    - 编译成功后才能提交代码或继续下一步工作

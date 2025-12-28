@@ -7,7 +7,7 @@ import UserManagement from "@/views/console/system-manage/user/UserManagement.vu
 import { useTimerStore } from "@/store/timer.ts";
 import ConsoleMainPage from "@/views/console/page/ConsoleMainPage.vue";
 import FileLibraryList from "@/views/console/file-space/file-library/FileLibraryList.vue";
-import OneselfShare from "@/views/console/file-space/oneself-share/OneselfShare.vue";
+import FileShare from "@/views/console/file-space/file-share/FileShare.vue";
 import FileSpace from "@/views/console/file-space/file-space/FileSpace.vue";
 
 let routes = [
@@ -69,10 +69,10 @@ let routes = [
                         component: FileSpace
                     },
                     {
-                        // 文件库 - 我的分享（占位）
+                        // 文件库 - 我的分享
                         path: 'my-share',
                         name: 'my-share',
-                        component: OneselfShare
+                        component: FileShare
                     }
                 ]
             }

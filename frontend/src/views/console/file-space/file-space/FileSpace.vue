@@ -64,6 +64,7 @@
           <template #default="{ record }">
             <a-space>
               <a-button type="link" @click="editData(record)">修改</a-button>
+              <a-button type="link" @click="openShareModal(record)">分享</a-button>
               <a-button type="link" danger @click="deleteData(record.id, record.name)">删除</a-button>
             </a-space>
           </template>
@@ -74,6 +75,10 @@
     <!-- 弹窗组件 -->
     <FileSpaceAddModal v-model:open="dialogInsert" @success="query" />
     <FileSpaceEditModal v-model:open="dialogEdit" :editData="selectData" @success="query" />
+    
+    <a-modal v-model:open="dialogShare" title="创建分享" :width="600" :footer="null">
+      <FileShareAdd ref="shareRef" @closeDialogInsert="dialogShare = false"/>
+    </a-modal>
 
   </a-layout>
 </template>
@@ -85,13 +90,16 @@ import { deleteFileSpace, getFileSpacePage } from "@/api/FileSpaceApi.ts";
 import { FileSpaceVo } from "@/type/filespace/FileSpaceVo.ts";
 import FileSpaceAddModal from "./FileSpaceAddModal.vue";
 import FileSpaceEditModal from "./FileSpaceEditModal.vue";
+import FileShareAdd from "../file-share/FileShareAdd.vue";
+import { ShareTypeEnum } from "@/enums/ShareTypeEnum.ts";
+import { nextTick } from "vue";
 
 /**
  * 个人空间管理页面
  */
 export default {
   name: "FileSpace",
-  components: { PlusOutlined, FileSpaceAddModal, FileSpaceEditModal },
+  components: { PlusOutlined, FileSpaceAddModal, FileSpaceEditModal, FileShareAdd },
   data() {
     return {
       queryForm: {
@@ -104,6 +112,7 @@ export default {
       tableHeight: 0,
       dialogInsert: false,
       dialogEdit: false,
+      dialogShare: false,
       selectData: null as FileSpaceVo | null,
     }
   },
@@ -178,6 +187,15 @@ export default {
             message.error('删除失败');
           });
         },
+      });
+    },
+    openShareModal(record: FileSpaceVo) {
+      this.dialogShare = true;
+      nextTick(() => {
+        (this.$refs.shareRef as any)?.init({
+          shareType: ShareTypeEnum.SPACE,
+          spaceId: record.id
+        });
       });
     }
   }

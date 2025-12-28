@@ -71,4 +71,12 @@ public interface FileSpaceMapper {
      * @return 空间数量
      */
     Integer countByUserId(@Param("userId") String userId);
+
+    /**
+     * 根据id列表查询
+     *
+     * @param fileSpaceIdList id列表
+     * @return 数据列表
+     */
+    List<FileSpaceDo> selectByIds(@Param("ids") List<String> fileSpaceIdList);
 }

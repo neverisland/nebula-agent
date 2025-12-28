@@ -2,7 +2,7 @@
   <div class="navbar-wrapper">
     <div class="header-container">
       <div class="logo-container">
-        <img alt="!" src="../../../assets/img/whale-32.png">
+        <img alt="!" width="36" height="36" src="/icon/whale-y.png">
       </div>
       <div class="content">
         <div class="social-links">

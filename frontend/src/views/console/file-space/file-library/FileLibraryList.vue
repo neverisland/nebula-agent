@@ -7,6 +7,9 @@
           <a-button v-if="selectedRowKeys.length > 0" @click="openMoveModal">
             移动至
           </a-button>
+          <a-button v-if="selectedRowKeys.length > 0" @click="openShareModal">
+            分享
+          </a-button>
           <a-button v-if="selectedRowKeys.length > 0 && queryForm.spaceId" @click="confirmRemoveFromSpace">
             移除空间
           </a-button>
@@ -198,6 +201,10 @@
     </a-modal>
 
     <FileUploadModal v-model:open="uploadVisible" @uploaded="handleUploaded"/>
+    
+    <a-modal v-model:open="dialogShare" title="创建分享" :width="600" :footer="null">
+      <FileShareAdd ref="shareRef" @closeDialogInsert="closeShareDialog"/>
+    </a-modal>
 
     <a-modal
         v-model:open="previewVisible"
@@ -250,12 +257,16 @@ import {
   DownloadOutlined,
   EditOutlined,
   InfoCircleOutlined,
-  DeleteOutlined
+  DeleteOutlined,
+  ShareAltOutlined
 } from '@ant-design/icons-vue';
 import {message, Modal, TablePaginationConfig} from 'ant-design-vue';
 import FileUploadModal from "./FileUploadModal.vue";
+import FileShareAdd from "../file-share/FileShareAdd.vue";
 import {deleteFileLibrary, getFileLibraryPage, removeFromSpace, renameFileLibrary} from "@/api/FileLibraryApi.ts";
 import {allocateFilesToSpace, selectFileSpaces} from "@/api/FileSpaceApi.ts";
+import {ShareTypeEnum} from "@/enums/ShareTypeEnum.ts";
+import {nextTick} from "vue";
 import type {PageResult} from "@/type/PageResult.ts";
 import {FileLibraryPageDto} from "@/type/filelibrary/FileLibraryPageDto.ts";
 import {FileLibraryPageVo} from "@/type/filelibrary/FileLibraryPageVo.ts";
@@ -275,7 +286,9 @@ export default {
     DownloadOutlined,
     EditOutlined,
     InfoCircleOutlined,
-    DeleteOutlined
+    DeleteOutlined,
+    ShareAltOutlined,
+    FileShareAdd
   },
   computed: {
     displaySpaces() {
@@ -324,6 +337,7 @@ export default {
       // 详情弹窗
       detailVisible: false,
       detailRecord: null as FileLibraryPageVo | null,
+      dialogShare: false,
     }
   },
   mounted() {
@@ -453,6 +467,22 @@ export default {
         }
       } catch (e) {
         message.error('移动失败');
+      }
+    },
+    openShareModal() {
+      this.dialogShare = true;
+      nextTick(() => {
+        (this.$refs.shareRef as any)?.init({
+          shareType: ShareTypeEnum.FILE,
+          fileIds: this.selectedRowKeys
+        });
+      });
+    },
+    closeShareDialog(refresh: boolean) {
+      this.dialogShare = false;
+      if (refresh) {
+        this.selectedRowKeys = [];
+        this.loadData();
       }
     },
     handleTableChange(pagination: TablePaginationConfig) {

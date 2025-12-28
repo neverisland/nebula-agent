@@ -19,6 +19,7 @@ public class PermissionVerificationConfigure implements WebMvcConfigurer {
             "/authentication/verifyWhetherAuthenticated", // 校验 token 是否有效
             "/sliding/verification/code/**", // 滑动验证码（获取/校验）
             "/file/**", // 文件下载/预览（图床核心功能）
+            "/file-share/public/**", // 文件分享公开访问
     };
 
     /**
