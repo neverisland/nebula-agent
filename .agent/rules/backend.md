@@ -50,9 +50,9 @@ globs: backend/**/*.java
 - **职责**:
     - 实现 `Facade` 接口。
     - 核心业务逻辑实现。
-    - 事务控制 (`@Transactional`)。
     - 调用 `Repository` 进行数据持久化。
     - 抛出业务异常 (`BusinessException`)。
+    - 关系实际业务操作，只能对领域对象(Entity)进行操作，不能直接操作数据库对象Do
 
 ### 3.4 Repository 层 (仓储层)
 - **位置**: `cn.yang.nebula.agent.business.*.repository`
@@ -60,11 +60,20 @@ globs: backend/**/*.java
     - 封装数据访问细节。
     - 调用 `Mapper` 或直接操作数据库。
     - 处理数据缓存 (Redis)。
+    - 事务控制 (`@Transactional`)。
+    - 仓储层只关心数据的存储、查询, **入参实体为 Entity / String id, 出参实体为 Entity**, Do不能出仓储层。
 
-### 3.5 Entity / DO (领域对象)
-- **位置**: `cn.yang.nebula.agent.business.*.dal` (或 `entity`)
+### 3.5 Entity (领域对象)
+- **位置**: `cn.yang.nebula.agent.business.*.entity`
 - **规范**:
-    - 必须继承 `BaseEntity`。
+    -- 必须继承 `BaseEntity` / `BaseTimeEntity`。
+    - 使用 Lombok (`@Data`)。
+    - 实现 `Serializable` 接口。
+
+### 3.5 DO (数据库持久化对象)
+- **位置**: `cn.yang.nebula.agent.business.*.dal`
+- **规范**:
+    - 必须继承 `BaseEntity` / `BaseTimeEntity`。
     - 使用 Lombok (`@Data`)。
     - 实现 `Serializable` 接口。
     - **严禁**: 手动设置 `createTime` 和 `updateTime`，由数据库默认值管理。
@@ -75,7 +84,7 @@ globs: backend/**/*.java
 - **类名**: PascalCase (e.g., `UserController`).
 - **方法名**: camelCase (e.g., `getUserById`).
 - **接口实现**: `Service` 实现 `Facade` 接口。
-- **入参对象**: `XxxxDto`（Parameter Object），用于 Controller 入参/Service 调用入参。
+- **入参对象**: `XxxxPo`（Parameter Object），用于 Controller 入参/Service 调用入参。
 - **出参对象**: `XxxxVo`（Response Object），用于 Controller 出参/Service 返回对象。
 - **前后端统一**: 前端 TypeScript 类型定义也应遵循 `Dto`/`Vo` 结尾的入参/出参命名，便于对齐契约。
 
@@ -168,20 +177,22 @@ globs: backend/**/*.java
     ```
 
 ### 4.5 异常处理
-- 业务逻辑错误抛出 `BusinessException`。
-- 必须指定错误码枚举 `ErrorStatusCodeEnum`。
+- 业务逻辑错误抛出 `cn.yang.common.data.structure.exception.BusinessException`。
+- 必须指定错误码枚举 `cn.yang.nebula.agent.enums.ErrorStatusCodeEnum`。
 
 ## 5. 常用工具类 (Common Utils)
 - **Bean 转换**: `cn.yang.common.data.structure.utils.bean.BeanConvertUtils`
 - **判空**: `org.springframework.util.ObjectUtils`, `org.springframework.util.CollectionUtils`
 - **集合**: `java.util.List`, `java.util.Map`, `java.util.stream.Collectors`
+- **工具类集合**: `cn.yang.nebula.agent.utils.*`
 
 ## 6. 注意事项 (Notes)
-1.  **API 文档**: 修改 Controller 后，务必运行 Cursor 生成/更新 `docs/api` 下的文档。
+1.  **API 文档**: 修改 Controller 后，务必运行 生成/更新 `docs/api` 下的文档。
 2.  **相对路径**: 引用文件时使用相对路径。
-3.  **事务**: 涉及多表修改务必添加 `@Transactional`。
-4.  **MyBatis**: 所有数据库操作必须通过 XML 映射实现，禁止使用 MyBatis-Plus。
-5.  **编译验证**: 完成代码修改后，**必须**执行编译验证，确保没有语法错误或依赖问题。
+3.  **事务**: 涉及多表修改务必添加 `@Transactional`,加在仓储层上。
+4.  **不能使用Map<Object,Object>**: 不能使用Map接收或传递参数,所有的数据类型必须定义明确的字段.
+5.  **MyBatis**: 所有数据库操作必须通过 XML 映射实现，禁止使用 MyBatis-Plus。
+6.  **编译验证**: 完成代码修改后，**必须**执行编译验证，确保没有语法错误或依赖问题。
     - 使用 IDEA 中的 Build → Build Project 或 Rebuild Project
     - 或使用命令行：`mvn clean compile -Dmaven.repo.local=D:\Maven-Repository -DskipTests`
     - 编译成功后才能提交代码或继续下一步工作

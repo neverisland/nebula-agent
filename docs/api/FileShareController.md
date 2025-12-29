@@ -14,8 +14,8 @@
 | enablePassword | Boolean | 是 | 是否开启密码访问 |
 | password | String | 否 | 访问密码 (开启密码必填) |
 | enableExpire | Boolean | 是 | 是否开启过期时间 |
-| expireTime | String | 否 | 过期时间 (yyyy-MM-dd, 开启过期必填) |
-| fileIds | Array | 否 | 关联文件ID列表 (类型为1必填) |
+| expireTime | String | 否 | 过期时间 (格式: yyyy-MM-dd, 开启过期必填) |
+| fileIds | Array<String> | 否 | 关联文件ID列表 (类型为1必填) |
 | spaceId | String | 否 | 关联空间ID (类型为2必填) |
 
 ### 响应参数
@@ -50,8 +50,8 @@
 | enablePassword | Boolean | 是 | 是否开启密码访问 |
 | password | String | 否 | 访问密码 (若需修改则填) |
 | enableExpire | Boolean | 是 | 是否开启过期时间 |
-| expireTime | String | 否 | 过期时间 (yyyy-MM-dd) |
-| fileIds | Array | 否 | 关联文件ID列表 (全量覆盖) |
+| expireTime | String | 否 | 过期时间 (格式: yyyy-MM-dd) |
+| fileIds | Array<String> | 否 | 关联文件ID列表 (全量覆盖) |
 | spaceId | String | 否 | 关联空间ID |
 
 ### 响应参数
@@ -105,11 +105,12 @@
 | data.shareUrl | String | 分享链接 |
 | data.enablePassword | Boolean | 是否开启密码 |
 | data.enableExpire | Boolean | 是否开启过期 |
-| data.expireTime | String | 过期时间 |
+| data.expireTime | String | 过期时间 (yyyy-MM-dd) |
 | data.isExpired | Boolean | 是否已过期 |
 | data.visitCount | Integer | 访问次数 |
 | data.downloadCount | Integer | 下载次数 |
 | data.fileCount | Integer | 文件数量 |
+| data.fileSpaceVo | Object | 空间信息 (如果是空间分享) |
 
 ## 5. 分页查询分享
 
@@ -133,7 +134,7 @@
 | code | Number | 状态码 |
 | msg | String | 消息 |
 | data | Object | 分页结果 |
-| data.records | Array | 数据列表 |
+| data.records | Array | 数据列表 (结构同详情) |
 | data.total | Number | 总数 |
 
 ## 6. 公开访问信息
@@ -154,3 +155,10 @@
 | code | Number | 状态码 |
 | msg | String | 消息 |
 | data | Object | 脱敏后的分享信息 |
+| data.id | String | 分享ID |
+| data.shareType | Integer | 类型 |
+| data.name | String | 名称 |
+| data.enablePassword | Boolean | 是否有密码 |
+| data.enableExpire | Boolean | 是否有过期时间 |
+| data.expireTime | String | 过期时间 |
+| data.isExpired | Boolean | 是否已过期 |

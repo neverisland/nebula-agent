@@ -77,15 +77,23 @@
           </template>
         </a-table-column>
 
-        <a-table-column title="链接" key="shareUrl" :width="300">
+        <a-table-column title="密码保护" key="password" :width="150" align="center">
           <template #default="{ record }">
-             <a-typography-text copyable>{{ record.shareUrl }}</a-typography-text>
+             <a-space v-if="record.enablePassword">
+                 <span style="font-family: monospace;">{{ record.password }}</span>
+                 <a-button type="link" size="small" @click="handleCopy(record.password)">
+                     <template #icon><CopyOutlined /></template>
+                </a-button>
+            </a-space>
+            <span v-else>-</span>
           </template>
         </a-table-column>
+        <a-table-column title="过期时间" dataIndex="expireTime" key="expireTime" :width="120" align="center"/>
+
+
 
         <a-table-column title="访问次数" dataIndex="visitCount" key="visitCount" :width="100" align="center"/>
         <a-table-column title="下载次数" dataIndex="downloadCount" key="downloadCount" :width="100" align="center"/>
-        <a-table-column title="过期时间" dataIndex="expireTime" key="expireTime" :width="180" align="center"/>
         
         <a-table-column title="状态" key="status" :width="100" align="center">
           <template #default="{ record }">
@@ -100,6 +108,7 @@
           <template #default="{ record }">
             <a-space>
               <a-button type="link" size="small" @click="openDialogDetail(record.id)">详情</a-button>
+              <a-button type="link" size="small" @click="handleCopy(record.shareUrl)">复制链接</a-button>
               <a-button type="link" size="small" @click="openDialogEdit(record.id)">编辑</a-button>
               <a-button type="link" size="small" danger @click="handleDelete(record)">删除</a-button>
             </a-space>
@@ -121,7 +130,7 @@
 <script lang="ts">
 import { h } from 'vue';
 import { message, Modal } from 'ant-design-vue';
-import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons-vue';
+import { ExclamationCircleOutlined, PlusOutlined, CopyOutlined } from '@ant-design/icons-vue';
 import { getSharePage, deleteShare } from '@/api/FileShareApi';
 import type { FileShareVo } from '@/type/file-share/vo/FileShareVo';
 import type { FileSharePageQueryPo } from '@/type/file-share/po/FileSharePageQueryPo';
@@ -134,7 +143,8 @@ export default {
   components: {
     FileShareEdit,
     FileShareDetail,
-    PlusOutlined // Register PlusOutlined for use in template
+    PlusOutlined,
+    CopyOutlined
   },
   data() {
     return {
@@ -264,6 +274,16 @@ export default {
           }
         }
       });
+    },
+    /**
+     * 复制文本
+     */
+    handleCopy(text: string) {
+       navigator.clipboard.writeText(text).then(() => {
+         message.success('复制成功');
+       }).catch(() => {
+         message.error('复制失败');
+       });
     }
   }
 };

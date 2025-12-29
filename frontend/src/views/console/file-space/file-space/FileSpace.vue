@@ -60,7 +60,7 @@
         </a-table-column>
         <a-table-column title="说明" dataIndex="remark" key="remark"/>
         <a-table-column title="创建时间" dataIndex="createTime" key="createTime" :width="180"/>
-        <a-table-column title="操作" key="action" :width="200" align="center">
+        <a-table-column title="操作" key="action" :width="240">
           <template #default="{ record }">
             <a-space>
               <a-button type="link" @click="editData(record)">修改</a-button>
@@ -194,7 +194,9 @@ export default {
       nextTick(() => {
         (this.$refs.shareRef as any)?.init({
           shareType: ShareTypeEnum.SPACE,
-          spaceId: record.id
+          spaceId: record.id,
+          name: record.name,
+          sourceName: record.name
         });
       });
     }

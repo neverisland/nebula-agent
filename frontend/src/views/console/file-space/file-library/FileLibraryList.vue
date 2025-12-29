@@ -470,11 +470,32 @@ export default {
       }
     },
     openShareModal() {
+      if (this.selectedRowKeys.length === 0) return;
+
       this.dialogShare = true;
+      
+      let name = '';
+      let sourceName = '';
+
+      if (this.selectedRowKeys.length === 1) {
+        // 单个文件
+        const file = this.tableData.find(item => item.id === this.selectedRowKeys[0]);
+        if (file) {
+          name = file.name;
+          sourceName = file.name;
+        }
+      } else {
+        // 多个文件
+        name = `${this.selectedRowKeys.length}个文件分享`;
+        sourceName = `${this.selectedRowKeys.length}个文件`;
+      }
+
       nextTick(() => {
         (this.$refs.shareRef as any)?.init({
           shareType: ShareTypeEnum.FILE,
-          fileIds: this.selectedRowKeys
+          fileIds: this.selectedRowKeys,
+          name: name,
+          sourceName: sourceName
         });
       });
     },
