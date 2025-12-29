@@ -141,4 +141,16 @@ public class FileShareController {
         FileSharePublicVo fileSharePublicVo = fileShareFacade.getPublicInfo(shareId);
         return ResultFactory.success(StatusCodeEnum.SUCCESS, "success", fileSharePublicVo);
     }
+
+    /**
+     * 增加访问次数（公开接口）
+     *
+     * @param id 分享ID
+     * @return 成功
+     */
+    @GetMapping("/public/incrementVisit")
+    public ResultVo<?> incrementVisit(@RequestParam("id") @NotBlank(message = "分享ID不能为空") String id) {
+        fileShareFacade.incrementVisitCount(id);
+        return ResultFactory.success(StatusCodeEnum.SUCCESS, "success");
+    }
 }

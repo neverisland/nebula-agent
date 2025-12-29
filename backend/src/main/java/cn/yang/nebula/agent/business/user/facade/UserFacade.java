@@ -9,7 +9,7 @@ import cn.yang.common.data.structure.vo.page.PageResult;
 /**
  * 用户 业务接口定义
  *
- * @author 未见清海
+ * @author QingHai
  */
 public interface UserFacade {
 

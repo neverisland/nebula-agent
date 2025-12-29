@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * 新增个人空间入参
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Data
 public class FileSpaceInsertDto implements Serializable {

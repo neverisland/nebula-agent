@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- * @author : 未见清海
+ * @author : QingHai
  */
 @Configuration
 public class BeanConfig {

@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * 个人空间 DO
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Data
 public class FileSpaceDo extends BaseEntity implements Serializable {

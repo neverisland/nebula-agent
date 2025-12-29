@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * 当前登录身份角色信息
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Data
 public class CurrentUserRoleDto implements Serializable {

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 角色枚举
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Getter
 public enum RoleEnum {

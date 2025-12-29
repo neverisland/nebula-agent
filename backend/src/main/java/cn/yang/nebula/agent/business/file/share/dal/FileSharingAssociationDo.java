@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * 分享关联 DO
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Data
 public class FileSharingAssociationDo implements Serializable {

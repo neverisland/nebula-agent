@@ -10,7 +10,7 @@ import java.time.LocalDate;
 /**
  * 分享记录 DO
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Data
 public class FileShareDo extends BaseEntity implements Serializable {

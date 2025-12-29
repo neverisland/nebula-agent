@@ -5,7 +5,6 @@ import cn.yang.common.data.structure.utils.bean.BeanConvertUtils;
 import cn.yang.common.data.structure.vo.page.PageResult;
 import cn.yang.nebula.agent.business.authentication.entity.UserInfo;
 import cn.yang.nebula.agent.business.authentication.facade.AuthenticationFacade;
-import cn.yang.nebula.agent.business.file.library.repository.FileLibraryRepository;
 import cn.yang.nebula.agent.business.file.share.entity.FileShare;
 import cn.yang.nebula.agent.business.file.share.enums.ShareTypeEnum;
 import cn.yang.nebula.agent.business.file.share.facade.FileShareFacade;
@@ -18,32 +17,40 @@ import cn.yang.nebula.agent.business.file.share.vo.FileShareVo;
 import cn.yang.nebula.agent.business.file.space.entity.FileSpace;
 import cn.yang.nebula.agent.business.file.space.repository.FileSpaceRepository;
 import cn.yang.nebula.agent.business.file.space.vo.FileSpaceVo;
+import cn.yang.nebula.agent.enums.CacheSpaceEnum;
 import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
  * 分享业务实现层
  *
- * @author 未见清海
+ * @author QingHai
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FileShareService implements FileShareFacade {
 
     private final FileShareRepository fileShareRepository;
 
-    private final FileLibraryRepository fileLibraryRepository;
-
     private final FileSpaceRepository fileSpaceRepository;
 
     private final AuthenticationFacade authenticationFacade;
+
+    private final RedissonClient redissonClient;
 
     @Value("${file.share.address}")
     private String shareAddress;
@@ -196,4 +203,82 @@ public class FileShareService implements FileShareFacade {
         return fileSharePublicVo;
     }
 
+    /**
+     * 增加访问次数
+     * 使用 Redisson 分布式锁保证并发安全
+     *
+     * @param id 分享ID
+     */
+    @Override
+    public void incrementVisitCount(String id) {
+        String lockKey = CacheSpaceEnum.FILE_SHARE_VISIT_COUNT.getMark() + id;
+        RLock lock = redissonClient.getLock(lockKey);
+
+        try {
+            // 尝试获取锁，等待 3 秒，锁自动释放时间 10 秒
+            boolean acquired = lock.tryLock(3, 10, TimeUnit.SECONDS);
+            if (acquired) {
+                try {
+                    fileShareRepository.incrementVisitCount(id);
+                } finally {
+                    lock.unlock();
+                }
+            } else {
+                throw new BusinessException(ErrorStatusCodeEnum.SYSTEM_BUSY, "系统繁忙，请稍后重试");
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new BusinessException(ErrorStatusCodeEnum.SYSTEM_BUSY, "操作被中断");
+        }
+    }
+
+    /**
+     * 定时任务：检查并更新过期分享状态
+     * 每天凌晨 00:00:00 执行
+     * 使用分布式锁保证多服务实例不重复执行，不进行重试
+     */
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void updateExpiredShareStatus() {
+        log.info("[分享过期任务] 开始执行分享过期状态检查任务...");
+
+        String lockKey = CacheSpaceEnum.FILE_SHARE_EXPIRE_TASK.getMark();
+        RLock lock = redissonClient.getLock(lockKey);
+
+        // 尝试获取锁，不等待，获取不到立即返回（不重试）
+        boolean acquired = lock.tryLock();
+        if (!acquired) {
+            log.info("[分享过期任务] 获取分布式锁失败，其他服务实例正在执行，本次任务跳过");
+            return;
+        }
+
+        try {
+            log.info("[分享过期任务] 成功获取分布式锁，开始处理过期分享...");
+
+            // 获取当前日期
+            LocalDate currentDate = LocalDate.now();
+
+            // 查询需要标记为过期的分享ID列表
+            List<String> expiredShareIds = fileShareRepository.selectExpiredShareIds(currentDate);
+
+            if (CollectionUtils.isEmpty(expiredShareIds)) {
+                log.info("[分享过期任务] 没有需要标记过期的分享记录");
+                return;
+            }
+
+            log.info("[分享过期任务] 查询到 {} 条需要标记过期的分享记录，ID列表: {}", expiredShareIds.size(), expiredShareIds);
+
+            // 批量更新过期状态
+            int updateCount = fileShareRepository.batchUpdateExpiredStatus(expiredShareIds);
+            log.info("[分享过期任务] 成功更新 {} 条分享记录的过期状态", updateCount);
+
+        } finally {
+            // 释放锁
+            if (lock.isHeldByCurrentThread()) {
+                lock.unlock();
+                log.info("[分享过期任务] 分布式锁已释放");
+            }
+        }
+
+        log.info("[分享过期任务] 分享过期状态检查任务执行完成");
+    }
 }

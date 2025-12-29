@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 用户角色关联 Mapper
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Mapper
 public interface UserRoleMapper {

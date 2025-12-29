@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * 使用spring cache 配置
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Configuration
 @EnableCaching

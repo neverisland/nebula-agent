@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 /**
  * 滑动验证码校验入参
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 public class SlideCaptchaCheckDto {
 

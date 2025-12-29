@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * 新增用户入参实体
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Data
 public class UserInsertDto implements Serializable {

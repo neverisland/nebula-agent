@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * 分配文件至空间 入参
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Data
 public class FileSpaceAllocateDto implements Serializable {

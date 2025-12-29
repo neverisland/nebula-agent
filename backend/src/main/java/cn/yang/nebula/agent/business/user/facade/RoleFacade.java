@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * 角色表 业务接口定义
  *
- * @author 未见清海
+ * @author QingHai
  */
 public interface RoleFacade {
 

@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * 文件重命名入参
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Data
 public class FileLibraryRenameDto implements Serializable {

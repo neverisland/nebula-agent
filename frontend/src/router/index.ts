@@ -9,11 +9,17 @@ import ConsoleMainPage from "@/views/console/page/ConsoleMainPage.vue";
 import FileLibraryList from "@/views/console/file-space/file-library/FileLibraryList.vue";
 import FileShare from "@/views/console/file-space/file-share/FileShare.vue";
 import FileSpace from "@/views/console/file-space/file-space/FileSpace.vue";
+import FileShareLayout from "@/views/public/file-share/FileShareLayout.vue";
 
 let routes = [
     {
         path: '/',
         redirect: '/console',
+    },
+    {
+        path: '/public/file/share/:id',
+        name: 'public-share',
+        component: FileShareLayout
     },
     {
         path: '/home',
@@ -91,7 +97,17 @@ const router = createRouter({
 router.beforeEach((to, _from, next) => {
     const timerStore = useTimerStore()
     // 在白名单停止是否登录监听
-    if (whiteListRoutes.includes(to.path)) {
+    // 简单的 includes 不支持 params 路由，需使用正则或特定匹配逻辑
+    const isWhiteList = whiteListRoutes.some(route => {
+        // 处理带参数的动态路由，如 /public/file/share/:id
+        if (route.includes('/:')) {
+            const regex = new RegExp('^' + route.replace(/:[a-zA-Z0-9_]+/g, '[^/]+') + '$');
+            return regex.test(to.path);
+        }
+        return route === to.path;
+    });
+
+    if (isWhiteList) {
         timerStore.stopTimer()
     } else {
         timerStore.startTimer()
@@ -105,6 +121,7 @@ export const whiteListRoutes: string[] = [
     '/',
     '/home',
     '/console/login',
+    '/public/file/share/:id', // 通配符可能需要逻辑处理，但在 includes 中无法直接匹配，需修改守卫逻辑
 ]
 
 export default router;

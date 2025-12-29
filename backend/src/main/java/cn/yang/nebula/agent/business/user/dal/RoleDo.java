@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * 角色持久数据结构
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Data
 public class RoleDo extends BaseEntity implements Serializable {

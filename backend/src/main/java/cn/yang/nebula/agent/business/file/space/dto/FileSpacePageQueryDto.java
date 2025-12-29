@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * 个人空间分页查询入参
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Data
 public class FileSpacePageQueryDto extends PageQuery implements Serializable {

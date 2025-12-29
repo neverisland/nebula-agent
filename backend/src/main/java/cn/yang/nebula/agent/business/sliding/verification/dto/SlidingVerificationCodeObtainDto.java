@@ -5,7 +5,7 @@ import cn.yang.foundational.capability.sliding.verification.code.dto.SlidingVeri
 /**
  * 滑动验证码获取的入参
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 public class SlidingVerificationCodeObtainDto extends SlidingVerificationCodeGain {
 

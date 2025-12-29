@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * 文件库
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Data
 public class FileLibraryDo extends BaseEntity implements Serializable {

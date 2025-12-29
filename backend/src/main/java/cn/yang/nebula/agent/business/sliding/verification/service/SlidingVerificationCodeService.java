@@ -23,7 +23,7 @@ import java.util.UUID;
 /**
  * 滑动验证码业务实现
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Service
 public class SlidingVerificationCodeService implements SlidingVerificationCodeFacade {

@@ -5,7 +5,7 @@ import java.io.Serial;
 /**
  * 模型调用异常
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 public class ModelCallException extends Exception {
 

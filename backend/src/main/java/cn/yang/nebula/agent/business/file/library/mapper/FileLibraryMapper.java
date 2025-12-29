@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * 文件库 Mapper
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Mapper
 public interface FileLibraryMapper {

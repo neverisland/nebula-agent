@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * 用户详情出参
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Data
 public class UserDto implements Serializable {

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 /**
  * 分享记录 VO
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Data
 public class FileSharePublicVo implements Serializable {

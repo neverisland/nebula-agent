@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * 角色详情
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Data
 public class RoleDto implements Serializable {

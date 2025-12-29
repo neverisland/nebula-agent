@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * 认证接口
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 public interface AuthenticationFacade {
 

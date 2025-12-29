@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * 用户角色关联实体
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Data
 public class UserRoleDo implements Serializable {

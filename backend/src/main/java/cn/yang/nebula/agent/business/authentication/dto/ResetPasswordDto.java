@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * 密码重置入参
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Data
 public class ResetPasswordDto implements Serializable {

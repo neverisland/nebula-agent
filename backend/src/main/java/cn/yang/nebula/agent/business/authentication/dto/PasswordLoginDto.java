@@ -7,7 +7,7 @@ import lombok.Data;
 /**
  * 账号密码登录入参
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Data
 public class PasswordLoginDto extends SlideCaptchaCheckDto {

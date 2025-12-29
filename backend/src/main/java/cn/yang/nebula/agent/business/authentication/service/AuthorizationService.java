@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * 授权业务层
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Service
 public class AuthorizationService implements AuthorizationFacade {

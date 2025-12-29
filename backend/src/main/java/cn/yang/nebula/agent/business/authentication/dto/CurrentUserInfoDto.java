@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * 当前登录用户信息
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Data
 public class CurrentUserInfoDto implements Serializable {

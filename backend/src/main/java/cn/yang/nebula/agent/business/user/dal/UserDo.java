@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 /**
  * 用户实体
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Data
 public class UserDo extends BaseEntity implements Serializable {

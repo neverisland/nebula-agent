@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * 文件删除入参
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Data
 public class FileLibraryDeleteDto implements Serializable {

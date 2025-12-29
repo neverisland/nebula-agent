@@ -5,7 +5,7 @@ import cn.yang.common.data.structure.vo.result.ResultCodeInterface;
 /**
  * 异常返回状态枚举
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 public enum ErrorStatusCodeEnum implements ResultCodeInterface {
 
@@ -27,7 +27,9 @@ public enum ErrorStatusCodeEnum implements ResultCodeInterface {
 
     NOT_LOGIN_EXCEPTION(9, "用户未登录"),
 
-    MODEL_CALL_EXCEPTION(10, "模型调用失败");
+    MODEL_CALL_EXCEPTION(10, "模型调用失败"),
+
+    SYSTEM_BUSY(11, "系统繁忙");
 
 
     /**

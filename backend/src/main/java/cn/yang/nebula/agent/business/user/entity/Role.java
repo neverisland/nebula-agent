@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * 角色表
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Data
 public class Role extends BaseEntity implements Serializable {

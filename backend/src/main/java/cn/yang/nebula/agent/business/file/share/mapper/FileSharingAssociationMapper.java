@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 分享关联 Mapper
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Mapper
 public interface FileSharingAssociationMapper {

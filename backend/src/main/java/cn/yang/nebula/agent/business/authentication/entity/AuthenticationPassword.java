@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * 用户密码认证
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Data
 public class AuthenticationPassword extends BaseTimeEntity implements Serializable {

@@ -96,7 +96,7 @@ globs: backend/**/*.java
      * 用户业务实现类
      * 负责处理用户相关的核心业务逻辑，如注册、登录、信息修改等
      *
-     * @author 未见清海
+     * @author QingHai
      */
     @Service
     public class UserService implements UserFacade { ... }
@@ -194,5 +194,5 @@ globs: backend/**/*.java
 5.  **MyBatis**: 所有数据库操作必须通过 XML 映射实现，禁止使用 MyBatis-Plus。
 6.  **编译验证**: 完成代码修改后，**必须**执行编译验证，确保没有语法错误或依赖问题。
     - 使用 IDEA 中的 Build → Build Project 或 Rebuild Project
-    - 或使用命令行：`mvn clean compile -Dmaven.repo.local=D:\Maven-Repository -DskipTests`
+    - 或使用命令行：`mvn clean compile -s D:\Software\Maven\conf\settings.xml -DskipTests`
     - 编译成功后才能提交代码或继续下一步工作

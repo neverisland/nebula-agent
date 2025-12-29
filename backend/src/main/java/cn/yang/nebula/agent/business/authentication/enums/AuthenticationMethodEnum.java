@@ -3,7 +3,7 @@ package cn.yang.nebula.agent.business.authentication.enums;
 /**
  * 认证方式
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 public enum AuthenticationMethodEnum {
 

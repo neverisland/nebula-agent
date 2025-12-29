@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * 用户身份接口
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @RestController
 @RequestMapping("/user")

@@ -5,7 +5,7 @@ import lombok.Getter;
 /**
  * 角色类型枚举
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Getter
 public enum RoleTypeEnum {

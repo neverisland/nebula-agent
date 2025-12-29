@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 /**
  * 个人空间业务层
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Service
 public class FileSpaceService implements FileSpaceFacade {

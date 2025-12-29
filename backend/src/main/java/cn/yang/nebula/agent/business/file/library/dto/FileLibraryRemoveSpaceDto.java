@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * 移除文件空间归属 入参
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Data
 public class FileLibraryRemoveSpaceDto implements Serializable {

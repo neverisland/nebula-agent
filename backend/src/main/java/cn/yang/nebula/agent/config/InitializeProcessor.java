@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * 初始化处理器
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Configuration
 public class InitializeProcessor {

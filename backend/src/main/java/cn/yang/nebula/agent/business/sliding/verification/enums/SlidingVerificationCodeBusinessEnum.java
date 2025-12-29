@@ -5,7 +5,7 @@ import cn.yang.common.data.structure.exception.NullDataException;
 /**
  * 滑动验证码业务枚举
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 public enum SlidingVerificationCodeBusinessEnum {
 

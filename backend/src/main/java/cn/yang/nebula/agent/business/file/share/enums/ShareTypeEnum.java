@@ -5,7 +5,7 @@ import lombok.Getter;
 /**
  * 分享类型枚举
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Getter
 public enum ShareTypeEnum {

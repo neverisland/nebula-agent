@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * 数据接口层
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Mapper
 public interface AuthenticationPasswordMapper {

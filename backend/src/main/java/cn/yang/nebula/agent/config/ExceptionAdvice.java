@@ -19,7 +19,7 @@ import java.util.Objects;
 /**
  * 全局异常捕获
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @RestControllerAdvice
 public class ExceptionAdvice {

@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * 文件库 门面接口
  *
- * @author 未见清海
+ * @author QingHai
  */
 public interface FileLibraryFacade {
 

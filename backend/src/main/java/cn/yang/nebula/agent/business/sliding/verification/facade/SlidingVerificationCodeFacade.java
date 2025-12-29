@@ -7,7 +7,7 @@ import cn.yang.foundational.capability.sliding.verification.code.dto.SlidingVeri
 /**
  * 滑动验证码业务接口
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 public interface SlidingVerificationCodeFacade {
 

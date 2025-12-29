@@ -11,7 +11,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 /**
  * 获取当前登录用户ID
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Service
 public class CurrentlyUserService implements CurrentlyUserFacade {

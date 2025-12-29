@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * 用户历史密码
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Data
 public class AuthenticationHistoricalPasswordDo extends BaseTimeEntity implements Serializable {

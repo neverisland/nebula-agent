@@ -1,4 +1,8 @@
 ---
+trigger: always_on
+---
+
+---
 description: 前端 Vue 3 + TypeScript 开发规范 (详细版)
 globs: frontend/**/*.ts,frontend/**/*.vue
 ---
@@ -12,6 +16,7 @@ globs: frontend/**/*.ts,frontend/**/*.vue
 - **UI 组件库**: Ant Design Vue
 - **状态管理**: Pinia
 - **HTTP 客户端**: Axios
+- **API风格偏好**: 选项式 API (Options API)
 
 ## 2. 目录结构 (Directory Structure)
 - `frontend/src/api`: API 接口定义，对应后端的 Controller。
@@ -50,7 +55,7 @@ globs: frontend/**/*.ts,frontend/**/*.vue
 - **定义位置**: 所有的出入参必须在 `frontend/src/type` 目录下定义。
 - **文件拆分**: 每个出参和入参必须单独定义一个文件，严禁多个类型定义合并在同一个文件中。
 - **注释规范**: 每一个字段都必须添加 JSDoc 注释，说明字段含义。
-- **命名规范**: 入参类型统一以 `XxxxDto` 结尾（Data Transfer Object），出参/数据返回类型统一以 `XxxxVo` 结尾（Value Object），必须与后端命名保持完全一致。
+- **命名规范**: 入参类型统一以 `XxxxPo` 结尾（Data Transfer Object），出参/数据返回类型统一以 `XxxxVo` 结尾（Value Object），必须与后端命名保持完全一致。
 - 所有 API 调用和数据传递必须有明确的 TypeScript 类型定义。
 
 ## 4. 代码示例 (Code Examples)

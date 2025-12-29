@@ -4,7 +4,7 @@ package cn.yang.nebula.agent.business.authentication.enums;
  * 用户密码类型
  * 0-初始密码 1-自定义密码
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 public enum PasswordTypeEnums {
 

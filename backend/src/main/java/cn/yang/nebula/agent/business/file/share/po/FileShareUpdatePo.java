@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 更新分享入参
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Data
 public class FileShareUpdatePo extends FileShareCreatePo implements Serializable {

@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
- * @author : 未见清海
+ * @author : QingHai
  */
 @Service
 public class AuthenticationPasswordService implements AuthenticationPasswordFacade {

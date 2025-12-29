@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 /**
  * 禁用/启用用户数据
- * @author : 未见清海
+ * @author : QingHai
  */
 @Data
 public class DisableEnableUserDto implements Serializable {

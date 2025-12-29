@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 /**
  * 用户密码认证 仓储层
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Component
 public class AuthenticationPasswordRepository {

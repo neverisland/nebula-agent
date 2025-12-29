@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * 滑动验证码业务统一接口
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @RestController
 @RequestMapping("/sliding/verification/code")

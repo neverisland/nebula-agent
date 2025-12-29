@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 权限 业务接口定义
  *
- * @author 未见清海
+ * @author QingHai
  */
 public interface PermissionFacade {
 

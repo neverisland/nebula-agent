@@ -5,7 +5,7 @@ import cn.yang.foundational.capability.sliding.verification.code.dto.SlidingVeri
 /**
  * 滑动验证码出参,渲染展示
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 public class SlidingVerificationCodeDto extends SlidingVerificationCodeBaseReturn {
 

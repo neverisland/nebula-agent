@@ -6,7 +6,7 @@ import lombok.Getter;
 /**
  * 权限枚举
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Getter
 public enum PermissionEnum {

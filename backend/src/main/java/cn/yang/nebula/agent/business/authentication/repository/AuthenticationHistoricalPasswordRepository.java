@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 /**
  * 用户历史密码 仓储层
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Repository
 public class AuthenticationHistoricalPasswordRepository {

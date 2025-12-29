@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 账号密码登录认证接口层
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @ParamLog
 @RestController

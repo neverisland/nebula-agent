@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * 权限
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Data
 public class PermissionDo extends BaseTimeEntity implements Serializable {

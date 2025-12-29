@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * 认证业务
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Service
 public class AuthenticationService implements AuthenticationFacade {

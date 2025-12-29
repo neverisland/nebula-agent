@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * 用户信息
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Data
 public class UserInfo implements Serializable {

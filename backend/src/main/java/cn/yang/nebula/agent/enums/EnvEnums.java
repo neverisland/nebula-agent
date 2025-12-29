@@ -3,7 +3,7 @@ package cn.yang.nebula.agent.enums;
 import lombok.Getter;
 
 /**
- * @author : 未见清海
+ * @author : QingHai
  */
 @Getter
 public enum EnvEnums {

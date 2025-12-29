@@ -21,7 +21,7 @@ import org.springframework.util.StringUtils;
 /**
  * 用户 业务层
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Service
 public class UserService implements UserFacade {

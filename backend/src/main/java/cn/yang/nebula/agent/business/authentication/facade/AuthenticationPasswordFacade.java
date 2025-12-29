@@ -6,7 +6,7 @@ import cn.yang.nebula.agent.business.authentication.dto.ResetPasswordDto;
 /**
  * 账号密码认证业务接口
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 public interface AuthenticationPasswordFacade {
 

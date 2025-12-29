@@ -85,4 +85,27 @@
         ORDER BY create_time DESC
     </select>
 
+    <update id="incrementVisitCount">
+        UPDATE file_share
+        SET visit_count = visit_count + 1
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectExpiredShareIds" resultType="java.lang.String">
+        SELECT id
+        FROM file_share
+        WHERE enable_expire = 1
+          AND is_expired = 0
+          AND expire_time &lt; #{currentDate}
+    </select>
+
+    <update id="batchUpdateExpiredStatus">
+        UPDATE file_share
+        SET is_expired = 1
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
 </mapper>

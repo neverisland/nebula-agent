@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * 个人空间实体
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Data
 public class FileSpace extends BaseEntity implements Serializable {

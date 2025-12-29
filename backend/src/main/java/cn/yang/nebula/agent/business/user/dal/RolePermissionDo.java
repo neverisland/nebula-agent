@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * 角色权限关联
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Data
 public class RolePermissionDo implements Serializable {

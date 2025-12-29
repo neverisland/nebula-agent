@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * 分享分页查询入参
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Data
 public class FileSharePageQueryPo extends PageQuery implements Serializable {

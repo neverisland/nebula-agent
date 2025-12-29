@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * 授权
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @ParamLog
 @RestController

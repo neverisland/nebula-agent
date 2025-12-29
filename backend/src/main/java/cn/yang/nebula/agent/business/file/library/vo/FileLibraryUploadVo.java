@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * 文件上传响应
  *
- * @author 未见清海
+ * @author QingHai
  */
 @Data
 public class FileLibraryUploadVo implements Serializable {

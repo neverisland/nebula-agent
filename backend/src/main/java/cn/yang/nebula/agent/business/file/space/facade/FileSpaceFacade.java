@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * 个人空间业务接口层
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 public interface FileSpaceFacade {
 

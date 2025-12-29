@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * 权限详情
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Data
 public class PermissionDto implements Serializable {

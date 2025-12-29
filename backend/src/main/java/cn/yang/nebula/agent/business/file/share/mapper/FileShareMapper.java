@@ -62,4 +62,29 @@ public interface FileShareMapper {
      * @return 数据列表
      */
     List<FileShareDo> selectPageData(@Param("query") FileSharePageQueryPo query);
+
+    /**
+     * 增加访问次数
+     *
+     * @param id 分享ID
+     * @return 影响行数
+     */
+    int incrementVisitCount(@Param("id") String id);
+
+    /**
+     * 查询需要标记为过期的分享记录
+     * 条件：启用了过期时间、过期时间已到、状态未标记为过期
+     *
+     * @param currentDate 当前日期
+     * @return 需要标记过期的分享ID列表
+     */
+    List<String> selectExpiredShareIds(@Param("currentDate") java.time.LocalDate currentDate);
+
+    /**
+     * 批量更新分享过期状态
+     *
+     * @param ids 分享ID列表
+     * @return 影响行数
+     */
+    int batchUpdateExpiredStatus(@Param("ids") List<String> ids);
 }

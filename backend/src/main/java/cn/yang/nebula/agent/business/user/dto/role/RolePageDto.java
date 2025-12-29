@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * 角色分页查询列表返回
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Data
 public class RolePageDto implements Serializable {

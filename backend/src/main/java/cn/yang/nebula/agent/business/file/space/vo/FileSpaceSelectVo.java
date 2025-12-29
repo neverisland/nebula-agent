@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * 个人空间选择
  *
- * @author : 未见清海
+ * @author : QingHai
  */
 @Data
 public class FileSpaceSelectVo implements Serializable {

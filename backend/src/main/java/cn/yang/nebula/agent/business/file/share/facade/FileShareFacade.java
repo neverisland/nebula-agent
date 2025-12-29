@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 分享业务层接口
  *
- * @author 未见清海
+ * @author QingHai
  */
 public interface FileShareFacade {
 
@@ -61,4 +61,12 @@ public interface FileShareFacade {
      * @return 分享信息
      */
     FileSharePublicVo getPublicInfo(String shareId);
+
+    /**
+     * 增加访问次数
+     * 使用分布式锁保证并发安全
+     *
+     * @param id 分享ID
+     */
+    void incrementVisitCount(String id);
 }
