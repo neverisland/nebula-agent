@@ -40,7 +40,7 @@ public class FileController {
         String fullPath = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
         String relativePath = fullPath.replaceFirst("/file/", "");
         relativePath = URLDecoder.decode(relativePath, StandardCharsets.UTF_8);
-        log.info("文件下载:[{}]", relativePath);
+//        log.info("文件下载:[{}]", relativePath);
         fileLibraryFacade.downloadPreview(relativePath, response);
     }
 }

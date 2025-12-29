@@ -1,29 +1,3 @@
-<script setup lang="ts">
-import { ref } from 'vue';
-import { LockOutlined } from '@ant-design/icons-vue';
-
-/**
- * 密码输入组件
- */
-
-const emit = defineEmits<{
-  (e: 'submit', password: string): void
-}>();
-
-const password = ref('');
-const loading = ref(false);
-
-const handleSubmit = () => {
-    if (!password.value) return;
-    loading.value = true;
-    setTimeout(() => {
-        emit('submit', password.value);
-        loading.value = false;
-    }, 500);
-};
-
-</script>
-
 <template>
   <div class="password-container">
     <div class="password-card">
@@ -50,7 +24,7 @@ const handleSubmit = () => {
                 size="large" 
                 class="submit-btn" 
                 :loading="loading"
-                :disabled="!password"
+                :disabled="!password || loading"
                 @click="handleSubmit"
              >
                 提取文件
@@ -59,6 +33,38 @@ const handleSubmit = () => {
     </div>
   </div>
 </template>
+
+<script lang="ts">
+import { LockOutlined } from '@ant-design/icons-vue';
+
+/**
+ * 密码输入组件
+ */
+export default {
+  name: "FileSharePassword",
+  components: {
+    LockOutlined
+  },
+  props: {
+    loading: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data() {
+    return {
+      password: ''
+    };
+  },
+  methods: {
+    handleSubmit() {
+      if (!this.password || this.loading) return;
+      // 直接触发提交事件，由父组件处理验证
+      this.$emit('submit', this.password);
+    }
+  }
+};
+</script>
 
 <style scoped>
 .password-container {

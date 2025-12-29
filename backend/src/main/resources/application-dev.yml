@@ -17,3 +17,10 @@ spring:
       # Redis服务器连接密码（默认为空）
 #      password: '%FD@Aoa%l4Sv'
       password: 'sf2!Ka2#tE2AD+9g'
+
+# 文件相关配置信息
+file:
+  access:
+    address: http://127.0.0.1:9000
+  share:
+    address: http://localhost:5173/public/file/share/

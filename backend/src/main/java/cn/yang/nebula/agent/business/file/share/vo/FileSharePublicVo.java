@@ -80,4 +80,9 @@ public class FileSharePublicVo implements Serializable {
      * 文件空间信息
      */
     private FileSpaceVo fileSpaceVo;
+
+    /**
+     * 创建人名称
+     */
+    private String createUserName;
 }

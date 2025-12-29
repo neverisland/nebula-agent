@@ -40,20 +40,18 @@
             <a-switch v-model:checked="formState.enableExpire" />
             <div v-if="formState.enableExpire" style="margin-top: 8px">
                 <a-form-item name="expireTime" :rules="formState.enableExpire ? rules.expireTime : []" no-style>
-                    <a-date-picker 
-                        v-model:value="formState.expireTime" 
-                        placeholder="选择过期时间" 
-                        value-format="YYYY-MM-DD"
-                        style="width: 100%"
+                    <expire-time-picker
+                        v-model:model-value="formState.expireTime"
+                        :show-time="false"
                     />
                 </a-form-item>
             </div>
         </a-form-item>
 
-        <a-form-item style="margin-top: 10px;">
+        <a-form-item>
             <a-space style="display: flex; justify-content: flex-end">
-                <a-button @click="handleCancel" size="small">取消</a-button>
-                <a-button type="primary" :loading="confirmLoading" @click="handleOk" size="small">确定</a-button>
+                <a-button @click="handleCancel">取消</a-button>
+                <a-button type="primary" :loading="confirmLoading" @click="handleOk">确定</a-button>
             </a-space>
         </a-form-item>
         </a-form>
@@ -66,9 +64,13 @@ import type { FormInstance } from 'ant-design-vue';
 import { ShareTypeEnum } from '@/enums/ShareTypeEnum';
 import { createShare } from '@/api/FileShareApi';
 import type { FileShareCreatePo } from '@/type/file-share/po/FileShareCreatePo';
+import ExpireTimePicker from '@/components/ExpireTimePicker.vue';
 
 export default {
     name: "FileShareAdd",
+    components: {
+        ExpireTimePicker
+    },
     emits: ['closeDialogInsert'],
     data() {
         return {
@@ -126,13 +128,22 @@ export default {
                 
                 const res = await createShare(this.formState);
                 if (res.data.code === 0) {
-                    message.success('创建成功');
+                    message.success('新增成功');
                     this.$emit('closeDialogInsert', true);
                 } else {
-                    message.error(res.data.msg || '创建失败');
+                    // 优先显示后端返回的详细信息，如果没有则显示 msg，最后才显示默认消息
+                    const errorMsg = res.data.details || res.data.msg || '新增失败';
+                    message.error(errorMsg);
                 }
-            } catch (error) {
+            } catch (error: any) {
                 console.error(error);
+                // 处理网络错误或其他异常
+                if (error?.response?.data) {
+                    const errorMsg = error.response.data.details || error.response.data.msg || '新增失败';
+                    message.error(errorMsg);
+                } else {
+                    message.error('网络异常，请稍后重试');
+                }
             } finally {
                 this.confirmLoading = false;
             }

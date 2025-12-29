@@ -3,9 +3,13 @@ import { message } from 'ant-design-vue';
 import type { FormInstance } from 'ant-design-vue';
 import { updateShare, getShareDetail } from '@/api/FileShareApi';
 import type { FileShareUpdatePo } from '@/type/file-share/po/FileShareUpdatePo';
+import ExpireTimePicker from '@/components/ExpireTimePicker.vue';
 
 export default {
     name: "FileShareEdit",
+    components: {
+        ExpireTimePicker
+    },
     props: {
         selectId: {
             type: String,
@@ -17,6 +21,7 @@ export default {
         return {
             confirmLoading: false,
             loading: false,
+            isExpired: false,
             formState: {
                 id: '',
                 name: '',
@@ -55,6 +60,10 @@ export default {
                 const res = await getShareDetail(this.selectId);
                 if (res.data.code === 0) {
                     const data = res.data.data;
+                    this.isExpired = data.isExpired || false;
+                    if (this.isExpired) {
+                        message.warning('已过期的分享不能进行修改');
+                    }
                     this.formState = {
                         id: data.id,
                         name: data.name,
@@ -78,6 +87,10 @@ export default {
          * 确定按钮
          */
         async handleOk() {
+            if (this.isExpired) {
+                message.warning('已过期的分享不能进行修改');
+                return;
+            }
             try {
                 await (this.$refs.formRef as FormInstance)?.validate();
                 this.confirmLoading = true;
@@ -115,29 +128,35 @@ export default {
             :rules="rules"
             layout="vertical"
             >
+            <a-alert
+                v-if="isExpired"
+                message="已过期的分享不能进行修改"
+                type="warning"
+                show-icon
+                style="margin-bottom: 16px"
+            />
+            
             <a-form-item label="分享名称" name="name">
-                <a-input v-model:value="formState.name" placeholder="请输入分享名称" />
+                <a-input v-model:value="formState.name" placeholder="请输入分享名称" :disabled="isExpired" />
             </a-form-item>
             
             <a-form-item label="访问密码">
-                <a-switch v-model:checked="formState.enablePassword" />
+                <a-switch v-model:checked="formState.enablePassword" :disabled="isExpired" />
                 <div v-if="formState.enablePassword" style="margin-top: 8px">
                     <a-form-item name="password" :rules="formState.enablePassword ? rules.password : []" no-style>
-                        <a-input-password v-model:value="formState.password" placeholder="重置访问密码 (留空则不修改)" />
+                        <a-input-password v-model:value="formState.password" placeholder="重置访问密码 (留空则不修改)" :disabled="isExpired" />
                     </a-form-item>
                 </div>
             </a-form-item>
 
             <a-form-item label="过期时间">
-                <a-switch v-model:checked="formState.enableExpire" />
+                <a-switch v-model:checked="formState.enableExpire" :disabled="isExpired" />
                 <div v-if="formState.enableExpire" style="margin-top: 8px">
                     <a-form-item name="expireTime" :rules="formState.enableExpire ? rules.expireTime : []" no-style>
-                        <a-date-picker 
-                            v-model:value="formState.expireTime" 
-                            show-time 
-                            placeholder="选择过期时间" 
-                            value-format="YYYY-MM-DD HH:mm:ss"
-                            style="width: 100%"
+                        <expire-time-picker
+                            v-model:model-value="formState.expireTime"
+                            :show-time="true"
+                            :disabled="isExpired"
                         />
                     </a-form-item>
                 </div>
@@ -146,7 +165,7 @@ export default {
             <a-form-item>
                 <a-space style="display: flex; justify-content: flex-end">
                     <a-button @click="handleCancel">取消</a-button>
-                    <a-button type="primary" :loading="confirmLoading" @click="handleOk">确定</a-button>
+                    <a-button type="primary" :loading="confirmLoading" :disabled="isExpired" @click="handleOk">确定</a-button>
                 </a-space>
             </a-form-item>
             </a-form>

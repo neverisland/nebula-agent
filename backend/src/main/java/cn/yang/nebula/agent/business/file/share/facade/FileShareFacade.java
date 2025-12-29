@@ -3,6 +3,7 @@ package cn.yang.nebula.agent.business.file.share.facade;
 import cn.yang.nebula.agent.business.file.share.po.FileShareCreatePo;
 import cn.yang.nebula.agent.business.file.share.po.FileSharePageQueryPo;
 import cn.yang.nebula.agent.business.file.share.po.FileShareUpdatePo;
+import cn.yang.nebula.agent.business.file.share.vo.FileShareFileInfoVo;
 import cn.yang.nebula.agent.business.file.share.vo.FileSharePublicVo;
 import cn.yang.nebula.agent.business.file.share.vo.FileShareVo;
 import cn.yang.common.data.structure.vo.page.PageResult;
@@ -69,4 +70,31 @@ public interface FileShareFacade {
      * @param id 分享ID
      */
     void incrementVisitCount(String id);
+
+    /**
+     * 下载全部文件（公开接口）
+     * 流式压缩并返回文件流
+     *
+     * @param shareId 分享ID
+     * @param password 密码（可选）
+     * @param response HTTP响应
+     */
+    void downloadAll(String shareId, String password, jakarta.servlet.http.HttpServletResponse response);
+
+    /**
+     * 验证分享密码（公开接口）
+     *
+     * @param shareId 分享ID
+     * @param password 密码
+     */
+    void verifyPassword(String shareId, String password);
+
+    /**
+     * 获取分享文件列表（公开接口）
+     *
+     * @param shareId 分享ID
+     * @param password 密码
+     * @return 文件列表
+     */
+    List<FileShareFileInfoVo> getFileList(String shareId, String password);
 }

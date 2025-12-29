@@ -72,6 +72,14 @@ public interface FileShareMapper {
     int incrementVisitCount(@Param("id") String id);
 
     /**
+     * 增加下载次数
+     *
+     * @param id 分享ID
+     * @return 影响行数
+     */
+    int incrementDownloadCount(@Param("id") String id);
+
+    /**
      * 查询需要标记为过期的分享记录
      * 条件：启用了过期时间、过期时间已到、状态未标记为过期
      *

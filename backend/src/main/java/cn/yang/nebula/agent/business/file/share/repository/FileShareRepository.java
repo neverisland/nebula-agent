@@ -174,6 +174,15 @@ public class FileShareRepository {
     }
 
     /**
+     * 增加下载次数
+     *
+     * @param id 分享ID
+     */
+    public void incrementDownloadCount(String id) {
+        fileShareMapper.incrementDownloadCount(id);
+    }
+
+    /**
      * 查询需要标记为过期的分享ID列表
      * 条件：启用了过期时间、过期时间已到、状态未标记为过期
      *

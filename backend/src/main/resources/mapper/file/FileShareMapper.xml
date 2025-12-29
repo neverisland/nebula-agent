@@ -91,6 +91,12 @@
         WHERE id = #{id}
     </update>
 
+    <update id="incrementDownloadCount">
+        UPDATE file_share
+        SET download_count = download_count + 1
+        WHERE id = #{id}
+    </update>
+
     <select id="selectExpiredShareIds" resultType="java.lang.String">
         SELECT id
         FROM file_share

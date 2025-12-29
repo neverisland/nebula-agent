@@ -14,6 +14,8 @@ public enum CacheSpaceEnum {
 
     FILE_SHARE_VISIT_COUNT("file-share:visit-count:", "文件分享访问次数(锁)"),
 
+    FILE_SHARE_DOWNLOAD_COUNT("file-share:download-count:", "文件分享下载次数(锁)"),
+
     FILE_SHARE_EXPIRE_TASK("file-share:expire-task-lock", "文件分享过期任务(锁)"),
     ;
 

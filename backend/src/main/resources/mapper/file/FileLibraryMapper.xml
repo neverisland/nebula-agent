@@ -139,5 +139,24 @@
     <select id="sumSizeByUserId" resultType="java.lang.Long">
         select IFNULL(sum(size), 0) from file_library where create_user_id = #{userId, jdbcType=VARCHAR}
     </select>
+
+    <!-- 根据id列表查询 -->
+    <select id="selectByIds" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from file_library
+        where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id, jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+    <!-- 根据空间ID和用户ID查询文件列表 -->
+    <select id="selectBySpaceIdAndUserId" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from file_library
+        where space_id = #{spaceId, jdbcType=VARCHAR}
+          and create_user_id = #{userId, jdbcType=VARCHAR}
+        order by create_time desc
+    </select>
 </mapper>
 

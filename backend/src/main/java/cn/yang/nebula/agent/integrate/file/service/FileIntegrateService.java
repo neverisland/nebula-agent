@@ -48,7 +48,7 @@ public class FileIntegrateService implements FileIntegrateFacade {
         try {
             PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, fileKey, file.getInputStream());
             PutObjectResult result = ossClient.putObject(putObjectRequest);
-            log.info("OSS文件上传成功,fileKey:[{}],响应:[{}]", fileKey, JsonUtils.objectToString(result));
+//            log.info("OSS文件上传成功,fileKey:[{}],响应:[{}]", fileKey, JsonUtils.objectToString(result));
             return;
         } catch (IOException ie) {
             log.error("文件上传失败", ie);
@@ -70,9 +70,9 @@ public class FileIntegrateService implements FileIntegrateFacade {
         try {
             PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, fileKey, file);
             PutObjectResult result = ossClient.putObject(putObjectRequest);
-            log.info("OSS文件上传成功,fileKey:[{}],响应:[{}]", fileKey, JsonUtils.objectToString(result));
-        } catch (IOException ie) {
-            log.error("文件上传失败", ie);
+//            log.info("OSS文件上传成功,fileKey:[{}],响应:[{}]", fileKey, JsonUtils.objectToString(result));
+//        } catch (IOException ie) {
+//            log.error("文件上传失败", ie);
         } catch (OSSException oe) {
             log.error("阿里云OSS处理异常,Request ID:[{}], Error Message:[{}], Error Code:[{}], Host ID:[{}],",
                     oe.getRequestId(), oe.getErrorMessage(), oe.getErrorCode(), oe.getHostId(), oe);

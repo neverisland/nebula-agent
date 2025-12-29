@@ -61,16 +61,18 @@
 | code | Number | 状态码（0 成功） |
 | msg | String | 提示信息 |
 | data | Object | 分页数据 |
-| data.records | Array | 数据列表 |
-| data.total | Number | 总数 |
-| data.records[].id | String | 主键 |
-| data.records[].name | String | 文件名 |
-| data.records[].mimeType | String | 类型 |
-| data.records[].size | Number | 大小（字节） |
-| data.records[].url | String | 文件访问地址 |
-| data.records[].thumbnailsUrl | String | 缩略图访问地址 |
-| data.records[].spaceId | String | 空间ID（可为空） |
-| data.records[].createTime | String | 上传时间 |
+| data.list | Array | 数据列表 |
+| data.total | Number | 总条数 |
+| data.current | Number | 当前页 |
+| data.size | Number | 每页大小 |
+| data.list[].id | String | 主键 |
+| data.list[].name | String | 文件名 |
+| data.list[].mimeType | String | 文件类型 |
+| data.list[].size | Number | 文件大小（字节） |
+| data.list[].url | String | 文件访问地址 |
+| data.list[].thumbnailsUrl | String | 缩略图访问地址（可为空） |
+| data.list[].spaceId | String | 空间ID（可为空） |
+| data.list[].createTime | String | 上传时间 |
 
 ### 响应示例
 
@@ -79,13 +81,13 @@
   "code": 0,
   "msg": "success",
   "data": {
-    "records": [
+    "list": [
       {
         "id": "1",
         "name": "demo.jpg",
         "mimeType": "image/jpeg",
         "size": 10240,
-        "url": "2025/12/11/xxxxx.jpg",
+        "url": "/file/2025/12/11/xxxxx.jpg",
         "thumbnailsUrl": null,
         "spaceId": "space123",
         "createTime": "2025-12-11 10:00:00"

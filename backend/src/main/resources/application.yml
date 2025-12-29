@@ -96,9 +96,3 @@ sa-token:
   token-style: uuid
   # 是否输出操作日志
   is-log: false
-
-file:
-  access:
-    address: http://127.0.0.1:9000
-  share:
-    address: http://127.0.0.1:5100/share/

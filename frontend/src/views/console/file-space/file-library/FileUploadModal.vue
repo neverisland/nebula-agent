@@ -6,7 +6,7 @@
       :footer="null"
       @cancel="close"
   >
-    <div class="upload-container" @paste="handlePaste">
+    <div ref="uploadContainerRef" class="upload-container" @paste="handlePaste" tabindex="-1">
       <a-upload-dragger
           name="file"
           :file-list="fileList"
@@ -103,6 +103,35 @@ export default {
       fileList: [] as UploadFile[],
       uploading: false,
       uploadedResults: [] as FileLibraryUploadVo[],
+      visibilityChangeHandler: null as (() => void) | null,
+    }
+  },
+  watch: {
+    open(newVal: boolean) {
+      if (newVal) {
+        // 弹窗打开时，延迟聚焦以确保 DOM 已渲染
+        this.$nextTick(() => {
+          this.focusContainer();
+        });
+      }
+    }
+  },
+  mounted() {
+    // 监听标签页可见性变化
+    this.visibilityChangeHandler = () => {
+      if (document.visibilityState === 'visible' && this.open) {
+        // 标签页切换回来且弹窗打开时，自动聚焦
+        this.$nextTick(() => {
+          this.focusContainer();
+        });
+      }
+    };
+    document.addEventListener('visibilitychange', this.visibilityChangeHandler);
+  },
+  beforeUnmount() {
+    // 清理事件监听
+    if (this.visibilityChangeHandler) {
+      document.removeEventListener('visibilitychange', this.visibilityChangeHandler);
     }
   },
   computed: {
@@ -161,11 +190,9 @@ export default {
       }
       this.uploading = true;
 
-      // 过滤出还未上传的文件
+      // 过滤出还未上传的文件（只上传状态不是 'done' 的文件）
       const filesToUpload = this.fileList.filter(file => {
-        return !this.uploadedResults.some(uploaded => {
-          return uploaded.name === file.name;
-        });
+        return file.status !== 'done';
       });
 
       if (filesToUpload.length === 0) {
@@ -218,6 +245,13 @@ export default {
         message.error('复制失败，请手动复制');
       }
     },
+    focusContainer() {
+      // 聚焦到上传容器，使其可以接收粘贴事件
+      const container = this.$refs.uploadContainerRef as HTMLElement;
+      if (container) {
+        container.focus();
+      }
+    },
   }
 }
 </script>
@@ -225,6 +259,7 @@ export default {
 <style scoped>
 .upload-container {
   padding: 12px;
+  outline: none;
 }
 .actions {
   margin-top: 12px;

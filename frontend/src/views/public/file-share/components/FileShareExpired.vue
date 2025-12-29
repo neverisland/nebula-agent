@@ -1,11 +1,3 @@
-<script setup lang="ts">
-import { WarningOutlined } from '@ant-design/icons-vue';
-
-/**
- * 分享过期提示组件
- */
-</script>
-
 <template>
   <div class="expired-container">
      <div class="expired-content">
@@ -18,6 +10,20 @@ import { WarningOutlined } from '@ant-design/icons-vue';
      </div>
   </div>
 </template>
+
+<script lang="ts">
+import { WarningOutlined } from '@ant-design/icons-vue';
+
+/**
+ * 分享过期提示组件
+ */
+export default {
+  name: "FileShareExpired",
+  components: {
+    WarningOutlined
+  }
+};
+</script>
 
 <style scoped>
 .expired-container {

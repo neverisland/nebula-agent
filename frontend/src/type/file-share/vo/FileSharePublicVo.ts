@@ -64,6 +64,11 @@ export interface FileSharePublicVo {
      */
     fileSpaceVo?: FileSpaceVo;
 
+    /**
+     * 创建人名称
+     */
+    createUserName?: string;
+
     // --- 前端扩展字段 (Mock 用) ---
     /**
      * 是否被密码锁定

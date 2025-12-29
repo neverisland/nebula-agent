@@ -154,4 +154,30 @@ public class FileLibraryRepository {
     public Long sumSizeByUserId(String userId) {
         return fileLibraryMapper.sumSizeByUserId(userId);
     }
+
+    /**
+     * 根据id列表查询
+     *
+     * @param ids id列表
+     * @return 文件列表
+     */
+    public List<FileLibrary> selectByIds(List<String> ids) {
+        if (CollectionUtils.isEmpty(ids)) {
+            return List.of();
+        }
+        List<FileLibraryDo> fileLibraryDoList = fileLibraryMapper.selectByIds(ids);
+        return BeanConvertUtils.convert(fileLibraryDoList, FileLibrary.class);
+    }
+
+    /**
+     * 根据空间ID和用户ID查询文件列表
+     *
+     * @param spaceId 空间ID
+     * @param userId 用户ID
+     * @return 文件列表
+     */
+    public List<FileLibrary> selectBySpaceIdAndUserId(String spaceId, String userId) {
+        List<FileLibraryDo> fileLibraryDoList = fileLibraryMapper.selectBySpaceIdAndUserId(spaceId, userId);
+        return BeanConvertUtils.convert(fileLibraryDoList, FileLibrary.class);
+    }
 }

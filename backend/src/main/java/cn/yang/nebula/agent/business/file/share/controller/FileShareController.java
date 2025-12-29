@@ -10,11 +10,14 @@ import cn.yang.nebula.agent.business.file.share.enums.ShareTypeEnum;
 import cn.yang.nebula.agent.business.file.share.facade.FileShareFacade;
 import cn.yang.nebula.agent.business.file.share.po.FileShareCreatePo;
 import cn.yang.nebula.agent.business.file.share.po.FileSharePageQueryPo;
+import cn.yang.nebula.agent.business.file.share.po.FileSharePasswordVerifyPo;
 import cn.yang.nebula.agent.business.file.share.po.FileShareUpdatePo;
+import cn.yang.nebula.agent.business.file.share.vo.FileShareFileInfoVo;
 import cn.yang.nebula.agent.business.file.share.vo.FileSharePublicVo;
 import cn.yang.nebula.agent.business.file.share.vo.FileShareVo;
 import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -22,6 +25,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * 文件分享 Controller
@@ -152,5 +156,45 @@ public class FileShareController {
     public ResultVo<?> incrementVisit(@RequestParam("id") @NotBlank(message = "分享ID不能为空") String id) {
         fileShareFacade.incrementVisitCount(id);
         return ResultFactory.success(StatusCodeEnum.SUCCESS, "success");
+    }
+
+    /**
+     * 下载全部文件（公开接口）
+     *
+     * @param shareId  分享ID
+     * @param password 密码（可选）
+     * @param response HTTP响应
+     */
+    @ParamLog(open = false)
+    @GetMapping("/public/downloadAll")
+    public void downloadAll(@RequestParam("shareId") @NotBlank(message = "分享ID不能为空") String shareId,
+                            @RequestParam(value = "password", required = false) String password,
+                            HttpServletResponse response) {
+        // 批量下载文件
+        fileShareFacade.downloadAll(shareId, password, response);
+    }
+
+    /**
+     * 验证分享密码（公开接口）
+     *
+     * @param verifyPo 验证参数
+     * @return 验证结果
+     */
+    @PostMapping("/public/verifyPassword")
+    public ResultVo<?> verifyPassword(@RequestBody @Validated FileSharePasswordVerifyPo verifyPo) {
+        fileShareFacade.verifyPassword(verifyPo.getShareId(), verifyPo.getPassword());
+        return ResultFactory.success(StatusCodeEnum.SUCCESS, "密码验证成功");
+    }
+
+    /**
+     * 获取文件列表（公开接口）
+     *
+     * @param verifyPo 查询参数
+     * @return 文件列表
+     */
+    @PostMapping("/public/fileList")
+    public ResultVo<List<FileShareFileInfoVo>> getFileList(@RequestBody @Validated FileSharePasswordVerifyPo verifyPo) {
+        List<FileShareFileInfoVo> fileList = fileShareFacade.getFileList(verifyPo.getShareId(), verifyPo.getPassword());
+        return ResultFactory.success(StatusCodeEnum.SUCCESS, "success", fileList);
     }
 }

@@ -109,7 +109,14 @@
             <a-space>
               <a-button type="link" size="small" @click="openDialogDetail(record.id)">详情</a-button>
               <a-button type="link" size="small" @click="handleCopy(record.shareUrl)">复制链接</a-button>
-              <a-button type="link" size="small" @click="openDialogEdit(record.id)">编辑</a-button>
+              <a-button 
+                type="link" 
+                size="small" 
+                :disabled="record.isExpired"
+                @click="openDialogEdit(record.id)"
+              >
+                编辑
+              </a-button>
               <a-button type="link" size="small" danger @click="handleDelete(record)">删除</a-button>
             </a-space>
           </template>
@@ -226,6 +233,12 @@ export default {
      * @param id 分享ID
      */
     openDialogEdit(id: string) {
+      // 检查分享是否过期
+      const record = this.listData.find(item => item.id === id);
+      if (record && record.isExpired) {
+        message.warning('已过期的分享不能进行修改');
+        return;
+      }
       this.selectId = id;
       this.dialogEdit = true;
     },

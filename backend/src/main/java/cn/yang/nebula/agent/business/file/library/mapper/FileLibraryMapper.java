@@ -105,5 +105,22 @@ public interface FileLibraryMapper {
      * @return 总存储大小（字节）
      */
     Long sumSizeByUserId(@Param("userId") String userId);
+
+    /**
+     * 根据id列表查询
+     *
+     * @param ids id列表
+     * @return 文件列表
+     */
+    List<FileLibraryDo> selectByIds(@Param("ids") List<String> ids);
+
+    /**
+     * 根据空间ID和用户ID查询文件列表
+     *
+     * @param spaceId 空间ID
+     * @param userId 用户ID
+     * @return 文件列表
+     */
+    List<FileLibraryDo> selectBySpaceIdAndUserId(@Param("spaceId") String spaceId, @Param("userId") String userId);
 }
 
