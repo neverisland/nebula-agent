@@ -279,8 +279,8 @@ public class FileShareService implements FileShareFacade {
      * 每天凌晨 00:00:00 执行
      * 使用分布式锁保证多服务实例不重复执行，不进行重试
      */
-//    @Scheduled(cron = "0 0 0 * * ?")
-    @Scheduled(cron = "0 0/1 * * * ? ")
+    @Scheduled(cron = "0 0 0 * * ?")
+//    @Scheduled(cron = "0 0/1 * * * ? ")
     public void updateExpiredShareStatus() {
         log.info("[分享过期任务] 开始执行分享过期状态检查任务...");
 
