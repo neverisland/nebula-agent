@@ -40,7 +40,12 @@ import { LockOutlined } from '@ant-design/icons-vue';
 /**
  * 密码输入组件
  */
-export default {
+import { defineComponent } from 'vue';
+
+/**
+ * 密码输入组件
+ */
+export default defineComponent({
   name: "FileSharePassword",
   components: {
     LockOutlined
@@ -63,7 +68,7 @@ export default {
       this.$emit('submit', this.password);
     }
   }
-};
+});
 </script>
 
 <style scoped>

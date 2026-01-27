@@ -30,7 +30,12 @@
         <!-- 按钮 -->
         <div id="slider-button" :style="{ left: sliderButtonLeft }" class="slider-button">
           <!-- 按钮图标 -->
-          <div class="slider-button-icon"/>
+          <!-- 按钮图标 -->
+          <div class="slider-button-icon">
+             <CheckOutlined v-if="verifySuccess" />
+             <CloseOutlined v-else-if="verifyFail" />
+             <ArrowRightOutlined v-else />
+          </div>
         </div>
       </div>
       <!--滑动条提示文字-->
@@ -40,7 +45,7 @@
 </template>
 
 <script>
-import { RedoOutlined } from '@ant-design/icons-vue';
+import { RedoOutlined, ArrowRightOutlined, CheckOutlined, CloseOutlined } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
 import { obtainSliderVerifyCode } from "@/api/SliderVerifyApi.ts";
 
@@ -54,7 +59,7 @@ function square(x) {
 
 export default {
   name: 'sliderVerify',
-  components: { RedoOutlined },
+  components: { RedoOutlined, ArrowRightOutlined, CheckOutlined, CloseOutlined },
   props: {
     // 业务标识
     business: {
@@ -471,21 +476,21 @@ export default {
   background: #1991FA
 }
 
-/*鼠标悬浮时的按钮图标样式*/
-.slider-button:hover .slider-button-icon {
-  /* background-position: 0 -13px */
-}
+
 
 /*滑动按钮图标*/
 .slider-button-icon {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  width: 20px;
-  height: 20px;
-  background-image: url("@/assets/images/slide.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #45494c;
+  transition: color 0.2s;
 }
 
 /*校验时的按钮样式*/
@@ -518,7 +523,7 @@ export default {
 
 /*校验成功时的按钮图标样式*/
 .verify-success .slider-button-icon {
-  background-position: 0 0 !important;
+  color: #fff;
 }
 
 /*校验失败时的滑动箱样式*/
@@ -540,8 +545,7 @@ export default {
 
 /*校验失败时的按钮图标样式*/
 .verify-fail .slider-button-icon {
-  top: 14px;
-  background-position: 0 -82px !important;
+  color: #fff;
 }
 
 /*校验状态下的提示文字隐藏*/

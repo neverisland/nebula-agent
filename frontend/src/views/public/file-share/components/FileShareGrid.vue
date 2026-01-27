@@ -83,7 +83,12 @@ import { FileOutlined, FileImageOutlined, FileTextOutlined, VideoCameraOutlined,
 /**
  * 文件网格展示组件
  */
-export default {
+import { defineComponent } from 'vue';
+
+/**
+ * 文件网格展示组件
+ */
+export default defineComponent({
   name: "FileShareGrid",
   components: {
     FileOutlined,
@@ -194,7 +199,7 @@ export default {
       }
     }
   }
-};
+});
 </script>
 
 <style scoped>

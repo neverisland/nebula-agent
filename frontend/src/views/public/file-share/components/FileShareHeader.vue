@@ -40,7 +40,14 @@ import { DownloadOutlined, ClockCircleOutlined, UserOutlined } from '@ant-design
  * 
  * @author 
  */
-export default {
+import { defineComponent } from 'vue';
+
+/**
+ * 文件分享头部组件
+ * 
+ * @author 
+ */
+export default defineComponent({
   name: "FileShareHeader",
   components: {
     DownloadOutlined,
@@ -68,7 +75,7 @@ export default {
       this.$emit('download-all');
     }
   }
-};
+});
 </script>
 
 <style scoped>

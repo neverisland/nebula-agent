@@ -7,7 +7,9 @@ declare module '*.vue' {
 // 扩展 Vue 模板中的静态资源路径类型
 // 允许在模板中使用 public 目录下的绝对路径
 declare module '@vue/runtime-core' {
+  import { RouteLocationNormalizedLoaded, Router } from 'vue-router';
   interface ComponentCustomProperties {
-    // 允许在模板中使用 /icon/ 和 /file-icon/ 等 public 目录下的路径
+    $route: RouteLocationNormalizedLoaded;
+    $router: Router;
   }
 }

@@ -40,7 +40,14 @@ import FileShareLoading from "./components/FileShareLoading.vue";
  * 
  * @author 
  */
-export default {
+import { defineComponent } from 'vue';
+
+/**
+ * 文件分享公开页布局
+ * 
+ * @author 
+ */
+export default defineComponent({
   name: "FileShareLayout",
   components: {
     FileShareHeader,
@@ -206,7 +213,7 @@ export default {
       downloadAllFiles(this.shareId, this.currentPassword);
     }
   }
-};
+});
 </script>
 
 <style scoped>

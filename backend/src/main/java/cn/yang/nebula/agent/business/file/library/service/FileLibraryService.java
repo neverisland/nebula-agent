@@ -251,7 +251,7 @@ public class FileLibraryService implements FileLibraryFacade {
             // 设置响应头
             response.setContentType(mimeType);
             String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8);
-            response.setHeader("Content-Disposition", "inline; filename*=UTF-8''" + encodedFileName);
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"; filename*=UTF-8''" + encodedFileName);
             response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
             // 文件传输
