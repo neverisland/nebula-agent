@@ -1,10 +1,9 @@
 package cn.yang.nebula.agent.business.user.facade;
 
 import cn.yang.nebula.agent.business.user.dto.role.*;
-import cn.yang.nebula.agent.business.user.dto.role.*;
 import cn.yang.nebula.agent.business.user.entity.Permission;
 import cn.yang.nebula.agent.business.user.entity.Role;
-import cn.yang.common.data.structure.vo.page.PageResult;
+import cn.yang.nebula.agent.vo.page.PageResult;
 
 import java.util.List;
 

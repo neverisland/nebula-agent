@@ -1,16 +1,16 @@
 package cn.yang.nebula.agent.business.file.library.repository;
 
-import cn.yang.common.data.structure.annotation.assignment.BaseDataAssignment;
-import cn.yang.common.data.structure.annotation.assignment.DataOperationTypeEnum;
-import cn.yang.common.data.structure.exception.NullDataException;
-import cn.yang.common.data.structure.utils.bean.BeanConvertUtils;
-import cn.yang.common.data.structure.vo.page.PageResult;
-import cn.yang.common.data.structure.vo.page.PageUtils;
-import cn.yang.foundational.capability.id.generator.IdGenerator;
+import cn.yang.nebula.agent.aop.assignment.BaseDataAssignment;
+import cn.yang.nebula.agent.aop.assignment.DataOperationTypeEnum;
 import cn.yang.nebula.agent.business.file.library.dal.FileLibraryDo;
 import cn.yang.nebula.agent.business.file.library.dto.FileLibraryPageDto;
 import cn.yang.nebula.agent.business.file.library.entity.FileLibrary;
 import cn.yang.nebula.agent.business.file.library.mapper.FileLibraryMapper;
+import cn.yang.nebula.agent.exception.NullDataException;
+import cn.yang.nebula.agent.utils.bean.BeanConvertUtils;
+import cn.yang.nebula.agent.utils.id.generator.IdGenerator;
+import cn.yang.nebula.agent.vo.page.PageResult;
+import cn.yang.nebula.agent.vo.page.PageUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;

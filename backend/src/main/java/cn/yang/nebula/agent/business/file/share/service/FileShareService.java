@@ -1,8 +1,5 @@
 package cn.yang.nebula.agent.business.file.share.service;
 
-import cn.yang.common.data.structure.exception.BusinessException;
-import cn.yang.common.data.structure.utils.bean.BeanConvertUtils;
-import cn.yang.common.data.structure.vo.page.PageResult;
 import cn.yang.nebula.agent.business.authentication.entity.UserInfo;
 import cn.yang.nebula.agent.business.authentication.facade.AuthenticationFacade;
 import cn.yang.nebula.agent.business.file.library.entity.FileLibrary;
@@ -22,11 +19,14 @@ import cn.yang.nebula.agent.business.file.space.repository.FileSpaceRepository;
 import cn.yang.nebula.agent.business.file.space.vo.FileSpaceVo;
 import cn.yang.nebula.agent.business.user.entity.User;
 import cn.yang.nebula.agent.business.user.repository.UserRepository;
-import cn.yang.common.data.structure.exception.NullDataException;
 import cn.yang.nebula.agent.enums.CacheSpaceEnum;
 import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
+import cn.yang.nebula.agent.exception.BusinessException;
+import cn.yang.nebula.agent.exception.NullDataException;
 import cn.yang.nebula.agent.integrate.file.facade.FileIntegrateFacade;
+import cn.yang.nebula.agent.utils.bean.BeanConvertUtils;
 import cn.yang.nebula.agent.utils.file.FileZipUtils;
+import cn.yang.nebula.agent.vo.page.PageResult;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

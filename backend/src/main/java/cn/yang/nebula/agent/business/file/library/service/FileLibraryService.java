@@ -1,22 +1,22 @@
 package cn.yang.nebula.agent.business.file.library.service;
 
-import cn.yang.common.data.structure.exception.BusinessException;
-import cn.yang.common.data.structure.exception.NullDataException;
-import cn.yang.common.data.structure.utils.bean.BeanConvertUtils;
-import cn.yang.common.data.structure.vo.page.PageResult;
 import cn.yang.nebula.agent.business.authentication.facade.AuthenticationFacade;
 import cn.yang.nebula.agent.business.file.library.dto.FileLibraryPageDto;
-import cn.yang.nebula.agent.business.file.library.vo.FileLibraryPageVo;
 import cn.yang.nebula.agent.business.file.library.dto.FileLibraryRenameDto;
-import cn.yang.nebula.agent.business.file.library.vo.FileLibraryStatisticsVo;
-import cn.yang.nebula.agent.business.file.library.vo.FileLibraryUploadVo;
 import cn.yang.nebula.agent.business.file.library.entity.FileLibrary;
 import cn.yang.nebula.agent.business.file.library.facade.FileLibraryFacade;
 import cn.yang.nebula.agent.business.file.library.repository.FileLibraryRepository;
+import cn.yang.nebula.agent.business.file.library.vo.FileLibraryPageVo;
+import cn.yang.nebula.agent.business.file.library.vo.FileLibraryStatisticsVo;
+import cn.yang.nebula.agent.business.file.library.vo.FileLibraryUploadVo;
 import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
+import cn.yang.nebula.agent.exception.BusinessException;
 import cn.yang.nebula.agent.exception.CallException;
+import cn.yang.nebula.agent.exception.NullDataException;
 import cn.yang.nebula.agent.integrate.file.facade.FileIntegrateFacade;
+import cn.yang.nebula.agent.utils.bean.BeanConvertUtils;
 import cn.yang.nebula.agent.utils.image.ImageUtils;
+import cn.yang.nebula.agent.vo.page.PageResult;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -242,16 +242,14 @@ public class FileLibraryService implements FileLibraryFacade {
         try {
             FileLibrary fileLibrary = fileLibraryRepository.selectByPath(relativePath);
             // 获取请求头
-            String mimeType = StringUtils.hasText(fileLibrary.getMimeType()) ? fileLibrary.getMimeType()
-                    : "application/octet-stream";
-            String fileName = StringUtils.hasText(fileLibrary.getName()) ? fileLibrary.getName()
-                    : relativePath.substring(relativePath.lastIndexOf("/") + 1);
+            String mimeType = StringUtils.hasText(fileLibrary.getMimeType()) ? fileLibrary.getMimeType() : "application/octet-stream";
+            String fileName = StringUtils.hasText(fileLibrary.getName()) ? fileLibrary.getName() : relativePath.substring(relativePath.lastIndexOf("/") + 1);
 
             InputStream inputStream = fileIntegrateFacade.obtainFile(fileLibrary.getPath());
             // 设置响应头
             response.setContentType(mimeType);
             String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8);
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"; filename*=UTF-8''" + encodedFileName);
+            response.setHeader("Content-Disposition", "inline; filename=\"" + encodedFileName + "\"; filename*=UTF-8''" + encodedFileName);
             response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
             // 文件传输

@@ -1,13 +1,13 @@
 package cn.yang.nebula.agent.business.authentication.repository;
 
+import cn.yang.nebula.agent.aop.assignment.BaseDataAssignment;
+import cn.yang.nebula.agent.aop.assignment.DataOperationTypeEnum;
 import cn.yang.nebula.agent.business.authentication.dal.AuthenticationPasswordDo;
 import cn.yang.nebula.agent.business.authentication.entity.AuthenticationPassword;
 import cn.yang.nebula.agent.business.authentication.mapper.AuthenticationPasswordMapper;
-import cn.yang.common.data.structure.annotation.assignment.BaseDataAssignment;
-import cn.yang.common.data.structure.annotation.assignment.DataOperationTypeEnum;
-import cn.yang.common.data.structure.exception.NullDataException;
-import cn.yang.common.data.structure.utils.bean.BeanConvertUtils;
-import cn.yang.foundational.capability.id.generator.IdGenerator;
+import cn.yang.nebula.agent.exception.NullDataException;
+import cn.yang.nebula.agent.utils.bean.BeanConvertUtils;
+import cn.yang.nebula.agent.utils.id.generator.IdGenerator;
 import jakarta.annotation.Resource;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.stereotype.Component;

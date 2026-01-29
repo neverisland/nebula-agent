@@ -5,7 +5,7 @@ import cn.yang.nebula.agent.business.authentication.entity.UserInfo;
 import cn.yang.nebula.agent.business.authentication.facade.AuthenticationFacade;
 import cn.yang.nebula.agent.business.user.entity.User;
 import cn.yang.nebula.agent.business.user.facade.UserFacade;
-import cn.yang.common.data.structure.utils.bean.BeanConvertUtils;
+import cn.yang.nebula.agent.utils.bean.BeanConvertUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 

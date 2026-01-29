@@ -1,10 +1,9 @@
 package cn.yang.nebula.agent.business.user.facade;
 
 import cn.yang.nebula.agent.business.user.dto.user.*;
-import cn.yang.nebula.agent.business.user.dto.user.*;
 import cn.yang.nebula.agent.business.user.entity.User;
-import cn.yang.common.data.structure.exception.NullDataException;
-import cn.yang.common.data.structure.vo.page.PageResult;
+import cn.yang.nebula.agent.exception.NullDataException;
+import cn.yang.nebula.agent.vo.page.PageResult;
 
 /**
  * 用户 业务接口定义

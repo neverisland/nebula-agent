@@ -1,7 +1,5 @@
 package cn.yang.nebula.agent.business.user.service;
 
-import cn.yang.nebula.agent.business.user.dto.role.*;
-import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
 import cn.yang.nebula.agent.business.user.dto.permission.PermissionDto;
 import cn.yang.nebula.agent.business.user.dto.role.*;
 import cn.yang.nebula.agent.business.user.entity.Permission;
@@ -12,10 +10,11 @@ import cn.yang.nebula.agent.business.user.enums.RoleTypeEnum;
 import cn.yang.nebula.agent.business.user.facade.PermissionFacade;
 import cn.yang.nebula.agent.business.user.facade.RoleFacade;
 import cn.yang.nebula.agent.business.user.repository.RoleRepository;
-import cn.yang.common.data.structure.exception.BusinessException;
-import cn.yang.common.data.structure.exception.NullDataException;
-import cn.yang.common.data.structure.utils.bean.BeanConvertUtils;
-import cn.yang.common.data.structure.vo.page.PageResult;
+import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
+import cn.yang.nebula.agent.exception.BusinessException;
+import cn.yang.nebula.agent.exception.NullDataException;
+import cn.yang.nebula.agent.utils.bean.BeanConvertUtils;
+import cn.yang.nebula.agent.vo.page.PageResult;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

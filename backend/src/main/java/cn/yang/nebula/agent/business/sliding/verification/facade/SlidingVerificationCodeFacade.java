@@ -2,7 +2,7 @@ package cn.yang.nebula.agent.business.sliding.verification.facade;
 
 import cn.yang.nebula.agent.business.sliding.verification.dto.SlidingVerificationCodeDto;
 import cn.yang.nebula.agent.business.sliding.verification.enums.SlidingVerificationCodeBusinessEnum;
-import cn.yang.foundational.capability.sliding.verification.code.dto.SlidingVerificationCodeGain;
+import cn.yang.nebula.agent.utils.sliding.verification.code.dto.SlidingVerificationCodeGain;
 
 /**
  * 滑动验证码业务接口

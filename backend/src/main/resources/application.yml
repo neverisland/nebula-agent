@@ -5,7 +5,7 @@ spring:
   application:
     name: nebula-agent
   profiles:
-    active: prod
+    active: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     ##  Hikari 连接池配置

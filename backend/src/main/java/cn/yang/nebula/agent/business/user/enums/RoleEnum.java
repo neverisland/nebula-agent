@@ -1,6 +1,6 @@
 package cn.yang.nebula.agent.business.user.enums;
 
-import cn.yang.common.data.structure.exception.NullDataException;
+import cn.yang.nebula.agent.exception.NullDataException;
 import lombok.Getter;
 
 import java.util.List;

@@ -1,15 +1,15 @@
 package cn.yang.nebula.agent.business.sliding.verification.controller;
 
-import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
 import cn.yang.nebula.agent.business.sliding.verification.dto.SlidingVerificationCodeDto;
 import cn.yang.nebula.agent.business.sliding.verification.dto.SlidingVerificationCodeObtainDto;
 import cn.yang.nebula.agent.business.sliding.verification.enums.SlidingVerificationCodeBusinessEnum;
 import cn.yang.nebula.agent.business.sliding.verification.facade.SlidingVerificationCodeFacade;
-import cn.yang.common.data.structure.enums.StatusCodeEnum;
-import cn.yang.common.data.structure.exception.BusinessException;
-import cn.yang.common.data.structure.exception.NullDataException;
-import cn.yang.common.data.structure.vo.result.ResultFactory;
-import cn.yang.common.data.structure.vo.result.ResultVo;
+import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
+import cn.yang.nebula.agent.enums.StatusCodeEnum;
+import cn.yang.nebula.agent.exception.BusinessException;
+import cn.yang.nebula.agent.exception.NullDataException;
+import cn.yang.nebula.agent.vo.result.ResultFactory;
+import cn.yang.nebula.agent.vo.result.ResultVo;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,8 +1,7 @@
 package cn.yang.nebula.agent.business.file.space.entity;
 
-import cn.yang.common.data.structure.entity.BaseEntity;
+import cn.yang.nebula.agent.vo.entity.BaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.io.Serializable;

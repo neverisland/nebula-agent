@@ -1,6 +1,6 @@
 package cn.yang.nebula.agent.enums;
 
-import cn.yang.common.data.structure.vo.result.ResultCodeInterface;
+import cn.yang.nebula.agent.vo.result.ResultCodeInterface;
 
 /**
  * 异常返回状态枚举

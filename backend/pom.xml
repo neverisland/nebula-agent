@@ -2,6 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>4.0.2</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
 
     <groupId>cn.yang.nebula.agent</groupId>
     <artifactId>nebula-agent</artifactId>
@@ -12,39 +19,10 @@
     <properties>
         <java.version>21</java.version>
 
-        <!-- 版本依赖管理 -->
-        <spring-boot.version>3.5.7</spring-boot.version>
-        <reuse-dependencies.version>1.2.1</reuse-dependencies.version>
-
         <!-- 功能依赖 -->
-        <sa-token.version>1.41.0</sa-token.version>
+        <sa-token.version>1.44.0</sa-token.version>
         <dashscope-sdk-java.version>2.20.3</dashscope-sdk-java.version>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-
-            <!-- 依赖版本统一管理 -->
-            <dependency>
-                <groupId>cn.yang.reuse.dependencies</groupId>
-                <artifactId>reuse-dependencies</artifactId>
-                <version>${reuse-dependencies.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <!-- springboot 版本统一管理 -->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-        </dependencies>
-    </dependencyManagement>
-
 
     <dependencies>
 
@@ -71,12 +49,30 @@
             <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
 
+        <!-- aop -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+            <version>4.0.0-M2</version>
+        </dependency>
+
+        <!-- 密码 -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-crypto</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>1.78.1</version>
+        </dependency>
+
         <!-- 自动校验 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-
 
         <!-- mybatis -->
         <dependency>
@@ -87,28 +83,7 @@
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>3.0.5</version>
-        </dependency>
-
-        <!-- 自行构建的通用数据结构依赖 -->
-        <dependency>
-            <groupId>cn.yang.common.data</groupId>
-            <artifactId>common-data-structures</artifactId>
-            <version>${reuse-dependencies.version}</version>
-        </dependency>
-
-        <!-- 自行构建的工具类复用依赖 -->
-        <dependency>
-            <groupId>cn.yang.foundational.capability</groupId>
-            <artifactId>foundational-capability-starter</artifactId>
-            <version>${reuse-dependencies.version}</version>
-        </dependency>
-
-        <!-- 自行构建的加密解密依赖 -->
-        <dependency>
-            <groupId>cn.yang.security.crypto</groupId>
-            <artifactId>security-crypto-starter</artifactId>
-            <version>${reuse-dependencies.version}</version>
+            <version>4.0.1</version>
         </dependency>
 
         <!-- Sa-Token 权限认证，在线文档：https://sa-token.cc -->
@@ -128,6 +103,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.42</version>
             <scope>provided</scope>
         </dependency>
 
@@ -158,6 +134,30 @@
             <version>4.0.0</version>
         </dependency>
 
+        <!-- PageHelper 分页插件 -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+
+        <!-- ULID ID生成器 -->
+        <dependency>
+            <groupId>com.github.f4b6a3</groupId>
+            <artifactId>ulid-creator</artifactId>
+            <version>5.2.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -165,7 +165,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
+                <version>4.0.2</version>
                 <executions>
                     <execution>
                         <goals>

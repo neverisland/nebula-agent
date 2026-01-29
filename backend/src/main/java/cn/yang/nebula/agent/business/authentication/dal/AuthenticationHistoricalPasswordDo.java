@@ -1,6 +1,6 @@
 package cn.yang.nebula.agent.business.authentication.dal;
 
-import cn.yang.common.data.structure.entity.BaseTimeEntity;
+import cn.yang.nebula.agent.vo.entity.BaseTimeEntity;
 import lombok.Data;
 
 import java.io.Serial;

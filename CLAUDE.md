@@ -9,10 +9,9 @@ Nebula Agent (星云智能) 是一个全栈应用，采用 Java Spring Boot 后�
 ## 构建和开发命令
 
 ### 后端 (Java Spring Boot)
-- **编译**: `mvn clean compile -s D:\Software\Maven\conf\settings.xml -DskipTests`
-- **运行测试**: `mvn test -s D:\Software\Maven\conf\settings.xml`
-- **打包**: `mvn clean package -s D:\Software\Maven\conf\settings.xml`
-- **Maven 本地仓库**: `D:\Maven-Repository`
+- **Windows - 编译（代码修改后必须执行）** `mvn clean compile -D "maven.repo.local=D:/Maven-Repository" -DskipTests`
+- **Mac/Linux - 编译** `mvn clean compile -s /usr/local/apache-maven-3.9.9/conf/settings.xml -DskipTests`
+- **Windows - Maven 本地仓库**: `D:\Maven-Repository`
 
 ### 前端 (Vue 3 + Vite)
 - **开发服务器**: `cd frontend && npm run dev`
@@ -115,7 +114,7 @@ API 文档位于 `docs/api/`，作为前后端协作的契约：
 
 **后端：**
 - Java 21
-- Spring Boot 3.5.7
+- Spring Boot 4.0.0
 - MyBatis 3.0.5
 - Sa-Token 1.41.0（权限认证）
 - Redis（缓存）

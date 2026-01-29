@@ -1,6 +1,5 @@
 package cn.yang.nebula.agent.integrate.file.service;
 
-import cn.yang.foundational.capability.utils.json.JsonUtils;
 import cn.yang.nebula.agent.exception.CallException;
 import cn.yang.nebula.agent.integrate.file.facade.FileIntegrateFacade;
 import com.aliyun.oss.OSS;
@@ -9,7 +8,6 @@ import com.aliyun.oss.model.DeleteObjectsRequest;
 import com.aliyun.oss.model.GetObjectRequest;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.aliyun.oss.model.PutObjectResult;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

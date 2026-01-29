@@ -1,6 +1,6 @@
 package cn.yang.nebula.agent.business.file.library.dal;
 
-import cn.yang.common.data.structure.entity.BaseEntity;
+import cn.yang.nebula.agent.vo.entity.BaseEntity;
 import lombok.Data;
 
 import java.io.Serial;

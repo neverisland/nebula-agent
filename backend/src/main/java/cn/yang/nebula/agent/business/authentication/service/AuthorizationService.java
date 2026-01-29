@@ -7,11 +7,9 @@ import cn.yang.nebula.agent.business.user.enums.AccountNonLockedEnum;
 import cn.yang.nebula.agent.business.user.enums.EnabledEnum;
 import cn.yang.nebula.agent.business.user.facade.UserFacade;
 import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
-import cn.yang.common.data.structure.exception.BusinessException;
+import cn.yang.nebula.agent.exception.BusinessException;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * 授权业务层

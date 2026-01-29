@@ -1,7 +1,7 @@
 package cn.yang.nebula.agent.business.user.dto.user;
 
-import cn.yang.nebula.agent.enums.EnabledEnum;
 import cn.yang.nebula.agent.business.user.enums.AccountNonLockedEnum;
+import cn.yang.nebula.agent.enums.EnabledEnum;
 import lombok.Data;
 
 import java.io.Serial;

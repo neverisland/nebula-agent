@@ -1,8 +1,8 @@
 package cn.yang.nebula.agent.utils.file;
 
-import cn.yang.common.data.structure.exception.BusinessException;
 import cn.yang.nebula.agent.business.file.library.entity.FileLibrary;
 import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
+import cn.yang.nebula.agent.exception.BusinessException;
 import cn.yang.nebula.agent.exception.CallException;
 import cn.yang.nebula.agent.integrate.file.facade.FileIntegrateFacade;
 import jakarta.servlet.http.HttpServletResponse;

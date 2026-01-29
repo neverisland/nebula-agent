@@ -1,16 +1,16 @@
 package cn.yang.nebula.agent.business.sliding.verification.service;
 
-import cn.yang.nebula.agent.enums.CacheSpaceEnum;
-import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
 import cn.yang.nebula.agent.business.sliding.verification.dto.SlidingVerificationCodeDto;
 import cn.yang.nebula.agent.business.sliding.verification.enums.SlidingVerificationCodeBusinessEnum;
 import cn.yang.nebula.agent.business.sliding.verification.facade.SlidingVerificationCodeFacade;
-import cn.yang.common.data.structure.exception.BusinessException;
-import cn.yang.common.data.structure.utils.bean.BeanConvertUtils;
-import cn.yang.foundational.capability.sliding.verification.code.dto.SlidingVerificationCodeGain;
-import cn.yang.foundational.capability.sliding.verification.code.dto.SlidingVerificationCodeReturn;
-import cn.yang.foundational.capability.sliding.verification.code.exception.SlidingVerificationCodeException;
-import cn.yang.foundational.capability.sliding.verification.code.utils.SlidingVerificationCodeUtils;
+import cn.yang.nebula.agent.enums.CacheSpaceEnum;
+import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
+import cn.yang.nebula.agent.exception.BusinessException;
+import cn.yang.nebula.agent.utils.bean.BeanConvertUtils;
+import cn.yang.nebula.agent.utils.sliding.verification.code.dto.SlidingVerificationCodeGain;
+import cn.yang.nebula.agent.utils.sliding.verification.code.dto.SlidingVerificationCodeReturn;
+import cn.yang.nebula.agent.utils.sliding.verification.code.exception.SlidingVerificationCodeException;
+import cn.yang.nebula.agent.utils.sliding.verification.code.utils.SlidingVerificationCodeUtils;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

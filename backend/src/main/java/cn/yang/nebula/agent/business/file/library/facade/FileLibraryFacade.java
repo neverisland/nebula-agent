@@ -1,11 +1,11 @@
 package cn.yang.nebula.agent.business.file.library.facade;
 
-import cn.yang.common.data.structure.vo.page.PageResult;
 import cn.yang.nebula.agent.business.file.library.dto.FileLibraryPageDto;
-import cn.yang.nebula.agent.business.file.library.vo.FileLibraryPageVo;
 import cn.yang.nebula.agent.business.file.library.dto.FileLibraryRenameDto;
+import cn.yang.nebula.agent.business.file.library.vo.FileLibraryPageVo;
 import cn.yang.nebula.agent.business.file.library.vo.FileLibraryStatisticsVo;
 import cn.yang.nebula.agent.business.file.library.vo.FileLibraryUploadVo;
+import cn.yang.nebula.agent.vo.page.PageResult;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
 

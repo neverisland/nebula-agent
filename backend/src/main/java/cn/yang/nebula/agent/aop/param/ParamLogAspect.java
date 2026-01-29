@@ -1,9 +1,9 @@
-package cn.yang.nebula.agent.aop;
+package cn.yang.nebula.agent.aop.param;
 
-import cn.yang.common.data.structure.exception.BusinessException;
-import cn.yang.common.data.structure.vo.result.ResultFactory;
-import cn.yang.foundational.capability.utils.json.JsonUtils;
+import cn.yang.nebula.agent.exception.BusinessException;
 import cn.yang.nebula.agent.utils.ip.IpUtils;
+import cn.yang.nebula.agent.utils.json.JsonUtils;
+import cn.yang.nebula.agent.vo.result.ResultFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -21,12 +21,12 @@ import java.util.Objects;
 @Component(value = "AssetParamLogAspect")
 public class ParamLogAspect {
 
-    @Around("@within(cn.yang.nebula.agent.aop.ParamLog)")
+    @Around("@within(cn.yang.nebula.agent.aop.param.ParamLog)")
     public Object doRequestClass(ProceedingJoinPoint pjp) throws Throwable {
         return execWithLog(pjp);
     }
 
-    @Around("@annotation(cn.yang.nebula.agent.aop.ParamLog)")
+    @Around("@annotation(cn.yang.nebula.agent.aop.param.ParamLog)")
     public Object doRequestMethod(ProceedingJoinPoint pjp) throws Throwable {
         return execWithLog(pjp);
     }
@@ -42,20 +42,20 @@ public class ParamLogAspect {
                 Object result = pjp.proceed();
                 long end = System.currentTimeMillis();
                 log.info("InvokeMonitor - 服务名称:[{}]\n访问IP:[{}]\n服务接口:[{}]\n方法:[{}]\n耗时:[{}]\n入参:[{}]\n出参:[{}]",
-                        "nebula-agent", clientIp, clazz.getCanonicalName(), name, end - start,
+                        "xiaozhi-backend-web", clientIp, clazz.getCanonicalName(), name, end - start,
                         JsonUtils.objectToString(pjp.getArgs()),
                         JsonUtils.objectToString(result));
                 return result;
             } catch (BusinessException e) {
                 long end = System.currentTimeMillis();
                 log.warn("InvokeMonitor - 抛出自定义异常 - 服务名称:[{}]\n访问IP:[{}]\n服务接口:[{}]\n方法:[{}]\n耗时:[{}]\n入参:[{}]\n堆栈:",
-                        "nebula-agent", clientIp, clazz.getCanonicalName(), name, end - start,
+                        "xiaozhi-backend-web", clientIp, clazz.getCanonicalName(), name, end - start,
                         JsonUtils.objectToString(pjp.getArgs()), e);
                 return ResultFactory.failure(e, e.getDetails());
             } catch (Exception e) {
                 long end = System.currentTimeMillis();
                 log.warn("InvokeMonitor - 抛出异常 - 服务名称:[{}]\n访问IP:[{}]\n服务接口:[{}]\n方法:[{}]\n耗时:[{}]\n入参:[{}]\n堆栈:",
-                        "nebula-agent", clientIp, clazz.getCanonicalName(), name, end - start,
+                        "xiaozhi-backend-web", clientIp, clazz.getCanonicalName(), name, end - start,
                         JsonUtils.objectToString(pjp.getArgs()), e);
                 throw e;
             }

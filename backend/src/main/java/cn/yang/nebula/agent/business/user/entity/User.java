@@ -1,14 +1,14 @@
 package cn.yang.nebula.agent.business.user.entity;
 
-import cn.yang.nebula.agent.enums.EnabledEnum;
 import cn.yang.nebula.agent.business.user.enums.AccountNonLockedEnum;
-import cn.yang.common.data.structure.entity.BaseEntity;
+import cn.yang.nebula.agent.enums.EnabledEnum;
+import cn.yang.nebula.agent.vo.entity.BaseEntity;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 用户实体

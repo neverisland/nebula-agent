@@ -1,6 +1,6 @@
 package cn.yang.nebula.agent.business.file.share.po;
 
-import cn.yang.common.data.structure.vo.page.PageQuery;
+import cn.yang.nebula.agent.vo.page.PageQuery;
 import lombok.Data;
 
 import java.io.Serial;

@@ -1,5 +1,7 @@
 package cn.yang.nebula.agent.business.user.repository;
 
+import cn.yang.nebula.agent.aop.assignment.BaseDataAssignment;
+import cn.yang.nebula.agent.aop.assignment.DataOperationTypeEnum;
 import cn.yang.nebula.agent.business.user.dal.UserDo;
 import cn.yang.nebula.agent.business.user.dal.UserRoleDo;
 import cn.yang.nebula.agent.business.user.dto.role.RoleDto;
@@ -9,12 +11,10 @@ import cn.yang.nebula.agent.business.user.entity.Role;
 import cn.yang.nebula.agent.business.user.entity.User;
 import cn.yang.nebula.agent.business.user.mapper.UserMapper;
 import cn.yang.nebula.agent.business.user.mapper.UserRoleMapper;
-import cn.yang.common.data.structure.annotation.assignment.BaseDataAssignment;
-import cn.yang.common.data.structure.annotation.assignment.DataOperationTypeEnum;
-import cn.yang.common.data.structure.exception.NullDataException;
-import cn.yang.common.data.structure.utils.bean.BeanConvertUtils;
-import cn.yang.common.data.structure.vo.page.PageResult;
-import cn.yang.foundational.capability.id.generator.IdGenerator;
+import cn.yang.nebula.agent.exception.NullDataException;
+import cn.yang.nebula.agent.utils.bean.BeanConvertUtils;
+import cn.yang.nebula.agent.utils.id.generator.IdGenerator;
+import cn.yang.nebula.agent.vo.page.PageResult;
 import jakarta.annotation.Resource;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;

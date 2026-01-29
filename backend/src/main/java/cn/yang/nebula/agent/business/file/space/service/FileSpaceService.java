@@ -1,25 +1,26 @@
 package cn.yang.nebula.agent.business.file.space.service;
 
-import cn.yang.common.data.structure.utils.bean.BeanConvertUtils;
+import cn.yang.nebula.agent.business.authentication.facade.AuthenticationFacade;
+import cn.yang.nebula.agent.business.file.library.repository.FileLibraryRepository;
 import cn.yang.nebula.agent.business.file.space.dto.FileSpaceAllocateDto;
 import cn.yang.nebula.agent.business.file.space.dto.FileSpaceInsertDto;
+import cn.yang.nebula.agent.business.file.space.dto.FileSpacePageQueryDto;
 import cn.yang.nebula.agent.business.file.space.dto.FileSpaceUpdateDto;
 import cn.yang.nebula.agent.business.file.space.entity.FileSpace;
 import cn.yang.nebula.agent.business.file.space.facade.FileSpaceFacade;
 import cn.yang.nebula.agent.business.file.space.repository.FileSpaceRepository;
-import cn.yang.nebula.agent.business.file.space.dto.FileSpacePageQueryDto;
-import cn.yang.nebula.agent.business.file.space.vo.FileSpaceVo;
 import cn.yang.nebula.agent.business.file.space.vo.FileSpaceSelectVo;
 import cn.yang.nebula.agent.business.file.space.vo.FileSpaceStatisticsVo;
-import cn.yang.common.data.structure.vo.page.PageResult;
-import cn.yang.nebula.agent.business.authentication.facade.AuthenticationFacade;
-import cn.yang.nebula.agent.business.file.library.repository.FileLibraryRepository;
-import org.springframework.util.CollectionUtils;
-import java.util.List;
+import cn.yang.nebula.agent.business.file.space.vo.FileSpaceVo;
 import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
-import cn.yang.common.data.structure.exception.BusinessException;
+import cn.yang.nebula.agent.exception.BusinessException;
+import cn.yang.nebula.agent.utils.bean.BeanConvertUtils;
+import cn.yang.nebula.agent.vo.page.PageResult;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 /**
  * 个人空间业务层

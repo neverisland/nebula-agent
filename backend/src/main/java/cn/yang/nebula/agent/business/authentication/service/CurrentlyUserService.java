@@ -1,9 +1,8 @@
 package cn.yang.nebula.agent.business.authentication.service;
 
-import cn.yang.common.data.structure.annotation.assignment.CurrentlyUserFacade;
-import cn.yang.common.data.structure.exception.NotLoginException;
+import cn.yang.nebula.agent.aop.assignment.CurrentlyUserFacade;
 import cn.yang.nebula.agent.business.authentication.facade.AuthenticationFacade;
-import cn.yang.nebula.agent.business.authentication.utils.SpringContextUtil;
+import cn.yang.nebula.agent.exception.NotLoginException;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;

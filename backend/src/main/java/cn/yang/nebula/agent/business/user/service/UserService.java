@@ -1,18 +1,17 @@
 package cn.yang.nebula.agent.business.user.service;
 
 import cn.yang.nebula.agent.business.user.dto.user.*;
-import cn.yang.nebula.agent.enums.EnabledEnum;
-import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
-import cn.yang.nebula.agent.business.user.dto.user.*;
 import cn.yang.nebula.agent.business.user.entity.User;
 import cn.yang.nebula.agent.business.user.enums.AccountNonLockedEnum;
 import cn.yang.nebula.agent.business.user.facade.UserFacade;
 import cn.yang.nebula.agent.business.user.repository.UserRepository;
-import cn.yang.common.data.structure.exception.BusinessException;
-import cn.yang.common.data.structure.exception.NullDataException;
-import cn.yang.common.data.structure.utils.bean.BeanConvertUtils;
-import cn.yang.common.data.structure.vo.page.PageResult;
-import cn.yang.foundational.capability.username.UsernameGenerator;
+import cn.yang.nebula.agent.enums.EnabledEnum;
+import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
+import cn.yang.nebula.agent.exception.BusinessException;
+import cn.yang.nebula.agent.exception.NullDataException;
+import cn.yang.nebula.agent.utils.bean.BeanConvertUtils;
+import cn.yang.nebula.agent.utils.username.UsernameGenerator;
+import cn.yang.nebula.agent.vo.page.PageResult;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;

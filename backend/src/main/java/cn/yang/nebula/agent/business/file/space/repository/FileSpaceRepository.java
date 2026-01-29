@@ -1,16 +1,16 @@
 package cn.yang.nebula.agent.business.file.space.repository;
 
-import cn.yang.common.data.structure.annotation.assignment.BaseDataAssignment;
-import cn.yang.common.data.structure.exception.BusinessException;
-import cn.yang.common.data.structure.utils.bean.BeanConvertUtils;
-import cn.yang.common.data.structure.vo.page.PageResult;
-import cn.yang.common.data.structure.vo.page.PageUtils;
-import cn.yang.foundational.capability.id.generator.IdGenerator;
+import cn.yang.nebula.agent.aop.assignment.BaseDataAssignment;
 import cn.yang.nebula.agent.business.file.space.dal.FileSpaceDo;
 import cn.yang.nebula.agent.business.file.space.dto.FileSpacePageQueryDto;
 import cn.yang.nebula.agent.business.file.space.entity.FileSpace;
 import cn.yang.nebula.agent.business.file.space.mapper.FileSpaceMapper;
 import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
+import cn.yang.nebula.agent.exception.BusinessException;
+import cn.yang.nebula.agent.utils.bean.BeanConvertUtils;
+import cn.yang.nebula.agent.utils.id.generator.IdGenerator;
+import cn.yang.nebula.agent.vo.page.PageResult;
+import cn.yang.nebula.agent.vo.page.PageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;

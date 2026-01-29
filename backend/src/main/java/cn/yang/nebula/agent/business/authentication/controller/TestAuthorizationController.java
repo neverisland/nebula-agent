@@ -1,11 +1,11 @@
 package cn.yang.nebula.agent.business.authentication.controller;
 
-import cn.yang.common.data.structure.enums.StatusCodeEnum;
-import cn.yang.common.data.structure.exception.BusinessException;
-import cn.yang.common.data.structure.vo.result.ResultFactory;
-import cn.yang.common.data.structure.vo.result.ResultVo;
 import cn.yang.nebula.agent.business.authentication.facade.AuthorizationFacade;
 import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
+import cn.yang.nebula.agent.enums.StatusCodeEnum;
+import cn.yang.nebula.agent.exception.BusinessException;
+import cn.yang.nebula.agent.vo.result.ResultFactory;
+import cn.yang.nebula.agent.vo.result.ResultVo;
 import jakarta.annotation.Resource;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.web.bind.annotation.GetMapping;

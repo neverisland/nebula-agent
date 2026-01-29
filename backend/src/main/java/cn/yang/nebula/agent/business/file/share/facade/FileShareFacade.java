@@ -6,7 +6,7 @@ import cn.yang.nebula.agent.business.file.share.po.FileShareUpdatePo;
 import cn.yang.nebula.agent.business.file.share.vo.FileShareFileInfoVo;
 import cn.yang.nebula.agent.business.file.share.vo.FileSharePublicVo;
 import cn.yang.nebula.agent.business.file.share.vo.FileShareVo;
-import cn.yang.common.data.structure.vo.page.PageResult;
+import cn.yang.nebula.agent.vo.page.PageResult;
 
 import java.util.List;
 

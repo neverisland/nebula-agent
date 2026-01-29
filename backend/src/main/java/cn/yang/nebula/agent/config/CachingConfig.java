@@ -1,7 +1,6 @@
 package cn.yang.nebula.agent.config;
 
-import cn.yang.nebula.agent.enums.CacheSpaceEnum;
-import org.springframework.boot.autoconfigure.cache.CacheProperties;
+import org.springframework.boot.cache.autoconfigure.CacheProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +8,8 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.RedisSerializer;
 
 import java.time.Duration;
 import java.util.Map;
@@ -22,9 +23,6 @@ import java.util.Map;
 @EnableCaching
 public class CachingConfig {
 
-//    @Value("#{${secondAuthLoginIdCodeValidityPeriod:5}}")
-//    private Long secondAuthLoginIdCodeValidityPeriod;
-
     @Bean
     public CacheProperties cacheProperties() {
         return new CacheProperties();
@@ -33,22 +31,25 @@ public class CachingConfig {
     @Primary
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory, CacheProperties cacheProperties) {
-        // 设置默认的缓存配置，包括默认的过期时间
-        RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig();
-        if (cacheProperties != null && cacheProperties.getRedis() != null) {
-            if (cacheProperties.getRedis().getTimeToLive() != null) {
-                defaultCacheConfig = defaultCacheConfig.entryTtl(cacheProperties.getRedis().getTimeToLive());
-            }
-            if (cacheProperties.getRedis().isCacheNullValues()) {
-                defaultCacheConfig = defaultCacheConfig.disableCachingNullValues();
-            }
-        }
 
-        return RedisCacheManager.builder(connectionFactory)
-                .cacheDefaults(defaultCacheConfig) // 应用默认配置
+        RedisSerializer<?> jsonSerializer = RedisSerializer.json();
+
+        RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
+                // 设置过期时间
+                .entryTtl(cacheProperties.getRedis().getTimeToLive() != null ? cacheProperties.getRedis().getTimeToLive() : Duration.ofHours(3))
+                // 禁用缓存空值
+                .disableCachingNullValues()
+                // Key 依然建议使用 String 序列化
+                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.string()))
+                // Value 使用最新的 JSON 序列化
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jsonSerializer))
+                .disableCachingNullValues();
+
+        return RedisCacheManager.builder(connectionFactory).cacheDefaults(config) // 应用默认配置
                 .withInitialCacheConfigurations(Map.ofEntries(
-                        Map.entry(CacheSpaceEnum.SLIDING_VERIFICATION_CODE.getMark(), RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(3)))
-                ))
-                .build();
+
+//                        Map.entry(CacheSpaceEnum.SMS_VERIFICATION_CODE_SEND.getMark(), RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(3)))
+
+                )).build();
     }
 }

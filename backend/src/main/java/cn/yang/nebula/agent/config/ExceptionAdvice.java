@@ -2,10 +2,10 @@ package cn.yang.nebula.agent.config;
 
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.yang.nebula.agent.enums.ErrorStatusCodeEnum;
-import cn.yang.common.data.structure.enums.StatusCodeEnum;
-import cn.yang.common.data.structure.exception.BusinessException;
-import cn.yang.common.data.structure.vo.result.ResultFactory;
-import cn.yang.common.data.structure.vo.result.ResultVo;
+import cn.yang.nebula.agent.enums.StatusCodeEnum;
+import cn.yang.nebula.agent.exception.BusinessException;
+import cn.yang.nebula.agent.vo.result.ResultFactory;
+import cn.yang.nebula.agent.vo.result.ResultVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.converter.HttpMessageNotReadableException;

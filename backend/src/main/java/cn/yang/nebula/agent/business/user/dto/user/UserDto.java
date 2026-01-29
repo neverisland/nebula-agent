@@ -1,8 +1,8 @@
 package cn.yang.nebula.agent.business.user.dto.user;
 
 import cn.yang.nebula.agent.business.user.dto.role.RoleDto;
-import cn.yang.nebula.agent.enums.EnabledEnum;
 import cn.yang.nebula.agent.business.user.enums.AccountNonLockedEnum;
+import cn.yang.nebula.agent.enums.EnabledEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 

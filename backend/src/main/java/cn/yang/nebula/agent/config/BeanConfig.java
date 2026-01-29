@@ -1,6 +1,6 @@
 package cn.yang.nebula.agent.config;
 
-import cn.yang.security.crypto.password.Pbkdf2PasswordEncoder;
+import cn.yang.nebula.agent.utils.password.Pbkdf2PasswordEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;

@@ -1,6 +1,6 @@
 package cn.yang.nebula.agent.business.sliding.verification.enums;
 
-import cn.yang.common.data.structure.exception.NullDataException;
+import cn.yang.nebula.agent.exception.NullDataException;
 
 /**
  * 滑动验证码业务枚举

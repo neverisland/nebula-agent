@@ -1,6 +1,6 @@
 package cn.yang.nebula.agent.business.sliding.verification.dto;
 
-import cn.yang.foundational.capability.sliding.verification.code.dto.SlidingVerificationCodeBaseReturn;
+import cn.yang.nebula.agent.utils.sliding.verification.code.dto.SlidingVerificationCodeBaseReturn;
 
 /**
  * 滑动验证码出参,渲染展示
