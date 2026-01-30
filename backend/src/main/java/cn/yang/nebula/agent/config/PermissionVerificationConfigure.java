@@ -29,9 +29,9 @@ public class PermissionVerificationConfigure implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new SaInterceptor(handle -> {
-            // 校验是否登录
-            StpUtil.checkLogin();
-        }))
+                    // 校验是否登录
+                    StpUtil.checkLogin();
+                }))
                 .addPathPatterns("/**")
                 .excludePathPatterns(DEVELOPMENT_API);
     }
