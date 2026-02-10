@@ -26,7 +26,6 @@ public class FileSharePasswordVerifyPo implements Serializable {
     /**
      * 访问密码
      */
-    @NotBlank(message = "密码不能为空")
     private String password;
 }
 
