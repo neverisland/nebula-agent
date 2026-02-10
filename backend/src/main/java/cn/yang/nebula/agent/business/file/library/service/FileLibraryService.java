@@ -245,7 +245,7 @@ public class FileLibraryService implements FileLibraryFacade {
             String mimeType = StringUtils.hasText(fileLibrary.getMimeType()) ? fileLibrary.getMimeType() : "application/octet-stream";
             String fileName = StringUtils.hasText(fileLibrary.getName()) ? fileLibrary.getName() : relativePath.substring(relativePath.lastIndexOf("/") + 1);
 
-            InputStream inputStream = fileIntegrateFacade.obtainFile(fileLibrary.getPath());
+            InputStream inputStream = fileIntegrateFacade.obtainFile(relativePath);
             // 设置响应头
             response.setContentType(mimeType);
             String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8);
@@ -254,12 +254,7 @@ public class FileLibraryService implements FileLibraryFacade {
 
             // 文件传输
             try (ServletOutputStream out = response.getOutputStream()) {
-                byte[] buffer = new byte[1024];
-                int len;
-                while ((len = inputStream.read(buffer)) != -1) {
-                    out.write(buffer, 0, len);
-                }
-                out.flush();
+                inputStream.transferTo(out);
             } finally {
                 inputStream.close();
             }

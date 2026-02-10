@@ -36,7 +36,7 @@ public class SlidingVerificationCodeController {
     public ResultVo<SlidingVerificationCodeDto> getSlidingVerificationCode(@RequestBody SlidingVerificationCodeObtainDto slidingVerificationCodeObtainDto) {
         try {
             if (slidingVerificationCodeObtainDto.getBackgroundHeight() == null || slidingVerificationCodeObtainDto.getBackgroundWidth() == null ||
-                    slidingVerificationCodeObtainDto.getVerifyHeight() == null || slidingVerificationCodeObtainDto.getBackgroundWidth() == null || slidingVerificationCodeObtainDto.getVerifyRadius() == null) {
+                    slidingVerificationCodeObtainDto.getVerifyHeight() == null || slidingVerificationCodeObtainDto.getVerifyWidth() == null || slidingVerificationCodeObtainDto.getVerifyRadius() == null) {
                 throw new BusinessException(ErrorStatusCodeEnum.PARAMETER_VERIFICATION_EXCEPTION, "滑动验证码参数异常");
             }
             SlidingVerificationCodeBusinessEnum codeBusinessEnum = SlidingVerificationCodeBusinessEnum.selectBusinessEnumByBusiness(slidingVerificationCodeObtainDto.getBusiness());
